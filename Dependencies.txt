@@ -1,0 +1,35 @@
+Group OpenDRC
+	Proj: OpenDRC.exe
+		Files: 
+			DRC.res
+			DRC.bpf
+			DRC_Main.cpp
+			DRC_CmdLine.cpp
+			DRC_FileIO.cpp
+			DRC_Core.cpp
+			Batch_l.cpp
+			Batcy_y.cpp
+			Generic_l.cpp
+			Gneric.l
+			Batch.l
+			Batch.y
+			Notes.txt
+			DRC_HdrStop.h
+			DRC.h
+			DRC_CmdLine.h
+			DRC_Core.h
+			DRC_FileIO.h
+			Batch_y.h
+			DRC_CmdLine.p
+			DRC_FileIO.p
+			DRC_Core.p
+			DRC_Main.p
+
+	Proj: DRCTest.exe
+		Files:
+			DRCTest.res
+			DRCTest.bpf
+			DRCTest.cpp
+			DRCTest_HdrStop.h
+			DRCTest.p
+	

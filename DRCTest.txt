@@ -1,0 +1,25 @@
+
+
+DRCTest comparison of directories:
+  Old: '.'
+  New: '.'
+  Error Threshold(A):          0.00000150
+  Error Totals Multiplier(B):        2.50
+  Error Totals Threshold(A*B): 0.00000375
+
+
+Processing RT files:
+    Old: '.\*.RT' done=-1
+    WARNING: Old RT file cannot be found.
+Processing STATS files:
+    Old: .\*.stats
+    WARNING: Old STATS file cannot be found.
+Processing Parameter files:
+    Old: .\parameters
+    WARNING: Old Param file cannot be found.
+Processing ACTS files:
+------
+Total Errors=0
+
+
+

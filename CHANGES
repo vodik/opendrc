@@ -1,0 +1,54 @@
+OpenDRC 1.01 March 15,2011
+
+	Changes:
+		1) The project was converted to be compileable in a second environment: 
+
+				MS Windows XP/Cygwin - Compiled/linked with GNU's g++
+		
+		   as well as the original enviroment:
+
+				MS Windows XP        - Compiled/linked with Borland's C++Builder
+
+		   The Cygwin linux-like environment can be obtained from: 
+
+				http://www.cygwin.com/
+
+		2) The GNU g++ compiler flaged some code changes that more rigorously stick
+		   to the C++ standard than my current Builder setup.  These changes include:
+
+			a) Conversion of #include's to standard header names (from depreciated ones):
+
+				<stdio.h>  ==>  <cstdio.h>
+
+			   and 
+
+			    <vector.h>  ==>  <vector>
+
+			b) Testing int's against 0 instead of NULL.
+			c) Missing casts "BYTE*" to "const char*" etc.
+			d) Adding the namespace command:
+
+				using namespace std;
+
+			e) Using un-commented extra tokens on #endif lines.
+			f) Conversion from using struct ffblk/findfirst/findnext to struct dirent/scandir.
+			g) Translation between Borland mkdir() and GNUC mkdir().
+			h) Changing "\\" in C-strings to "/".
+			i) Added type to declaration of flag FLG_DatabaseLoaded in DRC_Main.cpp/Load_Database().
+			j) Removed SED prefixing isatty() with std:: in compilation of FLEX sources.
+			k) Corrected problem in DRCTest.cpp/SaveACTSTotals() with short lines and comments.
+			l) In the MS Windows/Borland environment a file named "con.acts" cannot be created
+			   but can be in MS Windows/Cygwin.  Fixed this so that "con" is never used as a 
+			   filename without a con-# suffix.
+			j) Converted over the batch files (AllWords, ARCNonWord, and Pseudohomophones) to 
+			   use LF not CR-LF sequences to terminate lines.  This can be done with the
+			   Cygwin command:
+
+					tr -d '\r' <infile >outfile
+
+			k) Corrected a bug in DRC_CmdLine.cpp/Set_SetParameter() that reported a change in
+			   a boolean(true/false) parameter incorrectly.  In particular the OpenDRC command
+
+				-P <parameter> <value> 
+
+			   worked but displayed garbage in reporting the change.

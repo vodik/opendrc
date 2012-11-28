@@ -1,0 +1,68 @@
+one two three
+##############################################################################
+# Example DRC Batch File
+##############################################################################
+! Autoreset on
+! Autoreset off
+! reset
+! Alan 0.24
+! MinReadingPhonology 0.42
+! minreadingphonology 0.44
+! quit
+
+##############################################################################
+# Section 1. Normal Stimuli Simulations. 
+# In this section, 3 simulations are run for 3 different stimuli.
+# i.   TREE will run until named, or the default maximum number of cycles
+#      is reached. It is in the category 'words'
+# ii.  SPLIFF will run for a maximum of 200 cycles, or until named (unless
+#      the '-c' command line option was used.) It is in the category 'nonwords'
+# iii. CAKE will run for a maximum of only 10 cycles. It is not in any
+#      category.
+##############################################################################
+tree words
+200 spliff nonwords
+10 cake
+error1 error2 error3
+##############################################################################
+# Section 2. Batch Commands<LeftMouse>
+# In this section, automatic reset is disabled, then the stimulus TREE is
+# run for 20 cycles, then, without the activation levels in the model being
+# reset, CAKE is run until named.
+# The model is then reset, and SPLIFF is run for 30 cycles, then activation
+# levels in the letter layer are decayed by 50%, and then tree is run until
+# named.
+# Finally, the automatic reseting of the model after each stimulus is 
+# re-enabled.
+##############################################################################
+! AUTORESET OFF
+20 tree
+cake
+! RESET
+30 spliff
+! DECAY 1 0.5 0.0 0.0 0.0
+tree
+! RESET
+! AUTORESET ON
+
+##############################################################################
+# Section 3. The PRIME Command
+# In this section, the same things done in section 2 are achieved using the
+# prime command.
+##############################################################################
+! PRIME 20 tree
+cake
+! PRIME 30 spliff THEN DECAY 1 0.5 0.0 0.0 0.0
+tree
+##############################################################################
+! decay 22 0.5 0.3 6.7 9.2 Err
+##############################################################################
+! 27 RESET
+##############################################################################
+! 27 RESET
+##############################################################################
+! 27 RESET
+##############################################################################
+! 27 RESET
+##############################################################################
+one two three
