@@ -42,7 +42,7 @@
 //------------------------------------------------------------------------------
 #ifndef _H_DRCTest_HdrStop
 #define _H_DRCTest_HdrStop
-#pragma message in DRCTest_HdrStop.h
+/* #pragma message in DRCTest_HdrStop.h */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -89,7 +89,7 @@ typedef struct {
 #pragma hdrstop
 
 
-#pragma message out DRCTest_HdrStop.h
+/* #pragma message out DRCTest_HdrStop.h */
 #endif // _H_DRCTest_HdrStop
 
 //------------------------------------------------------------------------------

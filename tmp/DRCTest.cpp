@@ -87,13 +87,13 @@
 //
 //------------------------------------------------------------------------------
 
-#include "DRCTest_HdrStop.h"
+#include "DRCTest_hdrstop.h"
 
 
 //#define DEBUG
 //#include "debug.h"
 
-char* DRC_CmdLine[]={
+const char* DRC_CmdLine[]={
 	"$Author: alan $",
 	"$Date: 2011-03-14 17:09:41-04 $",
 	"$Revision: 1.9 $",
@@ -101,8 +101,8 @@ char* DRC_CmdLine[]={
 	"$Source: D:\\Repository\\D\\Dev\\Psych499\\DRCTest.cpp,v $"
 };
 
-char* FN_OutputFile="DRCTest.txt";
-char* FN_ACTSTotals="DRCTotals.txt";
+const char* FN_OutputFile="DRCTest.txt";
+const char* FN_ACTSTotals="DRCTotals.txt";
 FILE* fhACTSTotals=NULL;
 
 char* DIR_Old=".";
@@ -180,7 +180,7 @@ t_CmdLineArgs CmdLineArgs[]={
 // Errors:
 //---------------------------------------------------------------------------
 ProtoType
-bool MatchArg(char *flag,char *arg){
+bool MatchArg(const char *flag,char *arg){
     bool rtn=false;
 
     if(strcmp(flag,arg)==0){
