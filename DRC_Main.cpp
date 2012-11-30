@@ -18,13 +18,13 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
-//	The author can be contacted at:
-//		Alan.Angold@gmail.com
-//	or
-//		Alan Angold
-//		549 Sandbrooke Court
-//		Waterloo, Ontario 
-//		Canada N2T2H4
+//  The author can be contacted at:
+//      Alan.Angold@gmail.com
+//  or
+//      Alan Angold
+//      549 Sandbrooke Court
+//      Waterloo, Ontario 
+//      Canada N2T2H4
 //
 //
 // Main program for DRC (Dual Route Cascaded model).
@@ -134,19 +134,21 @@
 
 #include "DRC_HdrStop.h"
 
+#include <stdint.h>
+
 //#define DEBUG
 #define DBGvars
 #include "debug.h"
 
 
-char* DRC_Model_Version="1.0 (DRC1.2 Equivalent)";
+const char* DRC_Model_Version="1.0 (DRC1.2 Equivalent)";
 
-char* DRC_Main[]={
-	"$Author: alan $",
-	"$Date: 2011-03-14 17:04:07-04 $",
-	"$Revision: 1.25 $",
-	"$RCSfile: DRC_Main.cpp,v $",
-	"$Source: D:\\Repository\\D\\Dev\\Psych499\\DRC_Main.cpp,v $"
+const char* DRC_Main[]={
+    "$Author: alan $",
+    "$Date: 2011-03-14 17:04:07-04 $",
+    "$Revision: 1.25 $",
+    "$RCSfile: DRC_Main.cpp,v $",
+    "$Source: D:\\Repository\\D\\Dev\\Psych499\\DRC_Main.cpp,v $"
 };
 
 //---------------------------------------------------------------------------
@@ -157,17 +159,17 @@ char* DRC_Main[]={
 // Errors:
 //---------------------------------------------------------------------------
 ProtoType
-char* Terminate(char* start,char* fence)
+const char* Terminate(const char* start, __attribute__((unused)) const char* fence)
 {
-    if((int)fence<1000){
-        start[(int)fence]=0;
-    }else{
-        char* ps=strstr(start,fence);
-        if(ps!=NULL){
-            *ps=0;
-        }
-    }
-    return(start);
+    /* if((uintptr_t)fence<1000){ */
+    /*     start[(uintptr_t)fence]=0; */
+    /* }else{ */
+    /*     char* ps=strstr(start,fence); */
+    /*     if(ps!=NULL){ */
+    /*         *ps=0; */
+    /*     } */
+    /* } */
+    return start;
 }
 
 
@@ -224,22 +226,22 @@ void PrtVersion(FILE* fh)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
-bool MatchStr(char *str1,char *str2){
-    bool rtn=false;
-    char buf1[500];
-    char buf2[500];
+/* ProtoType */
+/* bool MatchStr(char *str1,char *str2){ */
+/*     bool rtn=false; */
+/*     char buf1[500]; */
+/*     char buf2[500]; */
 
-    strcpy(buf1,str1);
-    strlwr(buf1);
-    strcpy(buf2,str2);
-    strlwr(buf2);
+/*     strcpy(buf1,str1); */
+/*     strlwr(buf1); */
+/*     strcpy(buf2,str2); */
+/*     strlwr(buf2); */
 
-    if(strcmp(buf1,buf2)==0){
-        rtn=true;
-    }
-    return(rtn);
-}
+/*     if(strcmp(buf1,buf2)==0){ */
+/*         rtn=true; */
+/*     } */
+/*     return(rtn); */
+/* } */
 
 //---------------------------------------------------------------------------
 // Routine:
@@ -249,21 +251,31 @@ bool MatchStr(char *str1,char *str2){
 // Errors:
 //---------------------------------------------------------------------------
 ProtoType
-bool atob(char* str)
+bool atob(const char* str)
 {
-    char buf[10];
-    bool rtn=false;
-
-    strncpy(buf,str,9);
-    strlwr(buf);
-    if((strcmp(buf,"true")==0)||
-       (strcmp(buf,"t")==0)||
-       (strcmp(buf,"yes")==0)||
-       (strcmp(buf,"y")==0))
-    {
-        rtn=true;
+    switch (*str) {
+    case 't':
+    case 'T':
+    case 'y':
+    case 'Y':
+        return true;
+    default:
+        return false;
     }
-    return(rtn);
+
+    /* char buf[10]; */
+    /* bool rtn=false; */
+
+    /* strncpy(buf,str,9); */
+    /* strlwr(buf); */
+    /* if((strcmp(buf,"true")==0)|| */
+    /*    (strcmp(buf,"t")==0)|| */
+    /*    (strcmp(buf,"yes")==0)|| */
+    /*    (strcmp(buf,"y")==0)) */
+    /* { */
+    /*     rtn=true; */
+    /* } */
+    /* return(rtn); */
 }
 
 
@@ -401,7 +413,7 @@ void Init()
 // Errors:
 //---------------------------------------------------------------------------
 ProtoType
-int pfprintf(FILE* fh,char *fmt, ...)
+int pfprintf(FILE* fh,const char *fmt, ...)
 {
     va_list argptr;
     int cnt=0;

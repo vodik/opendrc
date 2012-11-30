@@ -71,7 +71,7 @@
 
 #include <stdio.h>
 
-#pragma message ("in debug.h")
+/* #pragma message ("in debug.h") */
 
 #define DBGMAX 100
 
@@ -170,13 +170,11 @@
             OutputDebugString((String("###       Line=")+Line+" --- ").c_str());
             #ifndef NOASSERT
             ShowMessage(("Assertion failure "+Cond+" \n at "+File+"("+Line+")").c_str());
-            #endif NOASSERT
+            #endif
         }
-    #ifdef __cplusplus
-    #endif __cplusplus
 #else
     #pragma message ("No OutputDebugString() function")
-#endif OutputDebugString
+#endif
 
 // -----------------------------------------------------------------------------
 
@@ -326,7 +324,7 @@
     #define debugraw(fmt,arg1)
 #endif  //DEBUG
 
-#pragma message ("out debug.h")
+/* #pragma message ("out debug.h") */
 
 #endif  //_DEBUG_H
 

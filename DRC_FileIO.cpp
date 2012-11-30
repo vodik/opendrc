@@ -292,8 +292,9 @@
 //#define DEBUG
 #include "debug.h"
 
+#include <unistd.h>
 
-char* DRC_FileIO[]={
+const char* DRC_FileIO[]={
 	"$Author: alan $",
 	"$Date: 2011-03-14 17:02:30-04 $",
 	"$Revision: 1.48 $",
@@ -731,7 +732,7 @@ int ReadParamFile(char* FileName)
 
 // Class names of the GPCRules file rules: Body, Multi(ple),Two,M(ulti)Phon(ic),
 // C(ontext)S(ensitive), Sing(le), Out(put).
-char*     GPCRuleClassNames[]={"?","body","multi","two","mphon","cs","sing","out"};
+const char*     GPCRuleClassNames[]={"?","body","multi","two","mphon","cs","sing","out"};
 // Storage for the GPCRules file.
 t_gpcrule GPCRules[MAXGPCRULES];
 // Index into GPCRules[] array. After loaded its size.
@@ -1367,6 +1368,8 @@ bool InitGPCSearch(void)
                 }
                 GPCList_OutputEnd=&GPCRules[i];
                 break;
+            default:
+                break;
         }
     }
     return(false);
@@ -1859,7 +1862,7 @@ int ReadPhonemesFile(char* FileName)
 //    DefaultNumPhonemeUnits=8
 //
 //------------------------------------------------------------------------------
-char* PropDelim="=\n";
+const char* PropDelim="=\n";
 
 t_Properties Properties[MAXPROPROPERTIES];
 int          PropertiesIdx=0;
@@ -2231,6 +2234,13 @@ DRC_Float CFSCalc(int Freqency,DRC_Float lfMaximum)
     DRC_Float lfWord=log10((DRC_Float)(Freqency+1));  // The +1 is a fudge factor because log(0) is undefined
     DRC_Float Rtn=((lfWord/lfMaximum)-1.0)*GP_FrequencyScale;
     return(Rtn);
+}
+
+static void strlwr(char *str)
+{
+    char* p = str;
+    for (; *p != '\0'; ++p)
+        *p = tolower(*p);
 }
 
 //---------------------------------------------------------------------------
@@ -2691,7 +2701,7 @@ void DisplayHomophones(FILE* fh)
 }
 
 ProtoType
-FILE* OpenOutputFile(char* ParentDir,char* RunDir,char* FileName,char* Extn)
+FILE* OpenOutputFile(const char* ParentDir,const char* RunDir,const char* FileName,const char* Extn)
 {
     char buf[MAXPATH];
     FILE* fh=NULL;
@@ -2701,7 +2711,7 @@ FILE* OpenOutputFile(char* ParentDir,char* RunDir,char* FileName,char* Extn)
         if(file_id==0){
 			// This file cannot be produced in MS Windows so we will 
 			// always suffix it with a number.
-			if(strcmpi(FileName,"con")==0) continue;
+			if(strcasecmp(FileName,"con")==0) continue;
 
             sprintf(buf,"%s\\%s\\%s.%s",ParentDir,RunDir,FileName,Extn);
         }else{
@@ -2952,7 +2962,7 @@ DRC_Float sqr(DRC_Float num)
 }
 
 ProtoType
-void DspMean(FILE* fh,char* good,char* bad,t_StatList& Stats)
+void DspMean(FILE* fh,const char* good,const char* bad,t_StatList& Stats)
 {
     if(Stats.Count!=0){
         DRC_Float Mean=Stats.RTSummed/Stats.Count;
@@ -2963,7 +2973,7 @@ void DspMean(FILE* fh,char* good,char* bad,t_StatList& Stats)
 }
 
 ProtoType
-void DspStdDev(FILE* fh,char* good,char* bad,t_StatList& Stats)
+void DspStdDev(FILE* fh,const char* good,const char* bad,t_StatList& Stats)
 {
     if(Stats.Count!=0){
         DRC_Float Mean=Stats.RTSummed/Stats.Count;
@@ -3178,7 +3188,7 @@ void CreateOutDir(char* OutDir)
         if(FileIndex==0){
 			// This directory cannot be produced in MS Windows so we will 
 			// always suffix it with a number.
-			if(strcmpi(OutDir,"con")==0) {
+			if(strcasecmp(OutDir,"con")==0) {
 				FileIndex++;
 				continue;
 			}

@@ -82,7 +82,7 @@
 //#define DEBUG
 #include "debug.h"
 
-char* Batch_y[]={
+const char* Batch_y[]={
 	"$Author: alan $",
 	"$Date: 2011-03-14 16:46:18-04 $",
 	"$Revision: 1.13 $",

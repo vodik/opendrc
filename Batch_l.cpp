@@ -560,7 +560,7 @@ char *Batch_text_ptr;
 //#define DEBUG
 #include "debug.h"
 
-char* Batch_l[]={
+const char* Batch_l[]={
 	"$Author: alan $",
 	"$Date: 2011-03-14 16:46:17-04 $",
 	"$Revision: 1.13 $",
@@ -1590,7 +1590,7 @@ FILE *file;
 #if YY_NEVER_INTERACTIVE
 	b->yy_is_interactive = 0;
 #else
-	b->yy_is_interactive = file ? (std::isatty( fileno(file) ) > 0) : 0;
+	b->yy_is_interactive = file ? (isatty( fileno(file) ) > 0) : 0;
 #endif
 #endif
 	}

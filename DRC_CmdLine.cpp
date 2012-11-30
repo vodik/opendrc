@@ -165,7 +165,7 @@
 //#define DEBUG
 #include "debug.h"
 
-char* DRC_CmdLine[]={
+const char* DRC_CmdLine[]={
 	"$Author: alan $",
 	"$Date: 2011-03-14 23:56:25-04 $",
 	"$Revision: 1.22 $",
@@ -523,7 +523,7 @@ char* FindLanguageParam(char* Name,bool FailHard)
 
     // Search for the named string in the parameter list.
     for(int idx=0; NotFound&&(idx<ParametersIdx); idx++){
-        if(strcmpi(lp->Name,Name)==0){
+        if(strcasecmp(lp->Name,Name)==0){
             // If we find it then use the corresponding pointer.
             NotFound=false;
             rtn=lp;
@@ -550,7 +550,7 @@ char* FindLanguageParam(char* Name,bool FailHard)
 //------------------------------------------------------------------------------
 // Usage message.
 //------------------------------------------------------------------------------
-char *HelpMessage[]={
+const char *HelpMessage[]={
     "Usage: drc [OPTIONS]... [WORD] [MAXCYCLES]",
     "",
     "Model Alteration Options:",
@@ -631,7 +631,7 @@ int HelpMessageSz=sizeof(HelpMessage)/sizeof(char*);
 // Structure and data for command line arguments.
 //------------------------------------------------------------------------------
 typedef struct{
-    char*   Flag;             // Command line flag for option.
+    const char*   Flag;             // Command line flag for option.
     bool    NeedsDB;          // Point in execution of program that this option should be processed.
     int     (*Func)(char**);  // Function pointer to process this option.
 }t_CmdLineArgs;

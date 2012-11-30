@@ -1,6 +1,6 @@
 #ifndef _DRC_Core_p
 #define _DRC_Core_p
-#pragma message in DRC_Core.p
+/* #pragma message in DRC_Core.p */
 
 /*
  * Prototype file (DRC_Core.p) corresponding to DRC_Core.cpp 
@@ -8,8 +8,8 @@
  *
  */
 
-#ifdef __BCPLUSPLUS__
-#pragma message C++
+/* #ifdef __BCPLUSPLUS__ */
+/* #pragma message C++ */
   extern "C" {
     void OILPOL_AddWords(int VocabIdx);
     int OIL_CharNext(int chridx,int column,int prev);
@@ -25,7 +25,7 @@
     void ClearShortLists(bool First);
     void DRC_ProcessWord(int MaxCycles,char *TestWord,char* Category);
     void CreatePBString(void);
-    bool CorrectOutput(char *Word, int cycle,int MaxCycles);
+    bool CorrectOutput(const char *Word, int cycle,int MaxCycles);
     void DRC_DisplayHeader(FILE* fh);
     void PrtCopyright(FILE* fh);
     void DRC_DisplayTotals(int cycle,FILE* fh);
@@ -80,77 +80,77 @@
     void DRC_FinalReport(FILE* fh);
     void DRC_Cleanup(FILE* fh);
   }
-#else
-#pragma message C
-    extern void OILPOL_AddWords(int VocabIdx);
-    extern int OIL_CharNext(int chridx,int column,int prev);
-    extern int POL_CharNext(int phoidx,int column,int prev);
-    extern char* Trim(char* str);
-    extern bool fequal(DRC_Float a,DRC_Float b);
-    extern int LetterIdx(char letter);
-    extern void IndexLetters(void);
-    extern int PhonemeIdx(char phoneme);
-    extern void IndexPhonemes(void);
-    extern void DspMatrix(FILE* fh, char* Title, char* Format, DRC_Float* Array, int Width, int Height, bool Invert);
-    extern inline DRC_Float ActDynamics(DRC_Float n_i,DRC_Float a_i,DRC_Float Decay);
-    extern void ClearShortLists(bool First);
-    extern void DRC_ProcessWord(int MaxCycles,char *TestWord,char* Category);
-    extern void CreatePBString(void);
-    extern bool CorrectOutput(char *Word, int cycle,int MaxCycles);
-    extern void DRC_DisplayHeader(FILE* fh);
-    extern void PrtCopyright(FILE* fh);
-    extern void DRC_DisplayTotals(int cycle,FILE* fh);
-    extern void UpdateParamTables(FILE* fh,char* Name,char* Value);
-    extern void UpdateLocalParams(void);
-    extern void DRC_ResetSystem(void);
-    extern void DRC_PropagateActivation(int cycle,FILE* fh);
-    extern void DRC_CalcFeatures(int cycle,FILE* fh);
-    extern void DRC_CalcLetters(int cycle,FILE* fh);
-    extern DRC_Float* DRC_CalcFeatLetterEI(char* str);
-    extern DRC_Float* DRC_CalcOILLetterEI(void);
-    extern DRC_Float* DRC_CalcLLLateralEI(void);
-    extern void DRC_CalcOILWords(int cycle,FILE* fh);
-    extern DRC_Float* DRC_CalcLetterOIL_EI(void);
-    extern inline bool HomographKeyEntry(int w);
-    extern inline bool HomographEntry(int w);
-    extern inline bool HomophoneKeyEntry(int w);
-    extern inline bool HomophoneEntry(int w);
-    extern inline bool NormalEntry(int w);
-    extern int GetHomographKey(int entry);
-    extern DRC_Float* DRC_CalcPhonoOIL_EI(void);
-    extern DRC_Float* DRC_CalcOILLateral_EI(void);
-    extern void DRC_CalcPOLWords(int cycle,FILE* fh);
-    extern int GetHomophoneKey(int entry);
-    extern DRC_Float* DRC_CalcOILPhono_EI(void);
-    extern DRC_Float* DRC_CalcPhonemePhono_EI(void);
-    extern DRC_Float* DRC_CalcPhonoLateral_EI(void);
-    extern void DRC_CalcPhonemes(int cycle,FILE* fh);
-    extern DRC_Float* DRC_CalcPhonoPhoneme_EI(void);
-    extern DRC_Float* DRC_CalcPhonemeLateral_EI(void);
-    extern DRC_Float* DRC_CalcGPCPhoneme_EI(int cycle);
-    extern void DRC_ClearPartialSoln(void);
-    extern void DRC_CalcGPCRoute(int cycle,int NumCharGPCR,bool& WordShifted,FILE* fh);
-    extern void DRC_UpdActFromGPCR(FILE* fh,int cycle,char* word);
-    extern void DRC_UpdPBFromGPC(FILE* fh,int cycle,char* word);
-    extern void GPC_CreateWord(void);
-    extern void DRC_DspDRCTranslations(FILE* fh,int cycle);
-    extern void DRC_DspGPCActivations(FILE* fh,int cycle);
-    extern int FirstNonBodyRuleSoln(void);
-    extern void DRC_GPCRouteShift(int cycle,int& GPCRChars,bool& ChgFlag,FILE* fh);
-    extern void SavePartSuccess(char* word,char* mask);
-    extern void SaveSuccess(char* word);
-    extern bool CompletelyMatched(char* mask);
-    extern void MergeMask(char* mask,int start,t_gpcrule* rule);
-    extern void UnMergeMask(char* mask,int start,t_gpcrule* rule);
-    extern bool FieldMatch(char* word,char* mask,t_gpcrule* rule,int start,int end,int* LetPhoIdx);
-    extern int FindStart(char* mask);
-    extern int NumChr(char* mask,char Special);
-    extern void DRC_GPCFind(char* word,char* mask,int start, int end, bool GotTerm);
-    extern void DRC_GPCApplyOutRules(bool GotTerm);
-    extern bool DRC_TestOutput(int Cycle,FILE* fh);
-    extern void DRC_FinalReport(FILE* fh);
-    extern void DRC_Cleanup(FILE* fh);
-#endif
+/* #else */
+/* #pragma message C */
+/*     extern void OILPOL_AddWords(int VocabIdx); */
+/*     extern int OIL_CharNext(int chridx,int column,int prev); */
+/*     extern int POL_CharNext(int phoidx,int column,int prev); */
+/*     extern char* Trim(char* str); */
+/*     extern bool fequal(DRC_Float a,DRC_Float b); */
+/*     extern int LetterIdx(char letter); */
+/*     extern void IndexLetters(void); */
+/*     extern int PhonemeIdx(char phoneme); */
+/*     extern void IndexPhonemes(void); */
+/*     extern void DspMatrix(FILE* fh, char* Title, char* Format, DRC_Float* Array, int Width, int Height, bool Invert); */
+/*     extern inline DRC_Float ActDynamics(DRC_Float n_i,DRC_Float a_i,DRC_Float Decay); */
+/*     extern void ClearShortLists(bool First); */
+/*     extern void DRC_ProcessWord(int MaxCycles,char *TestWord,char* Category); */
+/*     extern void CreatePBString(void); */
+/*     extern bool CorrectOutput(char *Word, int cycle,int MaxCycles); */
+/*     extern void DRC_DisplayHeader(FILE* fh); */
+/*     extern void PrtCopyright(FILE* fh); */
+/*     extern void DRC_DisplayTotals(int cycle,FILE* fh); */
+/*     extern void UpdateParamTables(FILE* fh,char* Name,char* Value); */
+/*     extern void UpdateLocalParams(void); */
+/*     extern void DRC_ResetSystem(void); */
+/*     extern void DRC_PropagateActivation(int cycle,FILE* fh); */
+/*     extern void DRC_CalcFeatures(int cycle,FILE* fh); */
+/*     extern void DRC_CalcLetters(int cycle,FILE* fh); */
+/*     extern DRC_Float* DRC_CalcFeatLetterEI(char* str); */
+/*     extern DRC_Float* DRC_CalcOILLetterEI(void); */
+/*     extern DRC_Float* DRC_CalcLLLateralEI(void); */
+/*     extern void DRC_CalcOILWords(int cycle,FILE* fh); */
+/*     extern DRC_Float* DRC_CalcLetterOIL_EI(void); */
+/*     extern inline bool HomographKeyEntry(int w); */
+/*     extern inline bool HomographEntry(int w); */
+/*     extern inline bool HomophoneKeyEntry(int w); */
+/*     extern inline bool HomophoneEntry(int w); */
+/*     extern inline bool NormalEntry(int w); */
+/*     extern int GetHomographKey(int entry); */
+/*     extern DRC_Float* DRC_CalcPhonoOIL_EI(void); */
+/*     extern DRC_Float* DRC_CalcOILLateral_EI(void); */
+/*     extern void DRC_CalcPOLWords(int cycle,FILE* fh); */
+/*     extern int GetHomophoneKey(int entry); */
+/*     extern DRC_Float* DRC_CalcOILPhono_EI(void); */
+/*     extern DRC_Float* DRC_CalcPhonemePhono_EI(void); */
+/*     extern DRC_Float* DRC_CalcPhonoLateral_EI(void); */
+/*     extern void DRC_CalcPhonemes(int cycle,FILE* fh); */
+/*     extern DRC_Float* DRC_CalcPhonoPhoneme_EI(void); */
+/*     extern DRC_Float* DRC_CalcPhonemeLateral_EI(void); */
+/*     extern DRC_Float* DRC_CalcGPCPhoneme_EI(int cycle); */
+/*     extern void DRC_ClearPartialSoln(void); */
+/*     extern void DRC_CalcGPCRoute(int cycle,int NumCharGPCR,bool& WordShifted,FILE* fh); */
+/*     extern void DRC_UpdActFromGPCR(FILE* fh,int cycle,char* word); */
+/*     extern void DRC_UpdPBFromGPC(FILE* fh,int cycle,char* word); */
+/*     extern void GPC_CreateWord(void); */
+/*     extern void DRC_DspDRCTranslations(FILE* fh,int cycle); */
+/*     extern void DRC_DspGPCActivations(FILE* fh,int cycle); */
+/*     extern int FirstNonBodyRuleSoln(void); */
+/*     extern void DRC_GPCRouteShift(int cycle,int& GPCRChars,bool& ChgFlag,FILE* fh); */
+/*     extern void SavePartSuccess(char* word,char* mask); */
+/*     extern void SaveSuccess(char* word); */
+/*     extern bool CompletelyMatched(char* mask); */
+/*     extern void MergeMask(char* mask,int start,t_gpcrule* rule); */
+/*     extern void UnMergeMask(char* mask,int start,t_gpcrule* rule); */
+/*     extern bool FieldMatch(char* word,char* mask,t_gpcrule* rule,int start,int end,int* LetPhoIdx); */
+/*     extern int FindStart(char* mask); */
+/*     extern int NumChr(char* mask,char Special); */
+/*     extern void DRC_GPCFind(char* word,char* mask,int start, int end, bool GotTerm); */
+/*     extern void DRC_GPCApplyOutRules(bool GotTerm); */
+/*     extern bool DRC_TestOutput(int Cycle,FILE* fh); */
+/*     extern void DRC_FinalReport(FILE* fh); */
+/*     extern void DRC_Cleanup(FILE* fh); */
+/* #endif */
 
 /*
  * End of file DRC_Core.p 

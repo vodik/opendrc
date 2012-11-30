@@ -47,7 +47,7 @@
 
 #ifndef _H_DRC_HdrStop
 #define _H_DRC_HdrStop
-#pragma message in HdrStop.h
+/* #pragma message in HdrStop.h */
 
 
 #ifdef __BORLANDC__
@@ -67,13 +67,14 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <string>
+#include <cstring>
 #include <cstdlib>
 #include <cstdarg>
 #include <cstdio>
 #include <cctype>
 #include <cmath>
 #include <cassert>
-#include <io.h>
+/* #include <io.h> */
 #include <exception>
 #include <vector>
 #endif
@@ -94,12 +95,12 @@
 // auto generate the *.p files (ie. proto xxx.cpp --> xxx.p)
 #define ProtoType
 
-#pragma hdrstop
+/* #pragma hdrstop */
 
 using namespace std;
 
 //---------------------------------------------------------------------------
-#pragma message out HdrStop.h
+/* #pragma message out HdrStop.h */
 #endif // _H_DRC_HdrStop
 
 

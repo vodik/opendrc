@@ -43,7 +43,7 @@
 //------------------------------------------------------------------------------
 #ifndef _DRC_FileIO_h
 #define _DRC_FileIO_h
-#pragma message in DRC_FileIO.h
+/* #pragma message in DRC_FileIO.h */
 
 
 //------------------------------------------------------------------------------
@@ -170,7 +170,7 @@ extern char File_Line[MAXLINE];
 extern char*     GPCIdxValues;
 extern char*     VowelConsonant;
 extern int       GPCIdxValuesSz;
-extern char*     GPCRuleClassNames[];
+extern const char*     GPCRuleClassNames[];
 extern t_gpcrule GPCRules[MAXGPCRULES];
 extern int       GPCRulesIdx;
 // Section pointers;

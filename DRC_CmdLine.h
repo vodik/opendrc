@@ -41,7 +41,7 @@
 //------------------------------------------------------------------------------
 #ifndef _DRC_CmdLine_h
 #define _DRC_CmdLine_h
-#pragma message in DRC_CmdLine.h
+/* #pragma message in DRC_CmdLine.h */
 
 //------------------------------------------------------------------------------
 // Constants defining maximum number of command line arguments we can store and
@@ -59,34 +59,34 @@
 //------------------------------------------------------------------------------
 
 typedef struct{
-    char*  Name;
+    const char*  Name;
     int    Value;
     int    Default;
-    char*  Comment;
+    const char*  Comment;
 }t_iparam;
 extern t_iparam DRC_IParams[];
 
 typedef struct{
-    char*      Name;
+    const char*      Name;
     DRC_Float  Value;
     DRC_Float  Default;
-    char*      Comment;
+    const char*      Comment;
 }t_fparam;
 extern t_fparam DRC_FParams[];
 
 typedef struct{
-    char*  Name;
-    char*  Value;
-    char*  Default;
-    char*  Comment;
+    const char*  Name;
+    const char*  Value;
+    const char*  Default;
+    const char*  Comment;
 }t_sparam;
 extern t_sparam DRC_SParams[];
 
 typedef struct{
-    char*  Name;
+    const char*  Name;
     bool   Value;
     bool   Default;
-    char*  Comment;
+    const char*  Comment;
 }t_bparam;
 extern t_bparam DRC_BParams[];
 
@@ -98,12 +98,12 @@ typedef struct{
 }t_DRCParams;
 extern t_DRCParams DRCParams;
 
-extern t_iparam* FindIParam(char* Name,bool FailHard=true);
-extern t_fparam* FindFParam(char* Name,bool FailHard=true);
-extern t_sparam* FindSParam(char* Name,bool FailHard=true);
-extern t_bparam* FindBParam(char* Name,bool FailHard=true);
+extern t_iparam* FindIParam(const char* Name,bool FailHard=true);
+extern t_fparam* FindFParam(const char* Name,bool FailHard=true);
+extern t_sparam* FindSParam(const char* Name,bool FailHard=true);
+extern t_bparam* FindBParam(const char* Name,bool FailHard=true);
 
-extern char* FindLanguageParam(char* Name,bool FailHard=true);
+extern char* FindLanguageParam(const char* Name,bool FailHard=true);
 
 
 

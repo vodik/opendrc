@@ -83,7 +83,7 @@ typedef union GENERICSTYPE
 extern GENERICSTYPE Genericlval;
 
 
-extern char* DRC_Model_Version;
+extern const char* DRC_Model_Version;
 
 
 
@@ -124,13 +124,13 @@ typedef struct DRC_COMMAND {
 
 
 // All the version information arrays.
-extern char* DRC_Main[];
-extern char* DRC_CmdLine[];
-extern char* DRC_FileIO[];
-extern char* DRC_Core[];
-extern char* Batch_l[];
-extern char* Batch_y[];
-extern char* Generic_l[];
+extern const char* DRC_Main[];
+extern const char* DRC_CmdLine[];
+extern const char* DRC_FileIO[];
+extern const char* DRC_Core[];
+extern const char* Batch_l[];
+extern const char* Batch_y[];
+extern const char* Generic_l[];
 
 
 

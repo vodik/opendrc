@@ -443,7 +443,7 @@
 #include "debug.h"
 
 
-char* DRC_Core[]={
+const char* DRC_Core[]={
 	"$Author: alan $",
 	"$Date: 2011-03-14 17:00:23-04 $",
 	"$Revision: 1.57 $",
@@ -455,7 +455,7 @@ char* DRC_Core[]={
 
 // This copyright notice and license are included with the intention of keeping
 // this program and all its derivatives open-sourced.
-char *Copyright[]={
+const char *Copyright[]={
     "; OpenDRC  Copyright (C) 2011  Alan Angold\n",
     ";   This program comes with ABSOLUTELY NO WARRANTY.  This is free software, and\n",
     ";   you are welcome to redistribute it under certain conditions.  See the included\n",
@@ -513,7 +513,7 @@ vector <t_solution> GPCSolns;
 t_gpcrule* MatchedRules[MAXINPUTBUF];  // List of pointers to matching rules in GPCRoute.
 int        MatchedRulesIdx=0; // Index into above array.
 
-char* STR_PosnIDs = "NbmeA---------------";
+const char* STR_PosnIDs = "NbmeA---------------";
 
 // Variables to detect and save the most activated POL word index.
 vector <char*> POLOutputWord;
@@ -1002,9 +1002,15 @@ void ClearShortLists(bool First)
 // Errors:
 //---------------------------------------------------------------------------
 
+static void strlwr(char *str)
+{
+    char* p = str;
+    for (; *p != '\0'; ++p)
+        *p = tolower(*p);
+}
 
 ProtoType
-void DRC_ProcessWord(int MaxCycles,char *TestWord,char* Category)
+void DRC_ProcessWord(int MaxCycles,const char *TestWord,const char* Category)
 {
     Enter("DRC_ProcessWord");
 
@@ -1019,7 +1025,7 @@ void DRC_ProcessWord(int MaxCycles,char *TestWord,char* Category)
     ClearShortLists(true);
 
     // Create the input to the Feature Level (VisualBuffer).
-    TestWord=Trim(TestWord);                    // Get rid of extra spaces (we will add ourselves).
+    /* TestWord=Trim(TestWord);                    // Get rid of extra spaces (we will add ourselves). */
     strncpy(VisualBuffer,TestWord,WORDSZ);      // Copy the word to the input to the feature layer.
     strncat(VisualBuffer,"          ",WORDSZ);  // Terminate as ASCIIZ string if ever used that way.
     VisualBuffer[WORDSZ]=0;
@@ -1365,10 +1371,10 @@ void UpdateParamTables(FILE* fh,char* Name,char* Value)
 
     // Check to see if parameter is a boolean parameter.
     }else if((bptr=FindBParam(Name,false))!=NULL){
-        if((strcmpi(Value,"true")==0)||
-           (strcmpi(Value,"t")==0)   ||
-           (strcmpi(Value,"yes")==0) ||
-           (strcmpi(Value,"y")==0)){
+        if((strcasecmp(Value,"true")==0)||
+           (strcasecmp(Value,"t")==0)   ||
+           (strcasecmp(Value,"yes")==0) ||
+           (strcasecmp(Value,"y")==0)){
             bptr->Value=true;
         }else{
             bptr->Value=false;

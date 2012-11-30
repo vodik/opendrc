@@ -1,6 +1,6 @@
 #ifndef _DRC_Main_p
 #define _DRC_Main_p
-#pragma message in DRC_Main.p
+/* #pragma message in DRC_Main.p */
 
 /*
  * Prototype file (DRC_Main.p) corresponding to DRC_Main.cpp 
@@ -8,8 +8,8 @@
  *
  */
 
-#ifdef __BCPLUSPLUS__
-#pragma message C++
+/* #ifdef __BCPLUSPLUS__ */
+/* #pragma message C++ */
   extern "C" {
     char* Terminate(char* start,char* fence);
     void PrtVersion(FILE* fh);
@@ -18,21 +18,21 @@
     void ProcessDRCCmd(t_DRCCmd* Cmd);
     void Load_Database(void);
     void Init(void);
-    int pfprintf(FILE* fh,char *fmt, ...);
+    int pfprintf(FILE* fh,const char *fmt, ...);
     void pfputc(char chr,FILE *fh);
   }
-#else
-#pragma message C
-    extern char* Terminate(char* start,char* fence);
-    extern void PrtVersion(FILE* fh);
-    extern bool MatchStr(char *str1,char *str2);
-    extern bool atob(char* str);
-    extern void ProcessDRCCmd(t_DRCCmd* Cmd);
-    extern void Load_Database(void);
-    extern void Init(void);
-    extern int pfprintf(FILE* fh,char *fmt, ...);
-    extern void pfputc(char chr,FILE *fh);
-#endif
+/* #else */
+/* #pragma message C */
+/*     extern char* Terminate(char* start,char* fence); */
+/*     extern void PrtVersion(FILE* fh); */
+/*     extern bool MatchStr(char *str1,char *str2); */
+/*     extern bool atob(char* str); */
+/*     extern void ProcessDRCCmd(t_DRCCmd* Cmd); */
+/*     extern void Load_Database(void); */
+/*     extern void Init(void); */
+/*     extern int pfprintf(FILE* fh,char *fmt, ...); */
+/*     extern void pfputc(char chr,FILE *fh); */
+/* #endif */
 
 /*
  * End of file DRC_Main.p 

@@ -1,6 +1,6 @@
 #ifndef _DRC_FileIO_p
 #define _DRC_FileIO_p
-#pragma message in DRC_FileIO.p
+/* #pragma message in DRC_FileIO.p */
 
 /*
  * Prototype file (DRC_FileIO.p) corresponding to DRC_FileIO.cpp 
@@ -8,8 +8,8 @@
  *
  */
 
-#ifdef __BCPLUSPLUS__
-#pragma message C++
+/* #ifdef __BCPLUSPLUS__ */
+/* #pragma message C++ */
   extern "C" {
     void CleanParamFile(void);
     void WriteParamFile(char* FileName);
@@ -40,7 +40,7 @@
     int SpcStrNCmp(char* str1, char* str2, int len);
     void DisplayHomographs(FILE* fh);
     void DisplayHomophones(FILE* fh);
-    FILE* OpenOutputFile(char* ParentDir,char* RunDir,char* FileName,char* Extn);
+    FILE* OpenOutputFile(const char* ParentDir,const char* RunDir,const char* FileName,const char* Extn);
     int ReadBatchFile(char* FileName);
     void DspNeighbourTtl(FILE *fh);
     bool IsNeighbour(char* word, char* nonword);
@@ -53,54 +53,54 @@
     void RTTotal(t_StatList& Return,t_StatList& Stats1,t_StatList& Stats2);
     void WriteBatchStats(FILE* fh);
     int ReadDriverFile(char* FileName);
-    void CreateOutDir(char* OutDir);
+    void CreateOutDir(const char* OutDir);
   }
-#else
-#pragma message C
-    extern void CleanParamFile(void);
-    extern void WriteParamFile(char* FileName);
-    extern void OutputParamFile(FILE* fh);
-    extern int ReadParamFile(char* FileName);
-    extern void CleanGPCRulesFile(void);
-    extern void WriteGPCRulesFile(char* FileName);
-    extern void DRC_GPCSetField(t_gpcrule* rule);
-    extern int ReadGPCRulesFile(char* FileName);
-    extern int GPCRuleSort(const void *a,const void *b);
-    extern void SortGPCRules(void);
-    extern t_gpcrule* GPC_NextRule(t_gpcrule* rule);
-    extern bool InitGPCSearch(void);
-    extern void CleanLettersFile(void);
-    extern void WriteLettersFile(char* FileName);
-    extern int ReadLettersFile(char* FileName);
-    extern void CleanPhonemesFile(void);
-    extern void WritePhonemesFile(char* FileName);
-    extern int ReadPhonemesFile(char* FileName);
-    extern void CleanPropertiesFile(void);
-    extern char* trim(char *buf);
-    extern int ReadPropertiesFile(char* FileName);
-    extern void WritePropertiesFile(char* FileName);
-    extern void CleanVocabularyFile(void);
-    extern void WriteVocabularyFile(char* FileName);
-    extern DRC_Float CFSCalc(int Freqency,DRC_Float lfMaximum);
-    extern int ReadVocabularyFile(char* FileName);
-    extern int SpcStrNCmp(char* str1, char* str2, int len);
-    extern void DisplayHomographs(FILE* fh);
-    extern void DisplayHomophones(FILE* fh);
-    extern FILE* OpenOutputFile(char* ParentDir,char* RunDir,char* FileName,char* Extn);
-    extern int ReadBatchFile(char* FileName);
-    extern void DspNeighbourTtl(FILE *fh);
-    extern bool IsNeighbour(char* word, char* nonword);
-    extern void DspNeighbourhood(FILE* fh,char* nonword);
-    extern void WriteBatchStatsHdr(FILE* fh);
-    extern void ClearBatchStatistics(void);
-    extern DRC_Float sqr(DRC_Float num);
-    extern void DspMean(FILE* fh,char* good,char* bad,t_StatList& Stats);
-    extern void DspStdDev(FILE* fh,char* good,char* bad,t_StatList& Stats);
-    extern void RTTotal(t_StatList& Return,t_StatList& Stats1,t_StatList& Stats2);
-    extern void WriteBatchStats(FILE* fh);
-    extern int ReadDriverFile(char* FileName);
-    extern void CreateOutDir(char* OutDir);
-#endif
+/* #else */
+/* #pragma message C */
+/*     extern void CleanParamFile(void); */
+/*     extern void WriteParamFile(char* FileName); */
+/*     extern void OutputParamFile(FILE* fh); */
+/*     extern int ReadParamFile(char* FileName); */
+/*     extern void CleanGPCRulesFile(void); */
+/*     extern void WriteGPCRulesFile(char* FileName); */
+/*     extern void DRC_GPCSetField(t_gpcrule* rule); */
+/*     extern int ReadGPCRulesFile(char* FileName); */
+/*     extern int GPCRuleSort(const void *a,const void *b); */
+/*     extern void SortGPCRules(void); */
+/*     extern t_gpcrule* GPC_NextRule(t_gpcrule* rule); */
+/*     extern bool InitGPCSearch(void); */
+/*     extern void CleanLettersFile(void); */
+/*     extern void WriteLettersFile(char* FileName); */
+/*     extern int ReadLettersFile(char* FileName); */
+/*     extern void CleanPhonemesFile(void); */
+/*     extern void WritePhonemesFile(char* FileName); */
+/*     extern int ReadPhonemesFile(char* FileName); */
+/*     extern void CleanPropertiesFile(void); */
+/*     extern char* trim(char *buf); */
+/*     extern int ReadPropertiesFile(char* FileName); */
+/*     extern void WritePropertiesFile(char* FileName); */
+/*     extern void CleanVocabularyFile(void); */
+/*     extern void WriteVocabularyFile(char* FileName); */
+/*     extern DRC_Float CFSCalc(int Freqency,DRC_Float lfMaximum); */
+/*     extern int ReadVocabularyFile(char* FileName); */
+/*     extern int SpcStrNCmp(char* str1, char* str2, int len); */
+/*     extern void DisplayHomographs(FILE* fh); */
+/*     extern void DisplayHomophones(FILE* fh); */
+/*     extern FILE* OpenOutputFile(char* ParentDir,char* RunDir,char* FileName,char* Extn); */
+/*     extern int ReadBatchFile(char* FileName); */
+/*     extern void DspNeighbourTtl(FILE *fh); */
+/*     extern bool IsNeighbour(char* word, char* nonword); */
+/*     extern void DspNeighbourhood(FILE* fh,char* nonword); */
+/*     extern void WriteBatchStatsHdr(FILE* fh); */
+/*     extern void ClearBatchStatistics(void); */
+/*     extern DRC_Float sqr(DRC_Float num); */
+/*     extern void DspMean(FILE* fh,char* good,char* bad,t_StatList& Stats); */
+/*     extern void DspStdDev(FILE* fh,char* good,char* bad,t_StatList& Stats); */
+/*     extern void RTTotal(t_StatList& Return,t_StatList& Stats1,t_StatList& Stats2); */
+/*     extern void WriteBatchStats(FILE* fh); */
+/*     extern int ReadDriverFile(char* FileName); */
+/*     extern void CreateOutDir(char* OutDir); */
+/* #endif */
 
 /*
  * End of file DRC_FileIO.p 

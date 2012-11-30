@@ -1,6 +1,6 @@
 #ifndef _DRC_CmdLine_p
 #define _DRC_CmdLine_p
-#pragma message in DRC_CmdLine.p
+/* #pragma message in DRC_CmdLine.p */
 
 /*
  * Prototype file (DRC_CmdLine.p) corresponding to DRC_CmdLine.cpp 
@@ -8,13 +8,13 @@
  *
  */
 
-#ifdef __BCPLUSPLUS__
-#pragma message C++
+/* #ifdef __BCPLUSPLUS__ */
+/* #pragma message C++ */
   extern "C" {
     void* FindParam(char* Name);
     void ProcessCmdLineArgs(int argc,char **argv);
     void WriteRTFileHeader(FILE* fh,bool batch,char* word);
-    bool MatchArg(char *flag,char *arg);
+    bool MatchArg(const char *flag,char *arg);
     void TestAndCall(int &idx,int argc,char **argv,int (*func)(char **argv));
     void ErrCmdSwt(char *str);
     int Set_Language(char** arglist);
@@ -52,49 +52,49 @@
     int Cmd_DspHomographs(char** arglist);
     int Cmd_DspHomophones(char** arglist);
   }
-#else
-#pragma message C
-    extern void* FindParam(char* Name);
-    extern void ProcessCmdLineArgs(int argc,char **argv);
-    extern void WriteRTFileHeader(FILE* fh,bool batch,char* word);
-    extern bool MatchArg(char *flag,char *arg);
-    extern void TestAndCall(int &idx,int argc,char **argv,int (*func)(char **argv));
-    extern void ErrCmdSwt(char *str);
-    extern int Set_Language(char** arglist);
-    extern int Set_VisualFeatureLetterUnits(char** arglist);
-    extern int Set_PhonemeUnits(char** arglist);
-    extern int Set_SetParameter(char** arglist);
-    extern int Set_ReadParameterFile(char** arglist);
-    extern int Set_SeparateHomophoneFlag(char** arglist);
-    extern int Set_ContinueToMaxCycles(char** arglist);
-    extern int Set_ProcessBatchFile(char** arglist);
-    extern int Set_TestBatchOnly(char** arglist);
-    extern int Set_BatchProcessLimits(char** arglist);
-    extern int Set_MaxIncorrectResults(char** arglist);
-    extern int Set_RepeatSimulation(char** arglist);
-    extern int Set_ActivationFileExt(char** arglist);
-    extern int Set_SaveActivationLvls(char** arglist);
-    extern int Set_ReportExtraInfo(char** arglist);
-    extern int Set_OutputFlags(char** arglist);
-    extern int Set_ReportActGreater(char** arglist);
-    extern int Set_NoOutputFiles(char** arglist);
-    extern int Set_RTFileExtn(char** arglist);
-    extern int Set_OutputDirectory(char** arglist);
-    extern int Set_ReportSimDuration(char** arglist);
-    extern int Set_Verbalize(char** arglist);
-    extern int ListIrregularWords(char** arglist);
-    extern int ListIrregularStressWords(char** arglist);
-    extern int ApplyGPCRules(char** arglist);
-    extern int ListRegularWords(char** arglist);
-    extern int ApplyGPCStressRules(char** arglist);
-    extern int ListWhammies(char** arglist);
-    extern int DisplayHelp(char** arglist);
-    extern int DisplayVersion(char** arglist);
-    extern int ReadCmdLineOptionsFile(char** arglist);
-    extern int Cmd_DspNeighbourhood(char** arglist);
-    extern int Cmd_DspHomographs(char** arglist);
-    extern int Cmd_DspHomophones(char** arglist);
-#endif
+/* #else */
+/* #pragma message C */
+/*     extern void* FindParam(char* Name); */
+/*     extern void ProcessCmdLineArgs(int argc,char **argv); */
+/*     extern void WriteRTFileHeader(FILE* fh,bool batch,char* word); */
+/*     extern bool MatchArg(char *flag,char *arg); */
+/*     extern void TestAndCall(int &idx,int argc,char **argv,int (*func)(char **argv)); */
+/*     extern void ErrCmdSwt(char *str); */
+/*     extern int Set_Language(char** arglist); */
+/*     extern int Set_VisualFeatureLetterUnits(char** arglist); */
+/*     extern int Set_PhonemeUnits(char** arglist); */
+/*     extern int Set_SetParameter(char** arglist); */
+/*     extern int Set_ReadParameterFile(char** arglist); */
+/*     extern int Set_SeparateHomophoneFlag(char** arglist); */
+/*     extern int Set_ContinueToMaxCycles(char** arglist); */
+/*     extern int Set_ProcessBatchFile(char** arglist); */
+/*     extern int Set_TestBatchOnly(char** arglist); */
+/*     extern int Set_BatchProcessLimits(char** arglist); */
+/*     extern int Set_MaxIncorrectResults(char** arglist); */
+/*     extern int Set_RepeatSimulation(char** arglist); */
+/*     extern int Set_ActivationFileExt(char** arglist); */
+/*     extern int Set_SaveActivationLvls(char** arglist); */
+/*     extern int Set_ReportExtraInfo(char** arglist); */
+/*     extern int Set_OutputFlags(char** arglist); */
+/*     extern int Set_ReportActGreater(char** arglist); */
+/*     extern int Set_NoOutputFiles(char** arglist); */
+/*     extern int Set_RTFileExtn(char** arglist); */
+/*     extern int Set_OutputDirectory(char** arglist); */
+/*     extern int Set_ReportSimDuration(char** arglist); */
+/*     extern int Set_Verbalize(char** arglist); */
+/*     extern int ListIrregularWords(char** arglist); */
+/*     extern int ListIrregularStressWords(char** arglist); */
+/*     extern int ApplyGPCRules(char** arglist); */
+/*     extern int ListRegularWords(char** arglist); */
+/*     extern int ApplyGPCStressRules(char** arglist); */
+/*     extern int ListWhammies(char** arglist); */
+/*     extern int DisplayHelp(char** arglist); */
+/*     extern int DisplayVersion(char** arglist); */
+/*     extern int ReadCmdLineOptionsFile(char** arglist); */
+/*     extern int Cmd_DspNeighbourhood(char** arglist); */
+/*     extern int Cmd_DspHomographs(char** arglist); */
+/*     extern int Cmd_DspHomophones(char** arglist); */
+/* #endif */
 
 /*
  * End of file DRC_CmdLine.p 

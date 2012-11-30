@@ -44,7 +44,7 @@
 
 #ifndef DRC_CoreH
 #define DRC_CoreH
-#pragma message in DRC_Core.h
+/* #pragma message in DRC_Core.h */
 //---------------------------------------------------------------------------
 
 
@@ -101,7 +101,7 @@ extern int IndexPhoneme[256];  // Phoneme (ASCII character) -> Phoneme table ind
 
 typedef enum {wpNone=0,wpBegin=1,wpMedial=2,wpEnd=3,wpAny=4} eWrdPosn;
 typedef enum {clsNone=0,clsOut=1,clsBody=2,clsMulti=3,clsCS=4,clsTwo=5,clsMphon=6,clsSing=7} eGPCClass;
-extern char* STR_PosnIDs;
+const extern char* STR_PosnIDs;
 
 #define MAXGPCRULES 1100
 typedef struct{
