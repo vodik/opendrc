@@ -1,7 +1,7 @@
 //--------------------------------------------------------------------------------------
 // $Header: D:\\Repository\\D\\Dev\\Psych499\\DRC.h,v 1.10 2011-03-14 16:55:29-04 alan Exp alan $
 //
-//    OpenDRC is an open-source implementation of the DRC Dual Route Cascaded Model 
+//    OpenDRC is an open-source implementation of the DRC Dual Route Cascaded Model
 //        of Visual Word Recognition and Reading Aloud.
 //    Copyright (C) 2011  Alan Angold
 //
@@ -18,13 +18,13 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
-//	The author can be contacted at:
-//		Alan.Angold@gmail.com
-//	or
-//		Alan Angold
-//		549 Sandbrooke Court
-//		Waterloo, Ontario 
-//		Canada N2T2H4
+//  The author can be contacted at:
+//      Alan.Angold@gmail.com
+//  or
+//      Alan Angold
+//      549 Sandbrooke Court
+//      Waterloo, Ontario
+//      Canada N2T2H4
 //
 //
 //
@@ -55,7 +55,7 @@ typedef double DRC_Float;
 #define MAXLINES      1000000
 
 #ifdef __GNUC__
-#define MAXPATH	1000
+#define MAXPATH 1000
 #endif
 
 
@@ -136,7 +136,7 @@ extern const char* Generic_l[];
 
 extern char File_Line[MAXLINE];
 extern void File_Line_Display();
-extern int	File_Line_Num;
+extern int  File_Line_Num;
 
 extern void Genericrestart(FILE*);
 extern void Batchrestart(FILE*);

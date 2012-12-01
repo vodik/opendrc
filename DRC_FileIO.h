@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 // $Header: D:\\Repository\\D\\Dev\\Psych499\\DRC_FileIO.h,v 1.23 2011-03-14 16:54:23-04 alan Exp alan $
 //
-//    OpenDRC is an open-source implementation of the DRC Dual Route Cascaded Model 
+//    OpenDRC is an open-source implementation of the DRC Dual Route Cascaded Model
 //        of Visual Word Recognition and Reading Aloud.
 //    Copyright (C) 2011  Alan Angold
 //
@@ -18,13 +18,13 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
-//	The author can be contacted at:
-//		Alan.Angold@gmail.com
-//	or
-//		Alan Angold
-//		549 Sandbrooke Court
-//		Waterloo, Ontario 
-//		Canada N2T2H4
+//  The author can be contacted at:
+//      Alan.Angold@gmail.com
+//  or
+//      Alan Angold
+//      549 Sandbrooke Court
+//      Waterloo, Ontario
+//      Canada N2T2H4
 //
 //
 //

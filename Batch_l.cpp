@@ -28,18 +28,6 @@
 #define YY_FLEX_MINOR_VERSION 5
 
 #include <stdio.h>
-
-
-/* cfront 1.2 defines "c_plusplus" instead of "__cplusplus" */
-#ifdef c_plusplus
-#ifndef __cplusplus
-#define __cplusplus
-#endif
-#endif
-
-
-#ifdef __cplusplus
-
 #include <stdlib.h>
 #include <unistd.h>
 
@@ -49,15 +37,8 @@
 /* The "const" storage-class-modifier is valid. */
 #define YY_USE_CONST
 
-#else	/* ! __cplusplus */
-
-#if __STDC__
-
 #define YY_USE_PROTOS
 #define YY_USE_CONST
-
-#endif	/* __STDC__ */
-#endif	/* ! __cplusplus */
 
 #ifdef __TURBOC__
  #pragma warn -rch

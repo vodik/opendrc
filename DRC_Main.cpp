@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 // $Header: D:\\Repository\\D\\Dev\\Psych499\\DRC_Main.cpp,v 1.25 2011-03-14 17:04:07-04 alan Exp alan $
 //
-//    OpenDRC is an open-source implementation of the DRC Dual Route Cascaded Model 
+//    OpenDRC is an open-source implementation of the DRC Dual Route Cascaded Model
 //        of Visual Word Recognition and Reading Aloud.
 //    Copyright (C) 2011  Alan Angold
 //
@@ -23,7 +23,7 @@
 //  or
 //      Alan Angold
 //      549 Sandbrooke Court
-//      Waterloo, Ontario 
+//      Waterloo, Ontario
 //      Canada N2T2H4
 //
 //
@@ -158,7 +158,6 @@ const char* DRC_Main[]={
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 const char* Terminate(const char* start, __attribute__((unused)) const char* fence)
 {
     /* if((uintptr_t)fence<1000){ */
@@ -180,7 +179,6 @@ const char* Terminate(const char* start, __attribute__((unused)) const char* fen
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void PrtVersion(FILE* fh)
 {
     pfprintf(fh,"DRC UofW 1.2\n");
@@ -250,7 +248,6 @@ void PrtVersion(FILE* fh)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 bool atob(const char* str)
 {
     switch (*str) {
@@ -287,7 +284,6 @@ bool atob(const char* str)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void ProcessDRCCmd(t_DRCCmd* Cmd)
 {
     if(!FindBParam("TestBatchOnly")->Value){
@@ -358,7 +354,6 @@ void ProcessDRCCmd(t_DRCCmd* Cmd)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void Load_Database()
 {
     static bool FLG_DatabaseLoaded=false;
@@ -395,7 +390,6 @@ void Load_Database()
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void Init()
 {
     // Set the default (parent) output directory to the current variable.
@@ -412,7 +406,6 @@ void Init()
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 int pfprintf(FILE* fh,const char *fmt, ...)
 {
     va_list argptr;
@@ -426,7 +419,6 @@ int pfprintf(FILE* fh,const char *fmt, ...)
     return(cnt);
 }
 
-ProtoType
 void pfputc(char chr,FILE *fh)
 {
     if(fh!=NULL){

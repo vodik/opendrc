@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 // $Header: D:\\Repository\\D\\Dev\\Psych499\\DRC_FileIO.cpp,v 1.48 2011-03-14 17:02:30-04 alan Exp alan $
 //
-//    OpenDRC is an open-source implementation of the DRC Dual Route Cascaded Model 
+//    OpenDRC is an open-source implementation of the DRC Dual Route Cascaded Model
 //        of Visual Word Recognition and Reading Aloud.
 //    Copyright (C) 2011  Alan Angold
 //
@@ -18,13 +18,13 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
-//	The author can be contacted at:
-//		Alan.Angold@gmail.com
-//	or
-//		Alan Angold
-//		549 Sandbrooke Court
-//		Waterloo, Ontario 
-//		Canada N2T2H4
+//  The author can be contacted at:
+//      Alan.Angold@gmail.com
+//  or
+//      Alan Angold
+//      549 Sandbrooke Court
+//      Waterloo, Ontario
+//      Canada N2T2H4
 //
 //
 // Routines that take care of File reading and writing.
@@ -295,11 +295,11 @@
 #include <unistd.h>
 
 const char* DRC_FileIO[]={
-	"$Author: alan $",
-	"$Date: 2011-03-14 17:02:30-04 $",
-	"$Revision: 1.48 $",
-	"$RCSfile: DRC_FileIO.cpp,v $",
-	"$Source: D:\\Repository\\D\\Dev\\Psych499\\DRC_FileIO.cpp,v $"
+    "$Author: alan $",
+    "$Date: 2011-03-14 17:02:30-04 $",
+    "$Revision: 1.48 $",
+    "$RCSfile: DRC_FileIO.cpp,v $",
+    "$Source: D:\\Repository\\D\\Dev\\Psych499\\DRC_FileIO.cpp,v $"
 };
 
 //------------------------------------------------------------------------------
@@ -422,7 +422,6 @@ int         ParametersIdx=0;
 // SideEffects: Parameters[] array modified.
 // Errors:  None.
 //---------------------------------------------------------------------------
-ProtoType
 void CleanParamFile(void)
 {
     for(int i=0;i<ParametersIdx;i++){
@@ -446,7 +445,6 @@ void CleanParamFile(void)
 // SideEffects: Output done to stdout and file written to.
 // Errors:  Fopen() failure -- results in message to stdout.
 //---------------------------------------------------------------------------
-ProtoType
 void WriteParamFile(char* FileName)
 {
     // NOTE: We might want to format the output based on the type of
@@ -469,7 +467,6 @@ void WriteParamFile(char* FileName)
 // SideEffects: Output done.
 // Errors:  None.
 //---------------------------------------------------------------------------
-ProtoType
 void OutputParamFile(FILE* fh)
 {
     for(int p=0;p<ParametersIdx;p++){
@@ -487,7 +484,6 @@ void OutputParamFile(FILE* fh)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 int ReadParamFile(const char* FileName)
 {
     FILE* fh=NULL;
@@ -644,9 +640,9 @@ int ReadParamFile(const char* FileName)
 //    e body eights  1ts u 1.0
 //    e body eigned  1nd u 1.0
 //    e body enched EnJt u 1.0
-//    
-//    	...
-//    
+//
+//      ...
+//
 //    A multi                     eigh    1 u 1.0
 //    A multi                     eare    7 u 1.0
 //    A multi                     augh    9 u 1.0
@@ -658,9 +654,9 @@ int ReadParamFile(const char* FileName)
 //    e multi                      tch    J u 1.0
 //    m multi                      tch    J u 1.0
 //    A multi                      air    8 u 1.0
-//    
-//    	...
-//    
+//
+//      ...
+//
 //    A   two                      a.e    1 u 1.0
 //    A   two                      i.e    2 u 1.0
 //    A   two                       oo    u u 1.0
@@ -680,9 +676,9 @@ int ReadParamFile(const char* FileName)
 //    e   two                       ll    l u 1.0
 //    e   two                       ge    _ u 1.0
 //    m   two                       ge    _ u 1.0
-//    
-//    	...
-//    
+//
+//      ...
+//
 //    m mphon                        x   ks u 1.0
 //    e mphon                        x   ks u 1.0
 //    b    cs                   gu[\V]    g u 1.0
@@ -699,9 +695,9 @@ int ReadParamFile(const char* FileName)
 //    e    cs               [\V][\C]ed    d u 1.0
 //    e    cs           [\V][\C][\C]ed    d u 1.0
 //    e    cs       [\V][\C][\C][\C]ed    d u 1.0
-//    
-//    	...
-//    
+//
+//      ...
+//
 //    A  sing                        s    s u 1.0
 //    A  sing                        t    t u 1.0
 //    A  sing                        p    p u 1.0
@@ -715,8 +711,8 @@ int ReadParamFile(const char* FileName)
 //    b  sing                        u    V u 1.0
 //    A  sing                        m    m u 1.0
 //    A  sing                        b    b u 1.0
-//    
-//    	...
+//
+//      ...
 //
 //    e   out [#123456789DbNdgilmnuv]s    z u 1.0
 //    A   out                     d[T]    t u 1.0
@@ -777,7 +773,6 @@ int        GPCStressRules=0; // Number of stress rules (not implemented).
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void CleanGPCRulesFile(void)
 {
     for(int i=0;i<MAXGPCRULES;i++){
@@ -811,7 +806,6 @@ void CleanGPCRulesFile(void)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void WriteGPCRulesFile(char* FileName)
 {
     // Special parsing.
@@ -856,7 +850,6 @@ void WriteGPCRulesFile(char* FileName)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void DRC_GPCSetField(t_gpcrule* rule)
 {
     int FieldIdx=0;
@@ -1049,7 +1042,6 @@ void DRC_GPCSetField(t_gpcrule* rule)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 int ReadGPCRulesFile(char* FileName)
 {
     FILE* fh=NULL;
@@ -1200,7 +1192,6 @@ int ReadGPCRulesFile(char* FileName)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 int GPCRuleSort(const void *a,const void *b)
 {
     t_gpcrule* EntryA=(t_gpcrule*)a;
@@ -1254,7 +1245,6 @@ int GPCRuleSort(const void *a,const void *b)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void SortGPCRules(void)
 {
     // Sort the entire table by words so we can be sure words are in order by orthography.
@@ -1268,7 +1258,6 @@ void SortGPCRules(void)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 t_gpcrule* GPC_NextRule(t_gpcrule* rule)
 {
     // NOTE: This code depends on the sections of the GPCRules file being contiguous.
@@ -1311,7 +1300,6 @@ t_gpcrule* GPC_NextRule(t_gpcrule* rule)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 bool InitGPCSearch(void)
 {
     // GPCList_End is the last valid entry in the list of GPC Rules.
@@ -1438,7 +1426,7 @@ bool InitGPCSearch(void)
 //    x C L 0 0 0 0 0 0 1 0 1 0 1 0 1 0
 //    y V L 0 0 0 0 0 0 1 0 1 0 0 1 0 0
 //    z C L 0 1 0 0 1 0 0 0 1 0 0 0 1 0
-//    
+//
 //------------------------------------------------------------------------------
 
 t_letter Letters[MAXLETTERS];
@@ -1452,7 +1440,6 @@ int      FeaturesIdx=MAXFEATURES;
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void CleanLettersFile(void)
 {
     for(int i=0;i<MAXLETTERS;i++){
@@ -1473,7 +1460,6 @@ void CleanLettersFile(void)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void WriteLettersFile(char* FileName)
 {
     // Special parsing.
@@ -1506,7 +1492,6 @@ void WriteLettersFile(char* FileName)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 int ReadLettersFile(char* FileName)
 {
     FILE* fh=NULL;
@@ -1680,7 +1665,7 @@ int ReadLettersFile(char* FileName)
 //    { V
 //    _ C
 //    W V
-//    
+//
 //------------------------------------------------------------------------------
 
 t_phoneme Phonemes[MAXPHONEMES];
@@ -1693,7 +1678,6 @@ int       PhonemesIdx=0;
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void CleanPhonemesFile(void)
 {
     for(int i=0;i<MAXPHONEMES;i++){
@@ -1710,7 +1694,6 @@ void CleanPhonemesFile(void)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void WritePhonemesFile(char* FileName)
 {
     // Special parsing.
@@ -1736,7 +1719,6 @@ void WritePhonemesFile(char* FileName)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 int ReadPhonemesFile(char* FileName)
 {
     FILE* fh=NULL;
@@ -1874,7 +1856,6 @@ int          PropertiesIdx=0;
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void CleanPropertiesFile(void)
 {
     for(int i=0;i<PropertiesIdx;i++){
@@ -1897,7 +1878,6 @@ void CleanPropertiesFile(void)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 char* trim(char *buf)
 {
     if(buf!=NULL){
@@ -1920,7 +1900,6 @@ char* trim(char *buf)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 int ReadPropertiesFile(char* FileName)
 {
     // Special parsing.
@@ -1970,7 +1949,6 @@ int ReadPropertiesFile(char* FileName)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void WritePropertiesFile(char* FileName)
 {
     // Special parsing.
@@ -2076,7 +2054,6 @@ DRC_Float lfMaxSpokenWordFreq;
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void CleanVocabularyFile(void)
 {
     for(int i=MINVOCAB;i<MAXVOCAB;i++){
@@ -2145,7 +2122,6 @@ void  PrtVocabLine(FILE* fh,int idx)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void WriteVocabularyFile(char* FileName)
 {
     // Special parsing.
@@ -2228,7 +2204,6 @@ int PhonemeSort(const void *a,const void *b)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 DRC_Float CFSCalc(int Freqency,DRC_Float lfMaximum)
 {
     DRC_Float lfWord=log10((DRC_Float)(Freqency+1));  // The +1 is a fudge factor because log(0) is undefined
@@ -2250,7 +2225,6 @@ static void strlwr(char *str)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 int ReadVocabularyFile(char* FileName)
 {
     FILE* fh=NULL;
@@ -2545,7 +2519,7 @@ int ReadVocabularyFile(char* FileName)
         }
     }
 
-     
+
 
 
 
@@ -2579,7 +2553,6 @@ int ReadVocabularyFile(char* FileName)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 int SpcStrNCmp(char* str1, char* str2, int len)
 {
     int rtn;
@@ -2601,7 +2574,6 @@ int SpcStrNCmp(char* str1, char* str2, int len)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void DisplayHomographs(FILE* fh)
 {
     bool InList=false;
@@ -2654,7 +2626,6 @@ void DisplayHomographs(FILE* fh)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void DisplayHomophones(FILE* fh)
 {
     bool InList=false;
@@ -2700,7 +2671,6 @@ void DisplayHomophones(FILE* fh)
     }
 }
 
-ProtoType
 FILE* OpenOutputFile(const char* ParentDir,const char* RunDir,const char* FileName,const char* Extn)
 {
     char buf[MAXPATH];
@@ -2709,9 +2679,9 @@ FILE* OpenOutputFile(const char* ParentDir,const char* RunDir,const char* FileNa
 
     for(file_id=0;file_id<MAX_FILE_ID;file_id++){
         if(file_id==0){
-			// This file cannot be produced in MS Windows so we will 
-			// always suffix it with a number.
-			if(strcasecmp(FileName,"con")==0) continue;
+            // This file cannot be produced in MS Windows so we will
+            // always suffix it with a number.
+            if(strcasecmp(FileName,"con")==0) continue;
 
             sprintf(buf,"%s\\%s\\%s.%s",ParentDir,RunDir,FileName,Extn);
         }else{
@@ -2772,7 +2742,6 @@ FILE* OpenOutputFile(const char* ParentDir,const char* RunDir,const char* FileNa
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 int ReadBatchFile(char* FileName)
 {
     FILE* fhBatch=NULL;
@@ -2864,14 +2833,12 @@ int ReadBatchFile(char* FileName)
     return(rtn);
 }
 
-ProtoType
 void DspNeighbourTtl(FILE *fh)
 {
     pfprintf(fh,"\n\nNonword      Status  Cnt Neighbouring Words\n");
     pfprintf(fh,"============ ======= === ============================================\n");
 }
 
-ProtoType
 bool IsNeighbour(char* word, char* nonword)
 {
     int len1=strlen(word);
@@ -2894,9 +2861,8 @@ bool IsNeighbour(char* word, char* nonword)
     return(rtn);
 }
 
-ProtoType
 void DspNeighbourhood(FILE* fh,char* nonword){
-    vector<int> VocabIdx;
+    std::vector<int> VocabIdx;
     bool Word=false;
 
     // Clear the vector
@@ -2927,7 +2893,6 @@ void DspNeighbourhood(FILE* fh,char* nonword){
     pfprintf(fh,"\n");
 }
 
-ProtoType
 void WriteBatchStatsHdr(FILE* fh)
 {
 
@@ -2936,7 +2901,6 @@ void WriteBatchStatsHdr(FILE* fh)
 }
 
 
-ProtoType
 void ClearBatchStatistics()
 {
     Stats.Correct.Named.Count=0;
@@ -2955,13 +2919,11 @@ void ClearBatchStatistics()
 
 }
 
-ProtoType
 DRC_Float sqr(DRC_Float num)
 {
     return(num*num);
 }
 
-ProtoType
 void DspMean(FILE* fh,const char* good,const char* bad,t_StatList& Stats)
 {
     if(Stats.Count!=0){
@@ -2972,7 +2934,6 @@ void DspMean(FILE* fh,const char* good,const char* bad,t_StatList& Stats)
     }
 }
 
-ProtoType
 void DspStdDev(FILE* fh,const char* good,const char* bad,t_StatList& Stats)
 {
     if(Stats.Count!=0){
@@ -2984,7 +2945,6 @@ void DspStdDev(FILE* fh,const char* good,const char* bad,t_StatList& Stats)
     }
 }
 
-ProtoType
 void RTTotal(t_StatList& Return,t_StatList& Stats1,t_StatList& Stats2)
 {
     Return.Count=Stats1.Count + Stats2.Count;
@@ -2992,7 +2952,6 @@ void RTTotal(t_StatList& Return,t_StatList& Stats1,t_StatList& Stats2)
     Return.RTSumSqr=Stats1.RTSumSqr + Stats2.RTSumSqr;
 }
 
-ProtoType
 void WriteBatchStats(FILE* fh)
 {
     if(fh!=NULL){
@@ -3094,7 +3053,6 @@ int      DriverIdx=1; // No data in first entry because it is ignored by Process
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 int ReadDriverFile(char* FileName)
 {
     FILE* fh=NULL;
@@ -3177,34 +3135,33 @@ int ReadDriverFile(char* FileName)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void CreateOutDir(char* OutDir)
 {
     static bool  FLG_OutDirCreated=false;
-	char         buf[MAXPATH];
+    char         buf[MAXPATH];
     int          FileIndex=0;
 
     while(!FLG_OutDirCreated){
         if(FileIndex==0){
-			// This directory cannot be produced in MS Windows so we will 
-			// always suffix it with a number.
-			if(strcasecmp(OutDir,"con")==0) {
-				FileIndex++;
-				continue;
-			}
+            // This directory cannot be produced in MS Windows so we will
+            // always suffix it with a number.
+            if(strcasecmp(OutDir,"con")==0) {
+                FileIndex++;
+                continue;
+            }
 
             sprintf(buf,"%s.drc",OutDir);
         }else{
             sprintf(buf,"%s-%d.drc",OutDir,FileIndex);
         }
 
-		// Try to make the directory to see if it already exists.
+        // Try to make the directory to see if it already exists.
 #ifdef __BORLANDC__
-		if(mkdir(buf)>=0){
+        if(mkdir(buf)>=0){
 #elif __GNUC__
-		if(mkdir(buf,0xffff)>=0){
+        if(mkdir(buf,0xffff)>=0){
 #endif
-			// Success, so mkdir() created it.
+            // Success, so mkdir() created it.
             strcpy(OutRunDirBuf,buf);
             FLG_OutDirCreated=true;
             break;

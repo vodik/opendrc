@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 // $Header: D:\\Repository\\D\\Dev\\Psych499\\DRC_Core.cpp,v 1.57 2011-03-14 17:00:23-04 alan Exp alan $
 //
-//    OpenDRC is an open-source implementation of the DRC Dual Route Cascaded Model 
+//    OpenDRC is an open-source implementation of the DRC Dual Route Cascaded Model
 //        of Visual Word Recognition and Reading Aloud.
 //    Copyright (C) 2011  Alan Angold
 //
@@ -18,13 +18,13 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
-//	The author can be contacted at:
-//		Alan.Angold@gmail.com
-//	or
-//		Alan Angold
-//		549 Sandbrooke Court
-//		Waterloo, Ontario 
-//		Canada N2T2H4
+//  The author can be contacted at:
+//      Alan.Angold@gmail.com
+//  or
+//      Alan Angold
+//      549 Sandbrooke Court
+//      Waterloo, Ontario
+//      Canada N2T2H4
 //
 //
 // Routines to take care of the core NonSemantic-Lexical route of the DRC model.
@@ -438,17 +438,17 @@
 //------------------------------------------------------------------------------
 
 #include "DRC_HdrStop.h"
-     
+
 //#define DEBUG
 #include "debug.h"
 
 
 const char* DRC_Core[]={
-	"$Author: alan $",
-	"$Date: 2011-03-14 17:00:23-04 $",
-	"$Revision: 1.57 $",
-	"$RCSfile: DRC_Core.cpp,v $",
-	"$Source: D:\\Repository\\D\\Dev\\Psych499\\DRC_Core.cpp,v $"
+    "$Author: alan $",
+    "$Date: 2011-03-14 17:00:23-04 $",
+    "$Revision: 1.57 $",
+    "$RCSfile: DRC_Core.cpp,v $",
+    "$Source: D:\\Repository\\D\\Dev\\Psych499\\DRC_Core.cpp,v $"
 };
 
 
@@ -509,14 +509,14 @@ t_solution LrgstPartSoln;
 int        LrgstPartUnMatchChars;
 
 
-vector <t_solution> GPCSolns;
+std::vector <t_solution> GPCSolns;
 t_gpcrule* MatchedRules[MAXINPUTBUF];  // List of pointers to matching rules in GPCRoute.
 int        MatchedRulesIdx=0; // Index into above array.
 
 const char* STR_PosnIDs = "NbmeA---------------";
 
 // Variables to detect and save the most activated POL word index.
-vector <char*> POLOutputWord;
+std::vector <char*> POLOutputWord;
 char  GPCWord[MAXINPUTBUF];
 
 
@@ -589,7 +589,7 @@ DRC_Float OL_Decay;               // Decay of activation at this level.
 
 // Phonological Lexicon
 DRC_Float PL_PhonoOrthoExcit;     // Feedback E/I of activated entries from POL --> OIL level.
-DRC_Float PL_PhonoOrthoInhib; 
+DRC_Float PL_PhonoOrthoInhib;
 DRC_Float PL_PhonoPhonemeExcit;   // Feedforward E/I of active entries from POL --> Phoneme buffer(PB) level.
 DRC_Float PL_PhonoPhonemeInhib;
 DRC_Float PL_PhonoLateralInhib;   // Lateral inhibition between activated words in POL
@@ -618,7 +618,7 @@ bool      GPC_DRC12UnSupDecayTrigErr;  // Flag which turns on/off the compensati
 //==============================================================================
 
 //---------------------------------------------------------------------------
-// Routine:                                
+// Routine:
 // Input:
 // Output:
 // SideEffects:
@@ -628,7 +628,6 @@ bool      GPC_DRC12UnSupDecayTrigErr;  // Flag which turns on/off the compensati
 int* OIL_Index=NULL;
 int* POL_Index=NULL;
 
-ProtoType
 void OILPOL_AddWords(int VocabIdx)
 {
     if(OILPOL_Sort==NULL){
@@ -683,7 +682,6 @@ void OILPOL_AddWords(int VocabIdx)
     }
 }
 
-ProtoType
 int OIL_CharNext(int chridx,int column,int prev)
 {
     int rtn=EMPTYCELL;
@@ -696,7 +694,6 @@ int OIL_CharNext(int chridx,int column,int prev)
     return(rtn);
 }
 
-ProtoType
 int POL_CharNext(int phoidx,int column,int prev)
 {
     int rtn=EMPTYCELL;
@@ -719,7 +716,6 @@ int POL_CharNext(int phoidx,int column,int prev)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 char* Trim(char* str)
 {
     // Get pointer to last character in string.
@@ -749,7 +745,6 @@ char* Trim(char* str)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 bool fequal(DRC_Float a,DRC_Float b)
 {
     bool rtn=false;
@@ -766,7 +761,6 @@ bool fequal(DRC_Float a,DRC_Float b)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 int LetterIdx(char letter){
     int rtn=-1;
 
@@ -788,7 +782,6 @@ int LetterIdx(char letter){
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void IndexLetters()
 {
     static bool LettersIndexed=false;
@@ -816,7 +809,6 @@ void IndexLetters()
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 int PhonemeIdx(char phoneme){
     int rtn=-1;
 
@@ -839,7 +831,6 @@ int PhonemeIdx(char phoneme){
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void IndexPhonemes()
 {
     static bool PhonemesIndexed=false;
@@ -869,7 +860,6 @@ void IndexPhonemes()
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void DspMatrix(FILE* fh, const char* Title, const char* Format, DRC_Float* Array, int Width, int Height, bool Invert)
 {
     if(fh!=NULL){
@@ -907,7 +897,6 @@ void DspMatrix(FILE* fh, const char* Title, const char* Format, DRC_Float* Array
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 inline DRC_Float ActDynamics(DRC_Float n_i,DRC_Float a_i,DRC_Float Decay)
 {
     // NOTE: See McCLelland and Rumelhart (1981) for a better explanation of
@@ -952,7 +941,6 @@ inline DRC_Float ActDynamics(DRC_Float n_i,DRC_Float a_i,DRC_Float Decay)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void ClearShortLists(bool First)
 {
     // Clear out these two arrays.  They will contain mostly -1 (EMPTYCELL) and
@@ -1009,7 +997,6 @@ static void strlwr(char *str)
         *p = tolower(*p);
 }
 
-ProtoType
 void DRC_ProcessWord(int MaxCycles,const char *TestWord,const char* Category)
 {
     Enter("DRC_ProcessWord");
@@ -1151,7 +1138,6 @@ void DRC_ProcessWord(int MaxCycles,const char *TestWord,const char* Category)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void CreatePBString()
 {
     memset(PBString,0,sizeof(PBString));
@@ -1180,7 +1166,6 @@ void CreatePBString()
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 bool CorrectOutput(char *Word, int cycle,int MaxCycles)
 {
     bool Correct=false;
@@ -1228,7 +1213,6 @@ bool CorrectOutput(char *Word, int cycle,int MaxCycles)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void DRC_DisplayHeader(FILE* fh)
 {
     if(fh!=NULL){
@@ -1269,7 +1253,6 @@ void DRC_DisplayHeader(FILE* fh)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void PrtCopyright(FILE* fh)
 {
     if(fh!=NULL){
@@ -1289,7 +1272,6 @@ void PrtCopyright(FILE* fh)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void DRC_DisplayTotals(int cycle,FILE* fh)
 {
     if(fh!=NULL){
@@ -1348,7 +1330,6 @@ void DRC_DisplayTotals(int cycle,FILE* fh)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void UpdateParamTables(FILE* fh,char* Name,char* Value)
 {
     t_iparam* iptr=NULL;
@@ -1396,59 +1377,58 @@ void UpdateParamTables(FILE* fh,char* Name,char* Value)
 // SideEffects: Local named variables changed.
 // Errors: FindFParam() mail exit the program.
 //---------------------------------------------------------------------------
-ProtoType
 void UpdateLocalParams(void)
 {
-	// General Parameters
-	GP_ActivationRate        = FindFParam("ActivationRate",true)->Value;
-	GP_FrequencyScale        = FindFParam("FrequencyScale",true)->Value;
-	GP_ReadingAloudCrit      = FindFParam("MinReadingPhonology",true)->Value;
-	GP_DisplayThreshold      = FindFParam("ReportActGreater",true)->Value;
-	
-	// Feature Level
-	FL_FeatureLetterExcit    = FindFParam("FeatureLetterExcitation",true)->Value;
-	FL_FeatureLetterInhib    = FindFParam("FeatureLetterInhibition",true)->Value;
-	FL_Noise                 = FindFParam("FeatureNoise",true)->Value;
-	FL_Decay                 = FindFParam("FeatureDecay",true)->Value;
-	
-	// Letter Level
-	LL_LetterOrthoExcit      = FindFParam("LetterOrthlexExcitation",true)->Value;
-	LL_LetterOrthoInhib      = FindFParam("LetterOrthlexInhibition",true)->Value;
-	LL_LetterLateralInhib    = FindFParam("LetterLateralInhibition",true)->Value;
-	LL_Noise                 = FindFParam("LetterNoise",true)->Value;
-	LL_Decay                 = FindFParam("LetterDecay",true)->Value;
-	
-	// Orthographic Lexicon
-	OL_OrthoLetterExcit      = FindFParam("OrthlexLetterExcitation",true)->Value;
-	OL_OrthoLetterInhib      = FindFParam("OrthlexLetterInhibition",true)->Value;
-	OL_OrthoPhonoExcit       = FindFParam("OrthlexPhonlexExcitation",true)->Value;
-	OL_OrthoPhonoInhib       = FindFParam("OrthlexPhonlexInhibition",true)->Value;
-	OL_OrthoLateralInhib     = FindFParam("OrthlexLateralInhibition",true)->Value;
-	OL_Noise                 = FindFParam("OILNoise",true)->Value;
-	OL_Decay                 = FindFParam("OILDecay",true)->Value;
-	
-	// Phonological Lexicon
-	PL_PhonoOrthoExcit       = FindFParam("PhonlexOrthlexExcitation",true)->Value;
-	PL_PhonoOrthoInhib       = FindFParam("PhonlexOrthlexInhibition",true)->Value;
-	PL_PhonoPhonemeExcit     = FindFParam("PhonlexPhonemeExcitation",true)->Value;
-	PL_PhonoPhonemeInhib     = FindFParam("PhonlexPhonemeInhibition",true)->Value;
-	PL_PhonoLateralInhib     = FindFParam("PhonlexLateralInhibition",true)->Value;
-	PL_Noise                 = FindFParam("POLNoise",true)->Value;
-	PL_Decay                 = FindFParam("POLDecay",true)->Value;
-	
-	// Phoneme Level
-	EL_PhonemePhonoExcit     = FindFParam("PhonemePhonlexExcitation",true)->Value;
-	EL_PhonemePhonoInhib     = FindFParam("PhonemePhonlexInhibition",true)->Value;
-	EL_PhonemeLateralInhib   = FindFParam("PhonemeLateralInhibition",true)->Value;
-	EL_Noise                 = FindFParam("PhonemeNoise",true)->Value;
-	EL_Decay                 = FindFParam("PhonemeDecay",true)->Value;
+    // General Parameters
+    GP_ActivationRate        = FindFParam("ActivationRate",true)->Value;
+    GP_FrequencyScale        = FindFParam("FrequencyScale",true)->Value;
+    GP_ReadingAloudCrit      = FindFParam("MinReadingPhonology",true)->Value;
+    GP_DisplayThreshold      = FindFParam("ReportActGreater",true)->Value;
+
+    // Feature Level
+    FL_FeatureLetterExcit    = FindFParam("FeatureLetterExcitation",true)->Value;
+    FL_FeatureLetterInhib    = FindFParam("FeatureLetterInhibition",true)->Value;
+    FL_Noise                 = FindFParam("FeatureNoise",true)->Value;
+    FL_Decay                 = FindFParam("FeatureDecay",true)->Value;
+
+    // Letter Level
+    LL_LetterOrthoExcit      = FindFParam("LetterOrthlexExcitation",true)->Value;
+    LL_LetterOrthoInhib      = FindFParam("LetterOrthlexInhibition",true)->Value;
+    LL_LetterLateralInhib    = FindFParam("LetterLateralInhibition",true)->Value;
+    LL_Noise                 = FindFParam("LetterNoise",true)->Value;
+    LL_Decay                 = FindFParam("LetterDecay",true)->Value;
+
+    // Orthographic Lexicon
+    OL_OrthoLetterExcit      = FindFParam("OrthlexLetterExcitation",true)->Value;
+    OL_OrthoLetterInhib      = FindFParam("OrthlexLetterInhibition",true)->Value;
+    OL_OrthoPhonoExcit       = FindFParam("OrthlexPhonlexExcitation",true)->Value;
+    OL_OrthoPhonoInhib       = FindFParam("OrthlexPhonlexInhibition",true)->Value;
+    OL_OrthoLateralInhib     = FindFParam("OrthlexLateralInhibition",true)->Value;
+    OL_Noise                 = FindFParam("OILNoise",true)->Value;
+    OL_Decay                 = FindFParam("OILDecay",true)->Value;
+
+    // Phonological Lexicon
+    PL_PhonoOrthoExcit       = FindFParam("PhonlexOrthlexExcitation",true)->Value;
+    PL_PhonoOrthoInhib       = FindFParam("PhonlexOrthlexInhibition",true)->Value;
+    PL_PhonoPhonemeExcit     = FindFParam("PhonlexPhonemeExcitation",true)->Value;
+    PL_PhonoPhonemeInhib     = FindFParam("PhonlexPhonemeInhibition",true)->Value;
+    PL_PhonoLateralInhib     = FindFParam("PhonlexLateralInhibition",true)->Value;
+    PL_Noise                 = FindFParam("POLNoise",true)->Value;
+    PL_Decay                 = FindFParam("POLDecay",true)->Value;
+
+    // Phoneme Level
+    EL_PhonemePhonoExcit     = FindFParam("PhonemePhonlexExcitation",true)->Value;
+    EL_PhonemePhonoInhib     = FindFParam("PhonemePhonlexInhibition",true)->Value;
+    EL_PhonemeLateralInhib   = FindFParam("PhonemeLateralInhibition",true)->Value;
+    EL_Noise                 = FindFParam("PhonemeNoise",true)->Value;
+    EL_Decay                 = FindFParam("PhonemeDecay",true)->Value;
     EL_UnsupportedDecay      = FindFParam("PhonemeUnsupportedDecay",true)->Value;
 
-	// GPC Route
-	GPC_GPCPhonemeExcit      = FindFParam("GPCPhonemeExcitation",true)->Value;
-	GPC_GPCCriticalPhonology = FindFParam("GPCCriticalPhonology",true)->Value;
-	GPC_GPCOnset             = FindIParam("GPCOnset",true)->Value;
-	// GPC_CyclesB4NextLetter   = FindFParam("SimEndVal",true)->Value;     // Obsolete in DRC1.2.
+    // GPC Route
+    GPC_GPCPhonemeExcit      = FindFParam("GPCPhonemeExcitation",true)->Value;
+    GPC_GPCCriticalPhonology = FindFParam("GPCCriticalPhonology",true)->Value;
+    GPC_GPCOnset             = FindIParam("GPCOnset",true)->Value;
+    // GPC_CyclesB4NextLetter   = FindFParam("SimEndVal",true)->Value;     // Obsolete in DRC1.2.
 
     FLG_OutExtended          = FindBParam("Extended",true)->Value;
     GPC_DRC12UnSupDecayTrigErr
@@ -1465,7 +1445,6 @@ void UpdateLocalParams(void)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void DRC_ResetSystem()
 {
     Enter("DRC_InitSystem");
@@ -1521,7 +1500,6 @@ void DRC_ResetSystem()
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void DRC_PropagateActivation(int cycle,FILE* fh)
 {
     Enter("DRC_PropagateActivation");
@@ -1574,7 +1552,6 @@ void DRC_PropagateActivation(int cycle,FILE* fh)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void DRC_CalcFeatures(int cycle,FILE* fh)
 {
     Enter("DRC_CalcFeatures");
@@ -1652,7 +1629,6 @@ void DRC_CalcFeatures(int cycle,FILE* fh)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void DRC_CalcLetters(int cycle,FILE* fh)
 {
     Enter("DRC_CalcLetters");
@@ -1775,7 +1751,6 @@ void DRC_CalcLetters(int cycle,FILE* fh)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 DRC_Float* DRC_CalcFeatLetterEI(char* str)       // Working & Tested
 {
     Enter("DRC_CalcFeatLetterEI");
@@ -1836,7 +1811,6 @@ DRC_Float* DRC_CalcFeatLetterEI(char* str)       // Working & Tested
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 DRC_Float* DRC_CalcOILLetterEI()
 {
     Enter("DRC_CalcOILLetterEI");
@@ -1885,7 +1859,6 @@ DRC_Float* DRC_CalcOILLetterEI()
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 DRC_Float* DRC_CalcLLLateralEI()
 {
     Enter("DRC_CalcLLLateralEI");
@@ -1952,7 +1925,6 @@ DRC_Float* DRC_CalcLLLateralEI()
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void DRC_CalcOILWords(int cycle,FILE* fh)
 {
     Enter("DRC_CalcOILWords");
@@ -2010,7 +1982,6 @@ void DRC_CalcOILWords(int cycle,FILE* fh)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 DRC_Float* DRC_CalcLetterOIL_EI()
 {
     Enter("DRC_CalcLetterOIL_EI");
@@ -2095,7 +2066,6 @@ DRC_Float* DRC_CalcLetterOIL_EI()
     return(OILLayerEI);
 };
 
-ProtoType
 inline bool HomographKeyEntry(int w)
 {
     // The key value in a homograph set will be will be marked with a negative
@@ -2106,7 +2076,6 @@ inline bool HomographKeyEntry(int w)
     return(idx<0);
 }
 
-ProtoType
 inline bool HomographEntry(int w)
 {
     // A Homograph pointer not pointing to oneself is the flag for a homograph.
@@ -2114,7 +2083,6 @@ inline bool HomographEntry(int w)
     return(idx!=w);
 }
 
-ProtoType
 inline bool HomophoneKeyEntry(int w)
 {
     // The key value in a homophone set will be will be marked with a negative
@@ -2125,7 +2093,6 @@ inline bool HomophoneKeyEntry(int w)
     return(idx<0);
 }
 
-ProtoType
 inline bool HomophoneEntry(int w)
 {
     // A Homophone pointer not pointing to oneself is the flag for a homophone.
@@ -2133,7 +2100,6 @@ inline bool HomophoneEntry(int w)
     return(idx!=w);
 }
 
-ProtoType
 inline bool NormalEntry(int w)
 {
     // A Homophone pointer not pointing to oneself is the flag for a homophone.
@@ -2151,7 +2117,6 @@ inline bool NormalEntry(int w)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 int GetHomographKey(int entry)
 {
     // Set up fence to end search.
@@ -2179,7 +2144,6 @@ int GetHomographKey(int entry)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 DRC_Float* DRC_CalcPhonoOIL_EI()
 {
     Enter("DRC_CalcPhonoOIL_EI");
@@ -2282,7 +2246,6 @@ DRC_Float* DRC_CalcPhonoOIL_EI()
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 DRC_Float* DRC_CalcOILLateral_EI()
 {
     Enter("DRC_CalcOILLateral_EI");
@@ -2361,7 +2324,6 @@ DRC_Float* DRC_CalcOILLateral_EI()
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void DRC_CalcPOLWords(int cycle,FILE* fh)
 {
     Enter("DRC_CalcPOLWords");
@@ -2426,7 +2388,6 @@ void DRC_CalcPOLWords(int cycle,FILE* fh)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 int GetHomophoneKey(int entry)
 {
     // Set up fence to end search.
@@ -2453,7 +2414,6 @@ int GetHomophoneKey(int entry)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 DRC_Float* DRC_CalcOILPhono_EI()
 {
     Enter("DRC_CalcOILPhono_EI");
@@ -2559,7 +2519,6 @@ DRC_Float* DRC_CalcOILPhono_EI()
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 DRC_Float* DRC_CalcPhonemePhono_EI()
 {
     Enter("DRC_CalcPhonemePhono_EI");
@@ -2662,7 +2621,6 @@ DRC_Float* DRC_CalcPhonemePhono_EI()
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 DRC_Float* DRC_CalcPhonoLateral_EI()
 {
     Enter("DRC_CalcPhonoLateral_EI");
@@ -2736,7 +2694,6 @@ DRC_Float* DRC_CalcPhonoLateral_EI()
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void DRC_CalcPhonemes(int cycle,FILE* fh)
 {
     Enter("DRC_CalcPhonemes");
@@ -2813,7 +2770,6 @@ void DRC_CalcPhonemes(int cycle,FILE* fh)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 DRC_Float* DRC_CalcPhonoPhoneme_EI()
 {
     Enter("DRC_CalcPhonoPhoneme_EI");
@@ -2864,7 +2820,6 @@ DRC_Float* DRC_CalcPhonoPhoneme_EI()
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 DRC_Float* DRC_CalcPhonemeLateral_EI()
 {
     Enter("DRC_CalcPhonemeLateral_EI");
@@ -2914,7 +2869,6 @@ DRC_Float* DRC_CalcPhonemeLateral_EI()
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 DRC_Float* DRC_CalcGPCPhoneme_EI(int cycle)
 {
     Enter("DRC_CalcGPCPhoneme_EI");
@@ -3002,7 +2956,6 @@ DRC_Float* DRC_CalcGPCPhoneme_EI(int cycle)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void DRC_ClearPartialSoln()
 {
 
@@ -3023,7 +2976,6 @@ void DRC_ClearPartialSoln()
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void DRC_CalcGPCRoute(int cycle,int NumCharGPCR,bool& WordShifted,FILE* fh)
 {
     char word[WORDSZEXTN];
@@ -3127,7 +3079,6 @@ void DRC_CalcGPCRoute(int cycle,int NumCharGPCR,bool& WordShifted,FILE* fh)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void DRC_UpdActFromGPCR(FILE* fh,int cycle,char* word)
 {
     char RuleUsed[MAXINPUTBUF];
@@ -3286,7 +3237,6 @@ void DRC_UpdActFromGPCR(FILE* fh,int cycle,char* word)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void DRC_UpdPBFromGPC(FILE* fh,int cycle,char* word)
 {
     // Zero our totals variables.
@@ -3386,7 +3336,6 @@ void DRC_UpdPBFromGPC(FILE* fh,int cycle,char* word)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void GPC_CreateWord()
 {
     // Clear our output word.
@@ -3413,7 +3362,6 @@ void GPC_CreateWord()
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void DRC_DspDRCTranslations(FILE* fh,int cycle)
 {
     int Solutions=(int)GPCSolns.size();
@@ -3542,7 +3490,6 @@ void DRC_DspDRCTranslations(FILE* fh,int cycle)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void DRC_DspGPCActivations(FILE* fh,int cycle)
 {
     char Phoneme;
@@ -3652,7 +3599,6 @@ void DRC_DspGPCActivations(FILE* fh,int cycle)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 int FirstNonBodyRuleSoln(void)
 {
     bool Found=false;
@@ -3688,7 +3634,6 @@ int FirstNonBodyRuleSoln(void)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void DRC_GPCRouteShift(int cycle,int& GPCRChars,bool& ChgFlag,FILE* fh)
 {
     // Determine the column of the last GPC Route generated phoneme and
@@ -3730,7 +3675,6 @@ void DRC_GPCRouteShift(int cycle,int& GPCRChars,bool& ChgFlag,FILE* fh)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void SavePartSuccess(char* word,char* mask)
 {
     // If we've matched anything then save the partial solution.
@@ -3761,7 +3705,6 @@ void SavePartSuccess(char* word,char* mask)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void SaveSuccess(char* word)
 {
     // If we've matched anything then save the solution.
@@ -3789,7 +3732,6 @@ void SaveSuccess(char* word)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 bool CompletelyMatched(char* mask)
 {
     bool rtn=true;
@@ -3811,7 +3753,6 @@ bool CompletelyMatched(char* mask)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void MergeMask(char* mask,int start,t_gpcrule* rule)
 {
     int PreContext=rule->PreContext;
@@ -3849,7 +3790,6 @@ void MergeMask(char* mask,int start,t_gpcrule* rule)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void UnMergeMask(char* mask,int start,t_gpcrule* rule)
 {
     int PreContext=rule->PreContext;
@@ -3896,7 +3836,6 @@ void UnMergeMask(char* mask,int start,t_gpcrule* rule)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 bool FieldMatch(char* word,char* mask,t_gpcrule* rule,int start,int end,int* LetPhoIdx)
 {
     int len,flds;
@@ -3954,7 +3893,7 @@ bool FieldMatch(char* word,char* mask,t_gpcrule* rule,int start,int end,int* Let
                     // Fail only if the word's char isn't in the defined list.
                     rtn=false;
                 }
-                
+
             }else if(chr=='+'){
                 // No alphabetic characters will match the End-of-Word marker '+'.
                 rtn=false;
@@ -4003,7 +3942,6 @@ bool FieldMatch(char* word,char* mask,t_gpcrule* rule,int start,int end,int* Let
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 int FindStart(char* mask)
 {
     int rtn=MAXINPUTBUF;
@@ -4023,7 +3961,6 @@ int FindStart(char* mask)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 int NumChr(char* mask,char Special)
 {
     int rtn=0;
@@ -4060,7 +3997,6 @@ int NumChr(char* mask,char Special)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void DRC_GPCFind(char* word,char* mask,int start, int end, bool GotTerm)
 {
     eWrdPosn Type1,Type2,Type3;
@@ -4126,7 +4062,7 @@ void DRC_GPCFind(char* word,char* mask,int start, int end, bool GotTerm)
                 // matched by either a simple field or a context field, OR the last
                 // unmatched letter of the word was matched.
 
-                // Following description is old ================================ 
+                // Following description is old ================================
                 // wpEnd rules will only match under these circumstances.  First that
                 // we have the end of the word presented to us (GotTerm[inal]) and
                 // then the rule must match the last available grapheme in the word
@@ -4207,7 +4143,6 @@ void DRC_GPCFind(char* word,char* mask,int start, int end, bool GotTerm)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void DRC_GPCApplyOutRules(bool GotTerm)
 {
     const char* DummyMask="CCCCCCCCCXXXXXXXX";
@@ -4283,7 +4218,6 @@ void DRC_GPCApplyOutRules(bool GotTerm)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 bool DRC_TestOutput(int Cycle,FILE* fh)
 {
     Enter("DRC_TestOutput");
@@ -4370,7 +4304,6 @@ bool DRC_TestOutput(int Cycle,FILE* fh)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void DRC_FinalReport(FILE* fh)
 {
     Enter("DRC_FinalReport");
@@ -4385,7 +4318,6 @@ void DRC_FinalReport(FILE* fh)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void DRC_Cleanup(FILE* fh)
 {
     Enter("DRC_Cleanup");

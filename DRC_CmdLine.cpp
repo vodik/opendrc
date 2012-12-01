@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 // $Header: D:\\Repository\\D\\Dev\\Psych499\\DRC_CmdLine.cpp,v 1.22 2011-03-14 23:56:25-04 alan Exp alan $
 //
-//    OpenDRC is an open-source implementation of the DRC Dual Route Cascaded Model 
+//    OpenDRC is an open-source implementation of the DRC Dual Route Cascaded Model
 //        of Visual Word Recognition and Reading Aloud.
 //    Copyright (C) 2011  Alan Angold
 //
@@ -18,13 +18,13 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
-//	The author can be contacted at:
-//		Alan.Angold@gmail.com
-//	or
-//		Alan Angold
-//		549 Sandbrooke Court
-//		Waterloo, Ontario 
-//		Canada N2T2H4
+//  The author can be contacted at:
+//      Alan.Angold@gmail.com
+//  or
+//      Alan Angold
+//      549 Sandbrooke Court
+//      Waterloo, Ontario
+//      Canada N2T2H4
 //
 //
 // Routines that take care of Command Line parameter parsing.
@@ -166,11 +166,11 @@
 #include "debug.h"
 
 const char* DRC_CmdLine[]={
-	"$Author: alan $",
-	"$Date: 2011-03-14 23:56:25-04 $",
-	"$Revision: 1.22 $",
-	"$RCSfile: DRC_CmdLine.cpp,v $",
-	"$Source: D:\\Repository\\D\\Dev\\Psych499\\DRC_CmdLine.cpp,v $"
+    "$Author: alan $",
+    "$Date: 2011-03-14 23:56:25-04 $",
+    "$Revision: 1.22 $",
+    "$RCSfile: DRC_CmdLine.cpp,v $",
+    "$Source: D:\\Repository\\D\\Dev\\Psych499\\DRC_CmdLine.cpp,v $"
 };
 
 
@@ -186,110 +186,110 @@ FILE* fh_BatchFile=stdin;
 // Default DRC Parameters
 //------------------------------------------------------------------------------
 t_iparam DRC_IParams[]={
-	// GPC Route Parameters
-	{"GPCOnset",                      26,      26, "Cycles before first letter available to GPCRoute"},
+    // GPC Route Parameters
+    {"GPCOnset",                      26,      26, "Cycles before first letter available to GPCRoute"},
     // Other parameters.
-	{"SimNumSteps",                    1,       1, "SimNumSteps"},
-	{"MaxErrors",                 MAXERR,  MAXERR, "Maximum number of batch file errors before failure"},
-	{"BatchFileStart",                 0,       0, "Start line in batch file"},
-	{"BatchFileLines",          MAXLINES,MAXLINES, "Number of batch file lines to execute"},
-	{"MaxCycles",                   1000,    1000, "Maximum number of cycles for simulation"},
-	{"PhonemeUnits",                   8,       8, "Width in characters of output DRC Phoneme Buffer"},
-	{"VisualFeatureLetterUnits",       8,       8, "Width in characters of input DRC Feature Layer"},
+    {"SimNumSteps",                    1,       1, "SimNumSteps"},
+    {"MaxErrors",                 MAXERR,  MAXERR, "Maximum number of batch file errors before failure"},
+    {"BatchFileStart",                 0,       0, "Start line in batch file"},
+    {"BatchFileLines",          MAXLINES,MAXLINES, "Number of batch file lines to execute"},
+    {"MaxCycles",                   1000,    1000, "Maximum number of cycles for simulation"},
+    {"PhonemeUnits",                   8,       8, "Width in characters of output DRC Phoneme Buffer"},
+    {"VisualFeatureLetterUnits",       8,       8, "Width in characters of input DRC Feature Layer"},
 
 
     {NULL,0,0,NULL}
 };
 
 t_fparam DRC_FParams[]={
-	// General Parameters
-	{"ActivationRate",              0.200, 0.200, "Scaling of input excitation/inhibition/CFS values (Epsilon)"},
-	{"FrequencyScale",              0.050, 0.050, "Scaling for written and spoken CFS values"},
-	{"MinReadingPhonology",         0.400, 0.400, "Word recognition threshold value"},
+    // General Parameters
+    {"ActivationRate",              0.200, 0.200, "Scaling of input excitation/inhibition/CFS values (Epsilon)"},
+    {"FrequencyScale",              0.050, 0.050, "Scaling for written and spoken CFS values"},
+    {"MinReadingPhonology",         0.400, 0.400, "Word recognition threshold value"},
 
-	// Feature Level Parameters
-	{"FeatureLetterExcitation",     0.005, 0.005, "FL->LL Excitation parameter"},
-	{"FeatureLetterInhibition",     0.150, 0.150, "FL->LL Inhibition parameter"},
-	{"FeatureNoise",                0.000, 0.000, "FL Noise (not implemented)"},
-	{"FeatureDecay",                0.000, 0.000, "FL Decay (Theta)"},
+    // Feature Level Parameters
+    {"FeatureLetterExcitation",     0.005, 0.005, "FL->LL Excitation parameter"},
+    {"FeatureLetterInhibition",     0.150, 0.150, "FL->LL Inhibition parameter"},
+    {"FeatureNoise",                0.000, 0.000, "FL Noise (not implemented)"},
+    {"FeatureDecay",                0.000, 0.000, "FL Decay (Theta)"},
 
-	// Letter Level Parameters
-	{"LetterOrthlexExcitation",     0.070, 0.070, "LL->OIL Excitation parameter"},
-	{"LetterOrthlexInhibition",     0.480, 0.480, "LL->OIL Inhibition parameter"},
-	{"LetterLateralInhibition",     0.000, 0.000, "LL->LL Inhibition parameter"},
-	{"LetterNoise",                 0.000, 0.000, "LL Noise (not implemented)"},
-	{"LetterDecay",                 0.000, 0.000, "LL Decay (Theta)"},
+    // Letter Level Parameters
+    {"LetterOrthlexExcitation",     0.070, 0.070, "LL->OIL Excitation parameter"},
+    {"LetterOrthlexInhibition",     0.480, 0.480, "LL->OIL Inhibition parameter"},
+    {"LetterLateralInhibition",     0.000, 0.000, "LL->LL Inhibition parameter"},
+    {"LetterNoise",                 0.000, 0.000, "LL Noise (not implemented)"},
+    {"LetterDecay",                 0.000, 0.000, "LL Decay (Theta)"},
 
-	// Orthographic Lexicon (Orthlex) Parameters
-	{"OrthlexPhonlexExcitation",    0.250, 0.250, "OIL->POL Excitation parameter"},
-	{"OrthlexPhonlexInhibition",    0.000, 0.000, "OIL->POL Inhibition parameter"},
-	{"OrthlexLetterExcitation",     0.300, 0.300, "OIL->LL Excitation parameter"},
-	{"OrthlexLetterInhibition",     0.000, 0.000, "OIL->LL Inhibition parameter"},
-	{"OrthlexLateralInhibition",    0.060, 0.060, "OIL->OIL Inhibition parameter"},
-	{"OILNoise",                    0.000, 0.000, "OIL Noise (not implemented)"},
-	{"OILDecay",                    0.000, 0.000, "OIL Decay (Theta)"},
+    // Orthographic Lexicon (Orthlex) Parameters
+    {"OrthlexPhonlexExcitation",    0.250, 0.250, "OIL->POL Excitation parameter"},
+    {"OrthlexPhonlexInhibition",    0.000, 0.000, "OIL->POL Inhibition parameter"},
+    {"OrthlexLetterExcitation",     0.300, 0.300, "OIL->LL Excitation parameter"},
+    {"OrthlexLetterInhibition",     0.000, 0.000, "OIL->LL Inhibition parameter"},
+    {"OrthlexLateralInhibition",    0.060, 0.060, "OIL->OIL Inhibition parameter"},
+    {"OILNoise",                    0.000, 0.000, "OIL Noise (not implemented)"},
+    {"OILDecay",                    0.000, 0.000, "OIL Decay (Theta)"},
     {"OILCFSInhibition",            1.000, 1.000, "OIL Specific freqency scaling"},   // Modulate the input of the CFS into POL calc
 
-	// Phonological Lexicon (Phonlex) Parameters
-	{"PhonlexPhonemeExcitation",    0.090, 0.090, "POL->PB Excitation parameter"},
-	{"PhonlexPhonemeInhibition",    0.000, 0.000, "POL->PB Inhibition parameter"},
-	{"PhonlexOrthlexExcitation",    0.250, 0.250, "POL->OIL Excitation parameter"},
-	{"PhonlexOrthlexInhibition",    0.000, 0.000, "POL->OIL Inhibition parameter"},
-	{"PhonlexLateralInhibition",    0.070, 0.070, "POL->POL Inhibition parameter"},
-	{"POLNoise",                    0.000, 0.000, "POL Noise (not implemented)"},
-	{"POLDecay",                    0.000, 0.000, "POL Decay (Theta)"},
+    // Phonological Lexicon (Phonlex) Parameters
+    {"PhonlexPhonemeExcitation",    0.090, 0.090, "POL->PB Excitation parameter"},
+    {"PhonlexPhonemeInhibition",    0.000, 0.000, "POL->PB Inhibition parameter"},
+    {"PhonlexOrthlexExcitation",    0.250, 0.250, "POL->OIL Excitation parameter"},
+    {"PhonlexOrthlexInhibition",    0.000, 0.000, "POL->OIL Inhibition parameter"},
+    {"PhonlexLateralInhibition",    0.070, 0.070, "POL->POL Inhibition parameter"},
+    {"POLNoise",                    0.000, 0.000, "POL Noise (not implemented)"},
+    {"POLDecay",                    0.000, 0.000, "POL Decay (Theta)"},
     {"POLCFSInhibition",            1.000, 1.000, "POL Specific freqency scaling"},   // Modulate the input of the CFS into POL calc
 
-	// Phoneme Level Parameters
-	{"PhonemePhonlexExcitation",    0.040, 0.040, "PB->POL Excitation parameter"},
-	{"PhonemePhonlexInhibition",    0.160, 0.160, "PB->POL Inhibition parameter"},
-	{"PhonemeLateralInhibition",    0.147, 0.147, "PB->PB Inhibition parameter"},
-	{"PhonemeUnsupportedDecay",     0.050, 0.050, "PB activation decay (after activation determined)"},
-	{"PhonemeNoise",                0.000, 0.000, "PB Noise (not implemented)"},
-	{"PhonemeDecay",                0.000, 0.000, "PB Decay (Theta)"},
+    // Phoneme Level Parameters
+    {"PhonemePhonlexExcitation",    0.040, 0.040, "PB->POL Excitation parameter"},
+    {"PhonemePhonlexInhibition",    0.160, 0.160, "PB->POL Inhibition parameter"},
+    {"PhonemeLateralInhibition",    0.147, 0.147, "PB->PB Inhibition parameter"},
+    {"PhonemeUnsupportedDecay",     0.050, 0.050, "PB activation decay (after activation determined)"},
+    {"PhonemeNoise",                0.000, 0.000, "PB Noise (not implemented)"},
+    {"PhonemeDecay",                0.000, 0.000, "PB Decay (Theta)"},
 
-	// GPC Route Parameters
-	{"GPCPhonemeExcitation",        0.051, 0.051, "GPC" },
-	{"GPCCriticalPhonology",        0.050, 0.050, "GPC" },
+    // GPC Route Parameters
+    {"GPCPhonemeExcitation",        0.051, 0.051, "GPC" },
+    {"GPCCriticalPhonology",        0.050, 0.050, "GPC" },
 
-	{"ReportActGreater",            0.02,  0.02,  "Display threshold for reporting activations"},
-	{"SimStartVal",                 0.0,   0.0,   "Simulation start-range value"},
-	{"SimEndVal",                   1.0,   1.0,   "Simulation end-range value"},
+    {"ReportActGreater",            0.02,  0.02,  "Display threshold for reporting activations"},
+    {"SimStartVal",                 0.0,   0.0,   "Simulation start-range value"},
+    {"SimEndVal",                   1.0,   1.0,   "Simulation end-range value"},
 
     {NULL,0.0,0.0,NULL}
 };
 
 t_sparam DRC_SParams[]={
-	{"LanguageDirectory",        "english1.1.6","english1.1.6", ""},
-	{"OutputDirectory",          OutParentDirBuf,".",           ""},
-	{"OutputRTFileExt",          "rt","rt",                     ""},
-	{"OutputActivationFileExt",  "acts","acts",                 ""},
+    {"LanguageDirectory",        "english1.1.6","english1.1.6", ""},
+    {"OutputDirectory",          OutParentDirBuf,".",           ""},
+    {"OutputRTFileExt",          "rt","rt",                     ""},
+    {"OutputActivationFileExt",  "acts","acts",                 ""},
     {"CmdFile",                  "","",                         ""},  // For use with the "-o <file>" empty file name means no file.
-	{"SimParam",                 NULL,NULL,                     ""},
-	{"FileNameBatchFile",        NULL,NULL,                     ""},
-	{"TestWord",                 NULL,NULL,                     ""},
+    {"SimParam",                 NULL,NULL,                     ""},
+    {"FileNameBatchFile",        NULL,NULL,                     ""},
+    {"TestWord",                 NULL,NULL,                     ""},
 
     {NULL,NULL,NULL,NULL}
 };
 
 t_bparam DRC_BParams[]={
     {"AutoReset",                 true,  true,  ""},
-	{"ApplyGPCRules",             false, false, ""},
-	{"ApplyGPCStressRules",       false, false, ""},
-	{"ListIrregularStressWords",  false, false, ""},
-	{"ListIrregularWords",        false, false, ""},
-	{"ListRegularWords",          false, false, ""},
-	{"ListWhammies",              false, false, ""},
-	{"NoOutputFiles",             false, false, ""},
-	{"ReportExtraInfo",           false, false, ""},
-	{"ReportSimDuration",         false, false, ""},
-	{"RunForMaxCycles",           false, false, ""},
-	{"SaveActivationLvls",        false, false, ""},
-	{"SeparateHomographemes",     false, false, ""},
-	{"SeparateHomophones",        false, false, ""},
-	{"TestBatchOnly",             false, false, ""},
-	{"Verbalize",                 false, false, ""},
-	{"Neighbourhood",             false, false, ""},   // Display the neighbourhood of a nonword and size.
+    {"ApplyGPCRules",             false, false, ""},
+    {"ApplyGPCStressRules",       false, false, ""},
+    {"ListIrregularStressWords",  false, false, ""},
+    {"ListIrregularWords",        false, false, ""},
+    {"ListRegularWords",          false, false, ""},
+    {"ListWhammies",              false, false, ""},
+    {"NoOutputFiles",             false, false, ""},
+    {"ReportExtraInfo",           false, false, ""},
+    {"ReportSimDuration",         false, false, ""},
+    {"RunForMaxCycles",           false, false, ""},
+    {"SaveActivationLvls",        false, false, ""},
+    {"SeparateHomographemes",     false, false, ""},
+    {"SeparateHomophones",        false, false, ""},
+    {"TestBatchOnly",             false, false, ""},
+    {"Verbalize",                 false, false, ""},
+    {"Neighbourhood",             false, false, ""},   // Display the neighbourhood of a nonword and size.
 
     // Flag(s) to turn on DRC1.2 bug effects.
     {"DRC12UnSupDecayTrigErr",    false, false, "Turn on compensation for the DRC1.2 Unsupported Decay Trigger Error"},
@@ -309,53 +309,53 @@ t_bparam DRC_BParams[]={
     {"FLDRC",                     true,  true , ""},  // Standard DRC feature level output (VF0-7 values)
     {"FLDRCE",                    false, false, ""},  // Standard DRC feature level output (float output i.e. "1"->"1.0 "
     {"FLDRCT",                    false, false, ""},  // Totals both per letter and per feature (TF value).
-	{"FLTimeT",                   false, false, ""},  // Display the previous time values
-	{"FLTimeTp1",                 false, false, ""},  // Display the newly ulated values.
+    {"FLTimeT",                   false, false, ""},  // Display the previous time values
+    {"FLTimeTp1",                 false, false, ""},  // Display the newly ulated values.
 
     // Output flags for the Letter Level (LL)
-	{"LLDRC",                     true,  true , ""},  // Display the DRC Letter Level activations (L0-7 values).
-	{"LLDRCT",                    true,  true , ""},  // Display the DRC Totals for the LL (TL line).
-	{"LLFromFL",                  false, false, ""},
-	{"LLFromLL",                  false, false, ""},
-	{"LLFromOIL",                 false, false, ""},
-	{"LLTimeT",                   false, false, ""},
-	{"LLTimeTp1",                 false, false, ""},
+    {"LLDRC",                     true,  true , ""},  // Display the DRC Letter Level activations (L0-7 values).
+    {"LLDRCT",                    true,  true , ""},  // Display the DRC Totals for the LL (TL line).
+    {"LLFromFL",                  false, false, ""},
+    {"LLFromLL",                  false, false, ""},
+    {"LLFromOIL",                 false, false, ""},
+    {"LLTimeT",                   false, false, ""},
+    {"LLTimeTp1",                 false, false, ""},
 
     // Output flags for the Orthographic Input Lexicon (OIL)
-	{"OILDRC",                    true,  true , ""},  // Display the DRC OIL activations (Orth values).
-	{"OILDRCT",                   true,  true , ""},  // Display the DRC Totals for the OIL (TO line).
-	{"OILFromLL",                 false, false, ""},
-	{"OILFromOIL",                false, false, ""},
-	{"OILFromPOL",                false, false, ""},
-	{"OILTimeT",                  false, false, ""},
-	{"OILTimeTp1",                false, false, ""},
+    {"OILDRC",                    true,  true , ""},  // Display the DRC OIL activations (Orth values).
+    {"OILDRCT",                   true,  true , ""},  // Display the DRC Totals for the OIL (TO line).
+    {"OILFromLL",                 false, false, ""},
+    {"OILFromOIL",                false, false, ""},
+    {"OILFromPOL",                false, false, ""},
+    {"OILTimeT",                  false, false, ""},
+    {"OILTimeTp1",                false, false, ""},
 
     // Output flags for the Phonological Output Lexicon (POL)
-	{"POLDRC",                    true,  true , ""},  // Display the DRC POL activations (Phon values).
-	{"POLDRCT",                   true,  true , ""},  // Display the DRC Totals for the OIL (TP line).
-	{"POLFromOIL",                false, false, ""},
-	{"POLFromPOL",                false, false, ""},
-	{"POLFromPB",                 false, false, ""},
-	{"POLTimeT",                  false, false, ""},
-	{"POLTimeTp1",                false, false, ""},
+    {"POLDRC",                    true,  true , ""},  // Display the DRC POL activations (Phon values).
+    {"POLDRCT",                   true,  true , ""},  // Display the DRC Totals for the OIL (TP line).
+    {"POLFromOIL",                false, false, ""},
+    {"POLFromPOL",                false, false, ""},
+    {"POLFromPB",                 false, false, ""},
+    {"POLTimeT",                  false, false, ""},
+    {"POLTimeTp1",                false, false, ""},
 
     // Output flags for the Phoneme Buffer (PB)
-	{"PBDRC",                     true,  true , ""},  // Display the DRC PB activations (P0-7 values).
-	{"PBDRCT",                    true,  true , ""},  // Display the DRC Totals for the PB (TPh line).
-	{"PBFromPOL",                 false, false, ""},
-	{"PBFromPB",                  false, false, ""},
-	{"PBTimeT",                   false, false, ""},
-	{"PBTimeTp1",                 false, false, ""},
+    {"PBDRC",                     true,  true , ""},  // Display the DRC PB activations (P0-7 values).
+    {"PBDRCT",                    true,  true , ""},  // Display the DRC Totals for the PB (TPh line).
+    {"PBFromPOL",                 false, false, ""},
+    {"PBFromPB",                  false, false, ""},
+    {"PBTimeT",                   false, false, ""},
+    {"PBTimeTp1",                 false, false, ""},
 
     // Output flags for the GPCRoute (GPC)
-	{"GPCDRC",                    true,  true , ""},  // Display the DRC GPC activations (GPC0-7 values).
-	{"GPCDRCT",                   true,  true , ""},  // Display the DRC Totals for the GPC (TGPC line).
-	{"GPCRDRC",                   true,  true , ""},  // Display the DRC GPCR activations (GPCR0-7 values).
-	{"GPCRDRCT",                  true,  true , ""},  // Display the DRC Totals for the GPC (TGPCR line).
-	{"GPCFromLL",                 false, false, ""},
-	{"GPCToPB",                   false, false, ""},
+    {"GPCDRC",                    true,  true , ""},  // Display the DRC GPC activations (GPC0-7 values).
+    {"GPCDRCT",                   true,  true , ""},  // Display the DRC Totals for the GPC (TGPC line).
+    {"GPCRDRC",                   true,  true , ""},  // Display the DRC GPCR activations (GPCR0-7 values).
+    {"GPCRDRCT",                  true,  true , ""},  // Display the DRC Totals for the GPC (TGPCR line).
+    {"GPCFromLL",                 false, false, ""},
+    {"GPCToPB",                   false, false, ""},
     {"GPCTimeT",                  false, false, ""},
-	{"GPCTimeTp1",                false, false, ""},
+    {"GPCTimeTp1",                false, false, ""},
 
     {NULL,false,false,NULL}
 };
@@ -488,7 +488,6 @@ t_bparam* FindBParam(char* Name,bool FailHard)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void* FindParam(char* Name)
 {
     void *rtn=NULL;
@@ -503,7 +502,7 @@ void* FindParam(char* Name)
     if(rtn==NULL){
         rtn=(void*)FindBParam(Name,false);
     }
-    
+
     return(rtn);
 }
 
@@ -531,7 +530,7 @@ char* FindLanguageParam(char* Name,bool FailHard)
         }
         lp++;
     }
-    
+
     // If we didn't find the name then potentially report and exit program
     if((rtn==NULL)&&(FailHard)) {
         pfprintf(stderr,"ERROR: FindLanguageParam(%s,%s) failure!\n",Name,FailHard?"true":"false");
@@ -688,7 +687,6 @@ bool DispdNbhdTtl=false;
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void ProcessCmdLineArgs(int argc,const char **argv)
 {
     int t=-1;
@@ -793,7 +791,6 @@ void ProcessCmdLineArgs(int argc,const char **argv)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void WriteRTFileHeader(FILE* fh,bool batch,const char* word){
     pfprintf(fh,"; OpenDRC Reaction Time Results File\n");
     DRC_DisplayHeader(fh);
@@ -810,7 +807,6 @@ void WriteRTFileHeader(FILE* fh,bool batch,const char* word){
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 bool MatchArg(const char *flag,const char *arg){
     bool rtn=false;
 
@@ -830,7 +826,6 @@ bool MatchArg(const char *flag,const char *arg){
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 void TestAndCall(int &idx,int argc,const char **argv,int (*func)(const char **argv))
 {
     int args=0;
@@ -845,7 +840,6 @@ void TestAndCall(int &idx,int argc,const char **argv,int (*func)(const char **ar
 // List of option processing routines
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-ProtoType
 void ErrCmdSwt(const char *str)
 {
     fprintf(stderr,"ERROR: \"%s\" command switch not implemented yet.\n",str);
@@ -860,11 +854,9 @@ void ErrCmdSwt(const char *str)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-#pragma argsused arglist
-ProtoType
 int Set_Language(const char** arglist)
 {
-	// -l LANGUAGE	-Use the language specified (default english1.1.6)
+    // -l LANGUAGE  -Use the language specified (default english1.1.6)
     //char* CmdLineFlag=arglist[0];
     const char* Language=arglist[1];
 
@@ -882,11 +874,9 @@ int Set_Language(const char** arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-#pragma argsused arglist
-ProtoType
 int Set_VisualFeatureLetterUnits(const char** arglist)
 {
-	// -no VALUE  -Set the number of units in the visual feature & letter layers
+    // -no VALUE  -Set the number of units in the visual feature & letter layers
     //             (The default value depends on the language used)
     //char* CmdLineFlag=arglist[0];
     const char* Units=arglist[1];
@@ -904,11 +894,9 @@ int Set_VisualFeatureLetterUnits(const char** arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-#pragma argsused arglist
-ProtoType
 int Set_PhonemeUnits(const char** arglist)
 {
-	// -np VALUE  -Set the number of units in the phoneme layer
+    // -np VALUE  -Set the number of units in the phoneme layer
     //             (The default value depends on the language used)
     //char* CmdLineFlag=arglist[0];
     const char* Units=arglist[1];
@@ -927,11 +915,9 @@ int Set_PhonemeUnits(const char** arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-#pragma argsused arglist
-ProtoType
 int Set_SetParameter(const char** arglist)
 {
-	// -P PRM VAL  -Set parameter PRM to value VAL
+    // -P PRM VAL  -Set parameter PRM to value VAL
     //char* CmdLineFlag=arglist[0];
     const char* Prm=arglist[1];
     const char* Val=arglist[2];
@@ -977,11 +963,9 @@ int Set_SetParameter(const char** arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-#pragma argsused arglist
-ProtoType
 int Set_ReadParameterFile(const char** arglist)
 {
-	// -p FILE	-Read parameters from FILE
+    // -p FILE  -Read parameters from FILE
     //char* CmdLineFlag=arglist[0];
     //char* FileName=arglist[1];
 
@@ -999,11 +983,9 @@ int Set_ReadParameterFile(const char** arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-#pragma argsused arglist
-ProtoType
 int Set_SeparateHomophoneFlag(const char** arglist)
 {
-	// -s  -Give homophones separate entries in the phonological lexicon
+    // -s  -Give homophones separate entries in the phonological lexicon
     //char* CmdLineFlag=arglist[0];
 
     FindBParam("SeparateHomophones")->Value=true;
@@ -1017,12 +999,10 @@ int Set_SeparateHomophoneFlag(const char** arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-#pragma argsused arglist
-ProtoType
 int Set_ContinueToMaxCycles(const char** arglist)
 {
-	// -c  -Continue running cycles until MAXCYCLES is reached, even if the
-    //		stimuli is named before then.
+    // -c  -Continue running cycles until MAXCYCLES is reached, even if the
+    //      stimuli is named before then.
     //char* CmdLineFlag=arglist[0];
 
     FindIParam("MaxCycles")->Value=true;
@@ -1036,11 +1016,9 @@ int Set_ContinueToMaxCycles(const char** arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-#pragma argsused arglist
-ProtoType
 int Set_ProcessBatchFile(const char** arglist)
 {
-	// -b FILE	-Process batch file (use '-b --' for stdin)
+    // -b FILE  -Process batch file (use '-b --' for stdin)
     //char* CmdLineFlag=arglist[0];
     const char* FileName=arglist[1];
 
@@ -1066,11 +1044,9 @@ int Set_ProcessBatchFile(const char** arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-#pragma argsused arglist
-ProtoType
 int Set_TestBatchOnly(const char** arglist)
 {
-	// -t	- Test batch file only (no execution done).
+    // -t   - Test batch file only (no execution done).
     FindBParam("TestBatchOnly")->Value=true;
     return(1);
 }
@@ -1082,11 +1058,9 @@ int Set_TestBatchOnly(const char** arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-#pragma argsused arglist
-ProtoType
 int Set_BatchProcessLimits(const char** arglist)
 {
-	// --bpart S N	process at most N lines of the batch file, starting at line S
+    // --bpart S N  process at most N lines of the batch file, starting at line S
     //              (blank & comment lines are ignored for line-counting purposes)
     //char* CmdLineFlag=arglist[0];
     const char* Start=arglist[1];
@@ -1106,11 +1080,9 @@ int Set_BatchProcessLimits(const char** arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-#pragma argsused arglist
-ProtoType
 int Set_MaxIncorrectResults(const char** arglist)
 {
-	//  -x NUM	-Abort batch jobs when NUM incorrect results have occurred
+    //  -x NUM  -Abort batch jobs when NUM incorrect results have occurred
     //char* CmdLineFlag=arglist[0];
     const char* Num=arglist[1];
 
@@ -1130,14 +1102,12 @@ int Set_MaxIncorrectResults(const char** arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-#pragma argsused arglist
-ProtoType
 int Set_RepeatSimulation(const char** arglist)
 {
-	//   -S PRM STARTVAL ENDVAL NUMSTEPS
-    //    	-Run this simulation NUMSTEPS times, starting with parameter
-    //    	 PRM set to value STARTVAL and increasing it incrementally so
-    //    	 that PRM will be set to ENDVAL on the final step.
+    //   -S PRM STARTVAL ENDVAL NUMSTEPS
+    //      -Run this simulation NUMSTEPS times, starting with parameter
+    //       PRM set to value STARTVAL and increasing it incrementally so
+    //       that PRM will be set to ENDVAL on the final step.
     //
     //       This argument may be used multiple times, for example:
     //           drc -S GPCOnset 5 7 3 -S ActivationRate 0.2 0.5 4 word
@@ -1163,11 +1133,9 @@ int Set_RepeatSimulation(const char** arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-#pragma argsused arglist
-ProtoType
 int Set_ActivationFileExt(const char** arglist)
 {
-	// -A EXT	-Set the filename extension for activation files (sets -a)
+    // -A EXT   -Set the filename extension for activation files (sets -a)
     //           (NOTE: Not sure what "sets -a" means for the program.
     //char* CmdLineFlag=arglist[0];
     const char* Ext=arglist[1];
@@ -1186,11 +1154,9 @@ int Set_ActivationFileExt(const char** arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-#pragma argsused arglist
-ProtoType
 int Set_SaveActivationLvls(const char** arglist)
 {
-	// -a  -Save activation levels
+    // -a  -Save activation levels
     //char* CmdLineFlag=arglist[0];
 
     FindBParam("SaveActivationLvls")->Value=true;
@@ -1205,10 +1171,9 @@ int Set_SaveActivationLvls(const char** arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 int Set_ReportExtraInfo(const char** arglist)
 {
-	// -e  -Report extra information in the screen output & RT/stats files
+    // -e  -Report extra information in the screen output & RT/stats files
     //char* CmdLineFlag=arglist[0];
     // Example:
     //    "czars NONWORD kz#z PNONWORD 141 NAMED CORRECT kz#z 4 4 0"
@@ -1225,7 +1190,6 @@ int Set_ReportExtraInfo(const char** arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 int Set_OutputFlags(const char** arglist)
 {
     //  -f FLAG    - Toggle an output flag (FLAG), use -f for list.",
@@ -1268,10 +1232,9 @@ int Set_OutputFlags(const char** arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 int Set_ReportActGreater(const char** arglist)
 {
-	// -m VALUE	 -Report only activation levels >= VALUE (default 0.02)
+    // -m VALUE  -Report only activation levels >= VALUE (default 0.02)
     //char* CmdLineFlag=arglist[0];
     const char* Value=arglist[1];
 
@@ -1286,10 +1249,9 @@ int Set_ReportActGreater(const char** arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 int Set_NoOutputFiles(const char** arglist)
 {
-	// --nofiles  -Suppress creation of all output files
+    // --nofiles  -Suppress creation of all output files
     //char* CmdLineFlag=arglist[0];
 
     FindBParam("NoOutputFiles")->Value=true;
@@ -1304,10 +1266,9 @@ int Set_NoOutputFiles(const char** arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 int Set_RTFileExtn(const char** arglist)
 {
-	// -r EXT  -Set the filename extension for the RT file
+    // -r EXT  -Set the filename extension for the RT file
     //char* CmdLineFlag=arglist[0];
     const char* Ext=arglist[1];
 
@@ -1323,10 +1284,9 @@ int Set_RTFileExtn(const char** arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 int Set_OutputDirectory(const char** arglist)
 {
-	// --rdir DIR  -Create output files in the directory named DIR
+    // --rdir DIR  -Create output files in the directory named DIR
     //              (DIR will be created if it doesn't exist)
     //char* CmdLineFlag=arglist[0];
     const char* Dir=arglist[1];
@@ -1345,10 +1305,9 @@ int Set_OutputDirectory(const char** arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 int Set_ReportSimDuration(const char** arglist)
 {
-	// -t  -Report simulation duration(s) in ms
+    // -t  -Report simulation duration(s) in ms
     //char* CmdLineFlag=arglist[0];
 
     // This routine should take the final RT value for the run of a word and
@@ -1369,10 +1328,9 @@ int Set_ReportSimDuration(const char** arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 int Set_Verbalize(const char** arglist)
 {
-	// -v  -Pronounce the model's output audibly (Mac OS X only)
+    // -v  -Pronounce the model's output audibly (Mac OS X only)
     //char* CmdLineFlag=arglist[0];
 
     // NOTE: Should see if we can find a program for Linux and Windows that will
@@ -1391,10 +1349,9 @@ int Set_Verbalize(const char** arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 int ListIrregularWords(const char** arglist)
 {
-	// --irreglist	-List all the words in the selected language which are irregular
+    // --irreglist  -List all the words in the selected language which are irregular
     //               (the pronunciation produced by the GPC rules does not match the vocabulary)
     //char* CmdLineFlag=arglist[0];
 
@@ -1412,12 +1369,11 @@ int ListIrregularWords(const char** arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 int ListIrregularStressWords(const char** arglist)
 {
-	// --irregstress  -List all the words in the selected language which have
-	//                 irregular stress (the stress pattern selected by the GPC stress
-	//                 rules does not match the stress pattern in the vocabulary)
+    // --irregstress  -List all the words in the selected language which have
+    //                 irregular stress (the stress pattern selected by the GPC stress
+    //                 rules does not match the stress pattern in the vocabulary)
     //char* CmdLineFlag=arglist[0];
 
     // NOTE: Need to generate a function to do this.
@@ -1434,10 +1390,9 @@ int ListIrregularStressWords(const char** arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 int ApplyGPCRules(const char** arglist)
 {
-	// --reg  -Read words from stdin and apply GPC rules to them
+    // --reg  -Read words from stdin and apply GPC rules to them
     //char* CmdLineFlag=arglist[0];
 
     // NOTE: Need to generate a function to do this.
@@ -1454,10 +1409,9 @@ int ApplyGPCRules(const char** arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 int ListRegularWords(const char** arglist)
 {
-	// --reglist  -List all the words in the selected language which are regular
+    // --reglist  -List all the words in the selected language which are regular
     //char* CmdLineFlag=arglist[0];
 
     // NOTE: Need to generate a function to do this.
@@ -1473,10 +1427,9 @@ int ListRegularWords(const char** arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 int ApplyGPCStressRules(const char** arglist)
 {
-	// --stress	 -Read words from stdin and apply GPC stress rules to them
+    // --stress  -Read words from stdin and apply GPC stress rules to them
     //char* CmdLineFlag=arglist[0];
 
     // NOTE: Need to generate a function to do this.
@@ -1492,10 +1445,9 @@ int ApplyGPCStressRules(const char** arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 int ListWhammies(const char** arglist)
 {
-	// --whammies  -Read words from stdin and list whammies for them
+    // --whammies  -Read words from stdin and list whammies for them
     //char* CmdLineFlag=arglist[0];
 
     // NOTE: Need to generate a function to do this.
@@ -1511,7 +1463,6 @@ int ListWhammies(const char** arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 int DisplayHelp(const char** arglist)
 {
     // Display the help message as it appears in the text array above.
@@ -1537,10 +1488,9 @@ int DisplayHelp(const char** arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 int DisplayVersion(const char** arglist)
 {
-	// --version  -Display version numbers and exit
+    // --version  -Display version numbers and exit
     //char* CmdLineFlag=arglist[0];
 
     // NOTE: Need procedure to list the version numbers of everything.
@@ -1559,10 +1509,9 @@ const char* Delimiters=" \t\n";
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-ProtoType
 int ReadCmdLineOptionsFile(const char** arglist)
 {
-	// -o FILE	-Read command-line options from FILE
+    // -o FILE  -Read command-line options from FILE
     //char* CmdLineFlag=arglist[0];
     const char* File=arglist[1];
 
@@ -1613,8 +1562,6 @@ int ReadCmdLineOptionsFile(const char** arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-#pragma argsused arglist
-ProtoType
 int Cmd_DspNeighbourhood(const char** arglist)
 {
     FindBParam("Neighbourhood")->Value=true;
@@ -1629,8 +1576,6 @@ int Cmd_DspNeighbourhood(const char** arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-#pragma argsused arglist
-ProtoType
 int Cmd_DspHomographs(const char** arglist)
 {
     DisplayHomographs(stdout);
@@ -1645,8 +1590,6 @@ int Cmd_DspHomographs(const char** arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-#pragma argsused arglist
-ProtoType
 int Cmd_DspHomophones(const char** arglist)
 {
     DisplayHomophones(stdout);

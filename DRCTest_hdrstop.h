@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 // $Header: D:\\Repository\\D\\Dev\\Psych499\\DRCTest_hdrstop.h,v 1.4 2011-03-14 16:52:37-04 alan Exp alan $
 //
-//    OpenDRC is an open-source implementation of the DRC Dual Route Cascaded Model 
+//    OpenDRC is an open-source implementation of the DRC Dual Route Cascaded Model
 //        of Visual Word Recognition and Reading Aloud.
 //    Copyright (C) 2011  Alan Angold
 //
@@ -18,13 +18,13 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
-//	The author can be contacted at:
-//		Alan.Angold@gmail.com
-//	or
-//		Alan Angold
-//		549 Sandbrooke Court
-//		Waterloo, Ontario 
-//		Canada N2T2H4
+//  The author can be contacted at:
+//      Alan.Angold@gmail.com
+//  or
+//      Alan Angold
+//      549 Sandbrooke Court
+//      Waterloo, Ontario
+//      Canada N2T2H4
 //
 //
 //
@@ -42,28 +42,15 @@
 //------------------------------------------------------------------------------
 #ifndef _H_DRCTest_HdrStop
 #define _H_DRCTest_HdrStop
-/* #pragma message in DRCTest_HdrStop.h */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
-#ifdef __BORLANDC__
-#include <dir.h>		// For findfirst()/findnext()
-#elif __GNUC__
-#include <dirent.h>		// For scanline()
-#endif
-#include <math.h>			// For fabs()
+#include <dirent.h>
+#include <math.h>
 #include <vector>
 #include <iostream>
 #include <algorithm>
-
-#ifdef __GNUC__
-#define MAXPATH	260
-#endif
-
-
-
-using namespace std;
 
 typedef struct {
     int start;
@@ -86,15 +73,9 @@ typedef struct {
 // auto generate the *.p files (ie. proto xxx.cpp --> xxx.p)
 #define ProtoType
 
-#pragma hdrstop
-
-
 /* #pragma message out DRCTest_HdrStop.h */
 #endif // _H_DRCTest_HdrStop
 
 //------------------------------------------------------------------------------
 // End of $RCSfile: DRCTest_hdrstop.h,v $
 //------------------------------------------------------------------------------
-
-
-

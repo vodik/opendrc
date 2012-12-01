@@ -1,7 +1,7 @@
 // -----------------------------------------------------------------------------
 // $Header: D:\\Repository\\C\\Programs\\Cygwin\\home\\Alan\\dev\\psych499\\debug.h,v 1.0 2011-03-13 23:17:57-04 alan Exp alan $
 //
-//    OpenDRC is an open-source implementation of the DRC Dual Route Cascaded Model 
+//    OpenDRC is an open-source implementation of the DRC Dual Route Cascaded Model
 //        of Visual Word Recognition and Reading Aloud.
 //    Copyright (C) 2011  Alan Angold
 //
@@ -18,13 +18,13 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
-//	The author can be contacted at:
-//		Alan.Angold@gmail.com
-//	or
-//		Alan Angold
-//		549 Sandbrooke Court
-//		Waterloo, Ontario 
-//		Canada N2T2H4
+//  The author can be contacted at:
+//      Alan.Angold@gmail.com
+//  or
+//      Alan Angold
+//      549 Sandbrooke Court
+//      Waterloo, Ontario
+//      Canada N2T2H4
 //
 //
 // Debug file to allow for debugging projects.
@@ -76,18 +76,18 @@
 #define DBGMAX 100
 
 // Debug levels.
-#define DBG_EE	0x01
-#define DBG_MS	0x02
-#define DBG_PF	0x04
+#define DBG_EE  0x01
+#define DBG_MS  0x02
+#define DBG_PF  0x04
 #define DBG_VB  0x08
 #define DBG_XX  0x00
 
 // Define DBGVars in only one module.
 #ifdef DBGvars
-	int   DBGind=0;
-	FILE *DBGfh=stdout;
-	FILE *DBGsh=stdout;
-	char *DBGnames[DBGMAX];
+    int   DBGind=0;
+    FILE *DBGfh=stdout;
+    FILE *DBGsh=stdout;
+    char *DBGnames[DBGMAX];
     char *DBGrtns[DBGMAX];
     int   DBGlines[DBGMAX];
     int   DBGlvl=DBG_EE | DBG_MS | DBG_PF;
@@ -95,24 +95,24 @@
     int   DBGFlowThrough=0;
 #else
     #ifdef __BCPLUSPLUS__
-	    extern "C" int DBGind;
-	    extern "C" FILE *DBGfh;
-	    extern "C" FILE *DBGsh;
-	    extern "C" char *DBGnames[DBGMAX];
-	    extern "C" char *DBGrtns[DBGMAX];
-	    extern "C" int   DBGlines[DBGMAX];
-	    extern "C" int   DBGlvl;
-		extern "C" int   fi;
+        extern "C" int DBGind;
+        extern "C" FILE *DBGfh;
+        extern "C" FILE *DBGsh;
+        extern "C" char *DBGnames[DBGMAX];
+        extern "C" char *DBGrtns[DBGMAX];
+        extern "C" int   DBGlines[DBGMAX];
+        extern "C" int   DBGlvl;
+        extern "C" int   fi;
         extern "C" int   DBGFlowThrough;
     #else
-	    extern int DBGind;
-	    extern FILE *DBGfh;
-	    extern FILE *DBGsh;
-	    extern char *DBGnames[DBGMAX];
-	    extern char *DBGrtns[DBGMAX];
-	    extern int   DBGlines[DBGMAX];
-	    extern int   DBGlvl;
-		extern int   fi;
+        extern int DBGind;
+        extern FILE *DBGfh;
+        extern FILE *DBGsh;
+        extern char *DBGnames[DBGMAX];
+        extern char *DBGrtns[DBGMAX];
+        extern int   DBGlines[DBGMAX];
+        extern int   DBGlvl;
+        extern int   fi;
         extern int   DBGFlowThrough;
     #endif
 #endif
@@ -126,7 +126,7 @@
 #ifndef DBGNoFiles
 
 #define DBGOpen(fname)  \
-		if((DBGfh=fopen(fname,"w"))==NULL){ \
+        if((DBGfh=fopen(fname,"w"))==NULL){ \
             perror("DBG Output File");\
             DBGfh=stdout;            \
         }else{ \
@@ -135,22 +135,22 @@
         fflush(DBGfh);
 
 #define DBGshOpen(fname,pname)  \
-		if((DBGsh=fopen(fname,"w"))==NULL){ \
-			perror("DBG Subroutine Hierarchy File");\
-			DBGfh=stdout;            \
-		}else{ \
-			fprintf(DBGfh,"#### DBGshOpen Called %s[%d]\n",__FILE__,__LINE__); \
-			fprintf(DBGsh,"Debug SubHeirchy File Program(%s)\n",pname); \
-		} \
-		fflush(DBGfh);
+        if((DBGsh=fopen(fname,"w"))==NULL){ \
+            perror("DBG Subroutine Hierarchy File");\
+            DBGfh=stdout;            \
+        }else{ \
+            fprintf(DBGfh,"#### DBGshOpen Called %s[%d]\n",__FILE__,__LINE__); \
+            fprintf(DBGsh,"Debug SubHeirchy File Program(%s)\n",pname); \
+        } \
+        fflush(DBGfh);
 
 #define DBGClose() \
-		{   DBGI(DBGind);            \
-			fprintf(DBGfh,"#### DBGClose Called %s[%d]\n",__FILE__,__LINE__); \
-			if(DBGfh!=stdout) {fflush(DBGfh);fclose(DBGfh);}; \
-			if(DBGsh!=stdout) {fflush(DBGsh);fclose(DBGsh);}; \
-			DBGfh=stdout;  \
-		}
+        {   DBGI(DBGind);            \
+            fprintf(DBGfh,"#### DBGClose Called %s[%d]\n",__FILE__,__LINE__); \
+            if(DBGfh!=stdout) {fflush(DBGfh);fclose(DBGfh);}; \
+            if(DBGsh!=stdout) {fflush(DBGsh);fclose(DBGsh);}; \
+            DBGfh=stdout;  \
+        }
 #endif // DBGNoFiles
 
 
@@ -268,7 +268,7 @@
                 DBGI(DBGind);            \
                 fprintf(DBGfh,"<--- %s %s[%d]\n",DBGnames[DBGind],__FILE__,__LINE__); \
                 DBGnames[DBGind]=NULL;   \
-                fflush(DBGfh);			 \
+                fflush(DBGfh);           \
             }
 
     #define debug0(fmt)  \
@@ -287,7 +287,7 @@
             if(DBGlvl&DBG_PF){ fprintf(DBGfh,fmt,arg1);fflush(DBGfh); }
     #define debugraw(fmt,arg1)  \
             debugBare(fmt,arg1)
-            
+
 #else //DEBUG
 // -----------------------------------------------------------------------------
 
