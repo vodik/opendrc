@@ -488,7 +488,7 @@ void OutputParamFile(FILE* fh)
 // Errors:
 //---------------------------------------------------------------------------
 ProtoType
-int ReadParamFile(char* FileName)
+int ReadParamFile(const char* FileName)
 {
     FILE* fh=NULL;
     int   rtn=1;

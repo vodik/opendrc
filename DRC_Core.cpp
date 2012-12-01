@@ -870,7 +870,7 @@ void IndexPhonemes()
 // Errors:
 //---------------------------------------------------------------------------
 ProtoType
-void DspMatrix(FILE* fh, char* Title, char* Format, DRC_Float* Array, int Width, int Height, bool Invert)
+void DspMatrix(FILE* fh, const char* Title, const char* Format, DRC_Float* Array, int Width, int Height, bool Invert)
 {
     if(fh!=NULL){
         pfprintf(fh,"%s:\n",Title);
@@ -3438,6 +3438,7 @@ void DRC_DspDRCTranslations(FILE* fh,int cycle)
                     case wpBegin: pfprintf(fh,"b"); break;
                     case wpMedial: pfprintf(fh,"m"); break;
                     case wpEnd: pfprintf(fh,"e"); break;
+                    default: break;
                 }
 
                 // Display the class of the rule.
@@ -4209,7 +4210,7 @@ void DRC_GPCFind(char* word,char* mask,int start, int end, bool GotTerm)
 ProtoType
 void DRC_GPCApplyOutRules(bool GotTerm)
 {
-    char* DummyMask="CCCCCCCCCXXXXXXXX";
+    const char* DummyMask="CCCCCCCCCXXXXXXXX";
     int   Solutions=(int)GPCSolns.size();
 
     // Look through all the solutions in the vector and try and apply each of the

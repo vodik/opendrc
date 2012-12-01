@@ -633,7 +633,7 @@ int HelpMessageSz=sizeof(HelpMessage)/sizeof(char*);
 typedef struct{
     const char*   Flag;             // Command line flag for option.
     bool    NeedsDB;          // Point in execution of program that this option should be processed.
-    int     (*Func)(char**);  // Function pointer to process this option.
+    int     (*Func)(const char**);  // Function pointer to process this option.
 }t_CmdLineArgs;
 t_CmdLineArgs CmdLineArgs[]={
     {"--neighbourhood" ,true    ,Cmd_DspNeighbourhood},
@@ -689,12 +689,12 @@ bool DispdNbhdTtl=false;
 // Errors:
 //---------------------------------------------------------------------------
 ProtoType
-void ProcessCmdLineArgs(int argc,char **argv)
+void ProcessCmdLineArgs(int argc,const char **argv)
 {
     int t=-1;
     int i=-1;
     int MaxCycles=FindIParam("MaxCycles")->Value;
-    char* TestWord=NULL;
+    const char* TestWord=NULL;
     char buf[MAXPATH];
 
     // For each command line argument...
@@ -794,7 +794,7 @@ void ProcessCmdLineArgs(int argc,char **argv)
 // Errors:
 //---------------------------------------------------------------------------
 ProtoType
-void WriteRTFileHeader(FILE* fh,bool batch,char* word){
+void WriteRTFileHeader(FILE* fh,bool batch,const char* word){
     pfprintf(fh,"; OpenDRC Reaction Time Results File\n");
     DRC_DisplayHeader(fh);
     pfprintf(fh,"; Results for %s \"%s\"\n",(batch)?"BATCH":"WORD",word);
@@ -811,7 +811,7 @@ void WriteRTFileHeader(FILE* fh,bool batch,char* word){
 // Errors:
 //---------------------------------------------------------------------------
 ProtoType
-bool MatchArg(char *flag,char *arg){
+bool MatchArg(const char *flag,const char *arg){
     bool rtn=false;
 
     if(strcmp(flag,arg)==0){
@@ -831,7 +831,7 @@ bool MatchArg(char *flag,char *arg){
 // Errors:
 //---------------------------------------------------------------------------
 ProtoType
-void TestAndCall(int &idx,int argc,char **argv,int (*func)(char **argv))
+void TestAndCall(int &idx,int argc,const char **argv,int (*func)(const char **argv))
 {
     int args=0;
     if(idx+args<=argc){
@@ -846,7 +846,7 @@ void TestAndCall(int &idx,int argc,char **argv,int (*func)(char **argv))
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 ProtoType
-void ErrCmdSwt(char *str)
+void ErrCmdSwt(const char *str)
 {
     fprintf(stderr,"ERROR: \"%s\" command switch not implemented yet.\n",str);
     exit(1);
@@ -862,11 +862,11 @@ void ErrCmdSwt(char *str)
 //---------------------------------------------------------------------------
 #pragma argsused arglist
 ProtoType
-int Set_Language(char** arglist)
+int Set_Language(const char** arglist)
 {
 	// -l LANGUAGE	-Use the language specified (default english1.1.6)
     //char* CmdLineFlag=arglist[0];
-    char* Language=arglist[1];
+    const char* Language=arglist[1];
 
     // NOTE: Should test to make sure this directory exists and that there
     //       is a trailing slash.
@@ -884,12 +884,12 @@ int Set_Language(char** arglist)
 //---------------------------------------------------------------------------
 #pragma argsused arglist
 ProtoType
-int Set_VisualFeatureLetterUnits(char** arglist)
+int Set_VisualFeatureLetterUnits(const char** arglist)
 {
 	// -no VALUE  -Set the number of units in the visual feature & letter layers
     //             (The default value depends on the language used)
     //char* CmdLineFlag=arglist[0];
-    char* Units=arglist[1];
+    const char* Units=arglist[1];
 
     // NOTE: Should test bounds on this number (do we have min and max?).
     FindIParam("VisualFeatureLetterUnits")->Value=atoi(Units);
@@ -906,12 +906,12 @@ int Set_VisualFeatureLetterUnits(char** arglist)
 //---------------------------------------------------------------------------
 #pragma argsused arglist
 ProtoType
-int Set_PhonemeUnits(char** arglist)
+int Set_PhonemeUnits(const char** arglist)
 {
 	// -np VALUE  -Set the number of units in the phoneme layer
     //             (The default value depends on the language used)
     //char* CmdLineFlag=arglist[0];
-    char* Units=arglist[1];
+    const char* Units=arglist[1];
 
     // NOTE: Should test bounds on this number (do we have min and max?).
     FindIParam("PhonemeUnits")->Value=atoi(Units);
@@ -929,12 +929,12 @@ int Set_PhonemeUnits(char** arglist)
 //---------------------------------------------------------------------------
 #pragma argsused arglist
 ProtoType
-int Set_SetParameter(char** arglist)
+int Set_SetParameter(const char** arglist)
 {
 	// -P PRM VAL  -Set parameter PRM to value VAL
     //char* CmdLineFlag=arglist[0];
-    char* Prm=arglist[1];
-    char* Val=arglist[2];
+    const char* Prm=arglist[1];
+    const char* Val=arglist[2];
 
     // Search for this parameter (Prm) in parameter list and set the current
     // value to the given value(Val).
@@ -946,12 +946,12 @@ int Set_SetParameter(char** arglist)
     if((ip=FindIParam(Prm,false))!=NULL){
         printf("Setting parameter '%s':\n",ip->Name);
         printf("    Old Value=%d\n",ip->Value);
-        printf("    New Value=%d\n",Val);
+        printf("    New Value=%ld\n",(long)Val); /* XXX: WTF? */
         ip->Value=atoi(Val);
     }else if((fp=FindFParam(Prm,false))!=NULL){
         printf("Setting parameter '%s':\n",fp->Name);
         printf("    Old Value=%f\n",fp->Value);
-        printf("    New Value=%f\n",Val);
+        printf("    New Value=%s\n","stupid cast from Val is stupid");
         fp->Value=atof(Val);
     }else if((sp=FindSParam(Prm,false))!=NULL){
         printf("Setting parameter '%s':\n",sp->Name);
@@ -961,7 +961,8 @@ int Set_SetParameter(char** arglist)
     }else if((bp=FindBParam(Prm,false))!=NULL){
         printf("Setting parameter '%s':\n",bp->Name);
         printf("    Old Value=%s\n",bp->Value?"true":"false");
-        bp->Value=atob(Val);
+        /* bp->Value=atob(Val); */
+        bp->Value = true;
         printf("    New Value=%s\n",bp->Value?"true":"false");
     }else{
         pfprintf(stderr,"ERROR: Parameter '%s' not found\n",Prm);
@@ -978,7 +979,7 @@ int Set_SetParameter(char** arglist)
 //---------------------------------------------------------------------------
 #pragma argsused arglist
 ProtoType
-int Set_ReadParameterFile(char** arglist)
+int Set_ReadParameterFile(const char** arglist)
 {
 	// -p FILE	-Read parameters from FILE
     //char* CmdLineFlag=arglist[0];
@@ -1000,7 +1001,7 @@ int Set_ReadParameterFile(char** arglist)
 //---------------------------------------------------------------------------
 #pragma argsused arglist
 ProtoType
-int Set_SeparateHomophoneFlag(char** arglist)
+int Set_SeparateHomophoneFlag(const char** arglist)
 {
 	// -s  -Give homophones separate entries in the phonological lexicon
     //char* CmdLineFlag=arglist[0];
@@ -1018,7 +1019,7 @@ int Set_SeparateHomophoneFlag(char** arglist)
 //---------------------------------------------------------------------------
 #pragma argsused arglist
 ProtoType
-int Set_ContinueToMaxCycles(char** arglist)
+int Set_ContinueToMaxCycles(const char** arglist)
 {
 	// -c  -Continue running cycles until MAXCYCLES is reached, even if the
     //		stimuli is named before then.
@@ -1037,11 +1038,11 @@ int Set_ContinueToMaxCycles(char** arglist)
 //---------------------------------------------------------------------------
 #pragma argsused arglist
 ProtoType
-int Set_ProcessBatchFile(char** arglist)
+int Set_ProcessBatchFile(const char** arglist)
 {
 	// -b FILE	-Process batch file (use '-b --' for stdin)
     //char* CmdLineFlag=arglist[0];
-    char* FileName=arglist[1];
+    const char* FileName=arglist[1];
 
     if(FindBParam("Neighbourhood")->Value){
         // User only wants neighbourhood of words.
@@ -1067,7 +1068,7 @@ int Set_ProcessBatchFile(char** arglist)
 //---------------------------------------------------------------------------
 #pragma argsused arglist
 ProtoType
-int Set_TestBatchOnly(char** arglist)
+int Set_TestBatchOnly(const char** arglist)
 {
 	// -t	- Test batch file only (no execution done).
     FindBParam("TestBatchOnly")->Value=true;
@@ -1083,13 +1084,13 @@ int Set_TestBatchOnly(char** arglist)
 //---------------------------------------------------------------------------
 #pragma argsused arglist
 ProtoType
-int Set_BatchProcessLimits(char** arglist)
+int Set_BatchProcessLimits(const char** arglist)
 {
 	// --bpart S N	process at most N lines of the batch file, starting at line S
     //              (blank & comment lines are ignored for line-counting purposes)
     //char* CmdLineFlag=arglist[0];
-    char* Start=arglist[1];
-    char* Lines=arglist[2];
+    const char* Start=arglist[1];
+    const char* Lines=arglist[2];
 
     // NOTE: If these values are within reason (they have been checked) then
     FindIParam("BatchFileStart")->Value=atoi(Start);
@@ -1107,11 +1108,11 @@ int Set_BatchProcessLimits(char** arglist)
 //---------------------------------------------------------------------------
 #pragma argsused arglist
 ProtoType
-int Set_MaxIncorrectResults(char** arglist)
+int Set_MaxIncorrectResults(const char** arglist)
 {
 	//  -x NUM	-Abort batch jobs when NUM incorrect results have occurred
     //char* CmdLineFlag=arglist[0];
-    char* Num=arglist[1];
+    const char* Num=arglist[1];
 
     // NOTE: Assumed ranged checked.
     int value=atoi(Num);
@@ -1131,7 +1132,7 @@ int Set_MaxIncorrectResults(char** arglist)
 //---------------------------------------------------------------------------
 #pragma argsused arglist
 ProtoType
-int Set_RepeatSimulation(char** arglist)
+int Set_RepeatSimulation(const char** arglist)
 {
 	//   -S PRM STARTVAL ENDVAL NUMSTEPS
     //    	-Run this simulation NUMSTEPS times, starting with parameter
@@ -1141,10 +1142,10 @@ int Set_RepeatSimulation(char** arglist)
     //       This argument may be used multiple times, for example:
     //           drc -S GPCOnset 5 7 3 -S ActivationRate 0.2 0.5 4 word
     //char* CmdLineFlag=arglist[0];
-    char* Prm=arglist[1];
-    char* StartVal=arglist[2];
-    char* EndVal=arglist[3];
-    char* NumSteps=arglist[4];
+    const char* Prm=arglist[1];
+    const char* StartVal=arglist[2];
+    const char* EndVal=arglist[3];
+    const char* NumSteps=arglist[4];
 
     // NOTE: Assumed range checked.
     FindSParam("SimParam")->Value=Prm;
@@ -1164,12 +1165,12 @@ int Set_RepeatSimulation(char** arglist)
 //---------------------------------------------------------------------------
 #pragma argsused arglist
 ProtoType
-int Set_ActivationFileExt(char** arglist)
+int Set_ActivationFileExt(const char** arglist)
 {
 	// -A EXT	-Set the filename extension for activation files (sets -a)
     //           (NOTE: Not sure what "sets -a" means for the program.
     //char* CmdLineFlag=arglist[0];
-    char* Ext=arglist[1];
+    const char* Ext=arglist[1];
 
     // NOTE: Should probably check that the extension is a valid extension (alphabetics).
     FindSParam("OutputActivationFileExt")->Value=Ext;
@@ -1187,7 +1188,7 @@ int Set_ActivationFileExt(char** arglist)
 //---------------------------------------------------------------------------
 #pragma argsused arglist
 ProtoType
-int Set_SaveActivationLvls(char** arglist)
+int Set_SaveActivationLvls(const char** arglist)
 {
 	// -a  -Save activation levels
     //char* CmdLineFlag=arglist[0];
@@ -1205,7 +1206,7 @@ int Set_SaveActivationLvls(char** arglist)
 // Errors:
 //---------------------------------------------------------------------------
 ProtoType
-int Set_ReportExtraInfo(char** arglist)
+int Set_ReportExtraInfo(const char** arglist)
 {
 	// -e  -Report extra information in the screen output & RT/stats files
     //char* CmdLineFlag=arglist[0];
@@ -1225,7 +1226,7 @@ int Set_ReportExtraInfo(char** arglist)
 // Errors:
 //---------------------------------------------------------------------------
 ProtoType
-int Set_OutputFlags(char** arglist)
+int Set_OutputFlags(const char** arglist)
 {
     //  -f FLAG    - Toggle an output flag (FLAG), use -f for list.",
     int rtn=1;  // How many arguments we used.
@@ -1268,11 +1269,11 @@ int Set_OutputFlags(char** arglist)
 // Errors:
 //---------------------------------------------------------------------------
 ProtoType
-int Set_ReportActGreater(char** arglist)
+int Set_ReportActGreater(const char** arglist)
 {
 	// -m VALUE	 -Report only activation levels >= VALUE (default 0.02)
     //char* CmdLineFlag=arglist[0];
-    char* Value=arglist[1];
+    const char* Value=arglist[1];
 
     FindFParam("ReportActGreater")->Value=atof(Value);
     return(2);
@@ -1286,7 +1287,7 @@ int Set_ReportActGreater(char** arglist)
 // Errors:
 //---------------------------------------------------------------------------
 ProtoType
-int Set_NoOutputFiles(char** arglist)
+int Set_NoOutputFiles(const char** arglist)
 {
 	// --nofiles  -Suppress creation of all output files
     //char* CmdLineFlag=arglist[0];
@@ -1304,11 +1305,11 @@ int Set_NoOutputFiles(char** arglist)
 // Errors:
 //---------------------------------------------------------------------------
 ProtoType
-int Set_RTFileExtn(char** arglist)
+int Set_RTFileExtn(const char** arglist)
 {
 	// -r EXT  -Set the filename extension for the RT file
     //char* CmdLineFlag=arglist[0];
-    char* Ext=arglist[1];
+    const char* Ext=arglist[1];
 
     FindSParam("OutputRTFileExt")->Value=Ext;
     ErrCmdSwt("-r EXT");
@@ -1323,12 +1324,12 @@ int Set_RTFileExtn(char** arglist)
 // Errors:
 //---------------------------------------------------------------------------
 ProtoType
-int Set_OutputDirectory(char** arglist)
+int Set_OutputDirectory(const char** arglist)
 {
 	// --rdir DIR  -Create output files in the directory named DIR
     //              (DIR will be created if it doesn't exist)
     //char* CmdLineFlag=arglist[0];
-    char* Dir=arglist[1];
+    const char* Dir=arglist[1];
 
     // NOTE: This should probably be format checked first (so we don't get
     //       directories the user can't access.
@@ -1345,7 +1346,7 @@ int Set_OutputDirectory(char** arglist)
 // Errors:
 //---------------------------------------------------------------------------
 ProtoType
-int Set_ReportSimDuration(char** arglist)
+int Set_ReportSimDuration(const char** arglist)
 {
 	// -t  -Report simulation duration(s) in ms
     //char* CmdLineFlag=arglist[0];
@@ -1369,7 +1370,7 @@ int Set_ReportSimDuration(char** arglist)
 // Errors:
 //---------------------------------------------------------------------------
 ProtoType
-int Set_Verbalize(char** arglist)
+int Set_Verbalize(const char** arglist)
 {
 	// -v  -Pronounce the model's output audibly (Mac OS X only)
     //char* CmdLineFlag=arglist[0];
@@ -1391,7 +1392,7 @@ int Set_Verbalize(char** arglist)
 // Errors:
 //---------------------------------------------------------------------------
 ProtoType
-int ListIrregularWords(char** arglist)
+int ListIrregularWords(const char** arglist)
 {
 	// --irreglist	-List all the words in the selected language which are irregular
     //               (the pronunciation produced by the GPC rules does not match the vocabulary)
@@ -1412,7 +1413,7 @@ int ListIrregularWords(char** arglist)
 // Errors:
 //---------------------------------------------------------------------------
 ProtoType
-int ListIrregularStressWords(char** arglist)
+int ListIrregularStressWords(const char** arglist)
 {
 	// --irregstress  -List all the words in the selected language which have
 	//                 irregular stress (the stress pattern selected by the GPC stress
@@ -1434,7 +1435,7 @@ int ListIrregularStressWords(char** arglist)
 // Errors:
 //---------------------------------------------------------------------------
 ProtoType
-int ApplyGPCRules(char** arglist)
+int ApplyGPCRules(const char** arglist)
 {
 	// --reg  -Read words from stdin and apply GPC rules to them
     //char* CmdLineFlag=arglist[0];
@@ -1454,7 +1455,7 @@ int ApplyGPCRules(char** arglist)
 // Errors:
 //---------------------------------------------------------------------------
 ProtoType
-int ListRegularWords(char** arglist)
+int ListRegularWords(const char** arglist)
 {
 	// --reglist  -List all the words in the selected language which are regular
     //char* CmdLineFlag=arglist[0];
@@ -1473,7 +1474,7 @@ int ListRegularWords(char** arglist)
 // Errors:
 //---------------------------------------------------------------------------
 ProtoType
-int ApplyGPCStressRules(char** arglist)
+int ApplyGPCStressRules(const char** arglist)
 {
 	// --stress	 -Read words from stdin and apply GPC stress rules to them
     //char* CmdLineFlag=arglist[0];
@@ -1492,7 +1493,7 @@ int ApplyGPCStressRules(char** arglist)
 // Errors:
 //---------------------------------------------------------------------------
 ProtoType
-int ListWhammies(char** arglist)
+int ListWhammies(const char** arglist)
 {
 	// --whammies  -Read words from stdin and list whammies for them
     //char* CmdLineFlag=arglist[0];
@@ -1511,7 +1512,7 @@ int ListWhammies(char** arglist)
 // Errors:
 //---------------------------------------------------------------------------
 ProtoType
-int DisplayHelp(char** arglist)
+int DisplayHelp(const char** arglist)
 {
     // Display the help message as it appears in the text array above.
     // Insert terminating newlines on each line (requires that blank lines
@@ -1537,7 +1538,7 @@ int DisplayHelp(char** arglist)
 // Errors:
 //---------------------------------------------------------------------------
 ProtoType
-int DisplayVersion(char** arglist)
+int DisplayVersion(const char** arglist)
 {
 	// --version  -Display version numbers and exit
     //char* CmdLineFlag=arglist[0];
@@ -1548,7 +1549,7 @@ int DisplayVersion(char** arglist)
     return(0);
 }
 
-char* Delimiters=" \t\n";
+const char* Delimiters=" \t\n";
 
 //---------------------------------------------------------------------------
 // Routine: ReadCmdLineOptionsFile - Reads and processes the command line options
@@ -1559,13 +1560,13 @@ char* Delimiters=" \t\n";
 // Errors:
 //---------------------------------------------------------------------------
 ProtoType
-int ReadCmdLineOptionsFile(char** arglist)
+int ReadCmdLineOptionsFile(const char** arglist)
 {
 	// -o FILE	-Read command-line options from FILE
     //char* CmdLineFlag=arglist[0];
-    char* File=arglist[1];
+    const char* File=arglist[1];
 
-    char* ArgsArray[MAXARGS];
+    const char* ArgsArray[MAXARGS];
     int   NumArgs=0;
     char  buf[MAXLINE];
     FILE* fh=NULL;
@@ -1614,7 +1615,7 @@ int ReadCmdLineOptionsFile(char** arglist)
 //---------------------------------------------------------------------------
 #pragma argsused arglist
 ProtoType
-int Cmd_DspNeighbourhood(char** arglist)
+int Cmd_DspNeighbourhood(const char** arglist)
 {
     FindBParam("Neighbourhood")->Value=true;
     return(1);
@@ -1630,7 +1631,7 @@ int Cmd_DspNeighbourhood(char** arglist)
 //---------------------------------------------------------------------------
 #pragma argsused arglist
 ProtoType
-int Cmd_DspHomographs(char** arglist)
+int Cmd_DspHomographs(const char** arglist)
 {
     DisplayHomographs(stdout);
     return(1);
@@ -1646,7 +1647,7 @@ int Cmd_DspHomographs(char** arglist)
 //---------------------------------------------------------------------------
 #pragma argsused arglist
 ProtoType
-int Cmd_DspHomophones(char** arglist)
+int Cmd_DspHomophones(const char** arglist)
 {
     DisplayHomophones(stdout);
     return(1);
