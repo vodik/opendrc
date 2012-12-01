@@ -4,7 +4,7 @@ SRC = ${wildcard *.cpp}
 OBJ = ${SRC:.cpp=.o}
 
 OpenDRC: ${OBJ}
-	${CXX} ${CXXFLAGS} ${LDFLAGS} $< ${LDLIBS} -o $@
+	${CXX} ${CXXFLAGS} ${LDFLAGS} ${OBJ} ${LDLIBS} -o $@
 
 clean:
 	${RM} OpenDRC ${OBJ}

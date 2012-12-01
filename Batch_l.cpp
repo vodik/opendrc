@@ -541,14 +541,6 @@ char *Batch_text_ptr;
 //#define DEBUG
 #include "debug.h"
 
-const char* Batch_l[]={
-	"$Author: alan $",
-	"$Date: 2011-03-14 16:46:17-04 $",
-	"$Revision: 1.13 $",
-	"$RCSfile: Batch_l.cpp,v $",
-	"$Source: D:\\Repository\\D\\Dev\\Psych499\\Batch_l.cpp,v $"
-};
-
 #define yylval	Batchlval
 #define yyerror Batcherror
 #define yywrap  Batchwrap

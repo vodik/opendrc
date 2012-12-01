@@ -513,14 +513,6 @@ char *Generic_text_ptr;
 //#define DEBUG
 #include "debug.h"
 
-const char* Generic_l[]={
-    "$Author: alan $",
-    "$Date: 2011-03-14 16:46:17-04 $",
-    "$Revision: 1.12 $",
-    "$RCSfile: Generic_l.cpp,v $",
-    "$Source: D:\\Repository\\D\\Dev\\Psych499\\Generic_l.cpp,v $"
-};
-
 #define yylval  Genericlval
 #define yyerror Genericerror
 #define yywrap  Genericwrap

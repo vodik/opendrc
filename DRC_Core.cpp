@@ -443,14 +443,6 @@
 #include "debug.h"
 
 
-const char* DRC_Core[]={
-    "$Author: alan $",
-    "$Date: 2011-03-14 17:00:23-04 $",
-    "$Revision: 1.57 $",
-    "$RCSfile: DRC_Core.cpp,v $",
-    "$Source: D:\\Repository\\D\\Dev\\Psych499\\DRC_Core.cpp,v $"
-};
-
 
 
 // This copyright notice and license are included with the intention of keeping
@@ -1166,7 +1158,7 @@ void CreatePBString()
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-bool CorrectOutput(char *Word, int cycle,int MaxCycles)
+bool CorrectOutput(const char *Word, int cycle,int MaxCycles)
 {
     bool Correct=false;
 
@@ -1330,7 +1322,7 @@ void DRC_DisplayTotals(int cycle,FILE* fh)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-void UpdateParamTables(FILE* fh,char* Name,char* Value)
+void UpdateParamTables(FILE* fh,const char* Name,const char* Value)
 {
     t_iparam* iptr=NULL;
     t_fparam* fptr=NULL;
@@ -1751,7 +1743,7 @@ void DRC_CalcLetters(int cycle,FILE* fh)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-DRC_Float* DRC_CalcFeatLetterEI(char* str)       // Working & Tested
+DRC_Float* DRC_CalcFeatLetterEI(const char* str)       // Working & Tested
 {
     Enter("DRC_CalcFeatLetterEI");
 
@@ -3079,7 +3071,7 @@ void DRC_CalcGPCRoute(int cycle,int NumCharGPCR,bool& WordShifted,FILE* fh)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-void DRC_UpdActFromGPCR(FILE* fh,int cycle,char* word)
+void DRC_UpdActFromGPCR(FILE* fh,int cycle,const char* word)
 {
     char RuleUsed[MAXINPUTBUF];
 
@@ -3237,7 +3229,7 @@ void DRC_UpdActFromGPCR(FILE* fh,int cycle,char* word)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-void DRC_UpdPBFromGPC(FILE* fh,int cycle,char* word)
+void DRC_UpdPBFromGPC(FILE* fh,int cycle,const char* word)
 {
     // Zero our totals variables.
     DRC_GPC_TotalAct=0.0;
@@ -3675,7 +3667,7 @@ void DRC_GPCRouteShift(int cycle,int& GPCRChars,bool& ChgFlag,FILE* fh)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-void SavePartSuccess(char* word,char* mask)
+void SavePartSuccess(const char* word,const char* mask)
 {
     // If we've matched anything then save the partial solution.
     if(MatchedRules[0]!=NULL){
@@ -3705,7 +3697,7 @@ void SavePartSuccess(char* word,char* mask)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-void SaveSuccess(char* word)
+void SaveSuccess(const char* word)
 {
     // If we've matched anything then save the solution.
     if(MatchedRules[0]!=NULL){
@@ -3732,7 +3724,7 @@ void SaveSuccess(char* word)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-bool CompletelyMatched(char* mask)
+bool CompletelyMatched(const char* mask)
 {
     bool rtn=true;
     for(int m=0;m<(int)strlen(mask);m++){
@@ -3753,8 +3745,9 @@ bool CompletelyMatched(char* mask)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-void MergeMask(char* mask,int start,t_gpcrule* rule)
+void MergeMask(const char* mask,int start,t_gpcrule* rule)
 {
+    /** XXX: MERGE MASK OVERWRITES mask */
     int PreContext=rule->PreContext;
     for(int c=0;c<(int)strlen(mask)-start+PreContext;c++){
         // Key to matching (word) mask with rule mask:
@@ -3772,7 +3765,7 @@ void MergeMask(char* mask,int start,t_gpcrule* rule)
 
         }else if((RulMsk==MASK_USED)&&(WrdMsk==MASK_SPACE)){
             // This is the normal case of a word char matching a rule's simple field.
-            mask[start-PreContext+c]=MASK_USED; // Flag word char as used.
+            /* mask[start-PreContext+c]=MASK_USED; // Flag word char as used. */
 
         }else if((RulMsk==MASK_SPACE)&&(WrdMsk==MASK_USED)){
             // This is as expected.  We can match context fields in rules to already used chars.
@@ -3790,8 +3783,9 @@ void MergeMask(char* mask,int start,t_gpcrule* rule)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-void UnMergeMask(char* mask,int start,t_gpcrule* rule)
+void UnMergeMask(const char* mask,int start,t_gpcrule* rule)
 {
+    /** XXX: MERGE MASK OVERWRITES mask */
     int PreContext=rule->PreContext;
     for(int c=0;c<(int)strlen(mask)-start+PreContext;c++){
         // Key to matching (word) mask with rule mask:
@@ -3806,7 +3800,7 @@ void UnMergeMask(char* mask,int start,t_gpcrule* rule)
         //if((RulMsk!=MASK_SPACE)&&(mask[start+c]!=MASK_SPACE)){
             // This word's field was used by this rule, so unmask it now.  A word's
             // char can only be used by one rules non-context fields.
-            mask[start-PreContext+c]=MASK_SPACE;
+            /* mask[start-PreContext+c]=MASK_SPACE; */
 
         }else if((RulMsk==MASK_USED)&&(WrdMsk==MASK_SPACE)){
             // This shouldn't happen if we assume this rule masked the word in the first place.
@@ -3836,7 +3830,7 @@ void UnMergeMask(char* mask,int start,t_gpcrule* rule)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-bool FieldMatch(char* word,char* mask,t_gpcrule* rule,int start,int end,int* LetPhoIdx)
+bool FieldMatch(const char* word,const char* mask,t_gpcrule* rule,int start,int end,int* LetPhoIdx)
 {
     int len,flds;
     bool rtn=true;  // Rule fields did match.
@@ -3942,7 +3936,7 @@ bool FieldMatch(char* word,char* mask,t_gpcrule* rule,int start,int end,int* Let
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-int FindStart(char* mask)
+int FindStart(const char* mask)
 {
     int rtn=MAXINPUTBUF;
     for(int i=0;i<MAXINPUTBUF;i++){
@@ -3961,7 +3955,7 @@ int FindStart(char* mask)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-int NumChr(char* mask,char Special)
+int NumChr(const char* mask,char Special)
 {
     int rtn=0;
     for(int c=0;c<(int)strlen(mask);c++){
@@ -3997,7 +3991,7 @@ int NumChr(char* mask,char Special)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-void DRC_GPCFind(char* word,char* mask,int start, int end, bool GotTerm)
+void DRC_GPCFind(const char* word,const char* mask,int start, int end, bool GotTerm)
 {
     eWrdPosn Type1,Type2,Type3;
     //int SpacesBeforeMask;

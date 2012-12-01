@@ -294,14 +294,6 @@
 
 #include <unistd.h>
 
-const char* DRC_FileIO[]={
-    "$Author: alan $",
-    "$Date: 2011-03-14 17:02:30-04 $",
-    "$Revision: 1.48 $",
-    "$RCSfile: DRC_FileIO.cpp,v $",
-    "$Source: D:\\Repository\\D\\Dev\\Psych499\\DRC_FileIO.cpp,v $"
-};
-
 //------------------------------------------------------------------------------
 
 // File discriptor pointers.  Used to control debugging output.
@@ -445,7 +437,7 @@ void CleanParamFile(void)
 // SideEffects: Output done to stdout and file written to.
 // Errors:  Fopen() failure -- results in message to stdout.
 //---------------------------------------------------------------------------
-void WriteParamFile(char* FileName)
+void WriteParamFile(const char* FileName)
 {
     // NOTE: We might want to format the output based on the type of
     //       parameter (to make it look more like the input file).
@@ -806,7 +798,7 @@ void CleanGPCRulesFile(void)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-void WriteGPCRulesFile(char* FileName)
+void WriteGPCRulesFile(const char* FileName)
 {
     // Special parsing.
     FILE* fh=NULL;
@@ -1042,7 +1034,7 @@ void DRC_GPCSetField(t_gpcrule* rule)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-int ReadGPCRulesFile(char* FileName)
+int ReadGPCRulesFile(const char* FileName)
 {
     FILE* fh=NULL;
     int   rtn=1;
@@ -1460,7 +1452,7 @@ void CleanLettersFile(void)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-void WriteLettersFile(char* FileName)
+void WriteLettersFile(const char* FileName)
 {
     // Special parsing.
     FILE* fh=NULL;
@@ -1492,7 +1484,7 @@ void WriteLettersFile(char* FileName)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-int ReadLettersFile(char* FileName)
+int ReadLettersFile(const char* FileName)
 {
     FILE* fh=NULL;
     int   rtn=1;
@@ -1694,7 +1686,7 @@ void CleanPhonemesFile(void)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-void WritePhonemesFile(char* FileName)
+void WritePhonemesFile(const char* FileName)
 {
     // Special parsing.
     FILE* fh=NULL;
@@ -1719,7 +1711,7 @@ void WritePhonemesFile(char* FileName)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-int ReadPhonemesFile(char* FileName)
+int ReadPhonemesFile(const char* FileName)
 {
     FILE* fh=NULL;
     int   rtn=1;
@@ -1900,7 +1892,7 @@ char* trim(char *buf)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-int ReadPropertiesFile(char* FileName)
+int ReadPropertiesFile(const char* FileName)
 {
     // Special parsing.
     FILE* fh=NULL;
@@ -1949,7 +1941,7 @@ int ReadPropertiesFile(char* FileName)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-void WritePropertiesFile(char* FileName)
+void WritePropertiesFile(const char* FileName)
 {
     // Special parsing.
     FILE* fh=NULL;
@@ -2122,7 +2114,7 @@ void  PrtVocabLine(FILE* fh,int idx)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-void WriteVocabularyFile(char* FileName)
+void WriteVocabularyFile(const char* FileName)
 {
     // Special parsing.
     FILE* fh=NULL;
@@ -2225,7 +2217,7 @@ static void strlwr(char *str)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-int ReadVocabularyFile(char* FileName)
+int ReadVocabularyFile(const char* FileName)
 {
     FILE* fh=NULL;
     int   rtn=1;
@@ -2742,7 +2734,7 @@ FILE* OpenOutputFile(const char* ParentDir,const char* RunDir,const char* FileNa
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-int ReadBatchFile(char* FileName)
+int ReadBatchFile(const char* FileName)
 {
     FILE* fhBatch=NULL;
     FILE* fhBatchStats=NULL;
@@ -2839,7 +2831,7 @@ void DspNeighbourTtl(FILE *fh)
     pfprintf(fh,"============ ======= === ============================================\n");
 }
 
-bool IsNeighbour(char* word, char* nonword)
+bool IsNeighbour(const char* word, const char* nonword)
 {
     int len1=strlen(word);
     int len2=strlen(nonword);
@@ -2861,7 +2853,7 @@ bool IsNeighbour(char* word, char* nonword)
     return(rtn);
 }
 
-void DspNeighbourhood(FILE* fh,char* nonword){
+void DspNeighbourhood(FILE* fh,const char* nonword){
     std::vector<int> VocabIdx;
     bool Word=false;
 
@@ -3053,7 +3045,7 @@ int      DriverIdx=1; // No data in first entry because it is ignored by Process
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-int ReadDriverFile(char* FileName)
+int ReadDriverFile(const char* FileName)
 {
     FILE* fh=NULL;
     int   rtn=1;
@@ -3135,7 +3127,7 @@ int ReadDriverFile(char* FileName)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-void CreateOutDir(char* OutDir)
+void CreateOutDir(const char* OutDir)
 {
     static bool  FLG_OutDirCreated=false;
     char         buf[MAXPATH];

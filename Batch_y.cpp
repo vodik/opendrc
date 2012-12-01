@@ -82,14 +82,6 @@
 //#define DEBUG
 #include "debug.h"
 
-const char* Batch_y[]={
-	"$Author: alan $",
-	"$Date: 2011-03-14 16:46:18-04 $",
-	"$Revision: 1.13 $",
-	"$RCSfile: Batch_y.cpp,v $",
-	"$Source: D:\\Repository\\D\\Dev\\Psych499\\Batch_y.cpp,v $"
-};
-
 extern char linebuf[1024];
 
 /*

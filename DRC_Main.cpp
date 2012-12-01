@@ -151,6 +151,54 @@ const char* DRC_Main[]={
     "$Source: D:\\Repository\\D\\Dev\\Psych499\\DRC_Main.cpp,v $"
 };
 
+const char* DRC_CmdLine[]={
+    "$Author: alan $",
+    "$Date: 2011-03-14 23:56:25-04 $",
+    "$Revision: 1.22 $",
+    "$RCSfile: DRC_CmdLine.cpp,v $",
+    "$Source: D:\\Repository\\D\\Dev\\Psych499\\DRC_CmdLine.cpp,v $"
+};
+
+const char* DRC_FileIO[]={
+    "$Author: alan $",
+    "$Date: 2011-03-14 17:02:30-04 $",
+    "$Revision: 1.48 $",
+    "$RCSfile: DRC_FileIO.cpp,v $",
+    "$Source: D:\\Repository\\D\\Dev\\Psych499\\DRC_FileIO.cpp,v $"
+};
+
+const char* DRC_Core[]={
+    "$Author: alan $",
+    "$Date: 2011-03-14 17:00:23-04 $",
+    "$Revision: 1.57 $",
+    "$RCSfile: DRC_Core.cpp,v $",
+    "$Source: D:\\Repository\\D\\Dev\\Psych499\\DRC_Core.cpp,v $"
+};
+
+const char* Batch_l[]={
+    "$Author: alan $",
+    "$Date: 2011-03-14 16:46:17-04 $",
+    "$Revision: 1.13 $",
+    "$RCSfile: Batch_l.cpp,v $",
+    "$Source: D:\\Repository\\D\\Dev\\Psych499\\Batch_l.cpp,v $"
+};
+
+const char* Batch_y[]={
+    "$Author: alan $",
+    "$Date: 2011-03-14 16:46:18-04 $",
+    "$Revision: 1.13 $",
+    "$RCSfile: Batch_y.cpp,v $",
+    "$Source: D:\\Repository\\D\\Dev\\Psych499\\Batch_y.cpp,v $"
+};
+
+const char* Generic_l[]={
+    "$Author: alan $",
+    "$Date: 2011-03-14 16:46:17-04 $",
+    "$Revision: 1.12 $",
+    "$RCSfile: Generic_l.cpp,v $",
+    "$Source: D:\\Repository\\D\\Dev\\Psych499\\Generic_l.cpp,v $"
+};
+
 //---------------------------------------------------------------------------
 // Routine:
 // Input:
