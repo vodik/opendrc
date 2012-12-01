@@ -196,6 +196,50 @@ extern char OutRunDirBuf[];
 // Vocabulary index with phonemic sort.
 extern int PhonemeList[MAXVOCAB];
 
+/* XXX: From precompiled header */
+void CleanParamFile(void);
+void WriteParamFile(char* FileName);
+void OutputParamFile(FILE* fh);
+int ReadParamFile(const char* FileName);
+void CleanGPCRulesFile(void);
+void WriteGPCRulesFile(const char* FileName);
+void DRC_GPCSetField(t_gpcrule* rule);
+int ReadGPCRulesFile(const char* FileName);
+int GPCRuleSort(const void *a,const void *b);
+void SortGPCRules(void);
+t_gpcrule* GPC_NextRule(t_gpcrule* rule);
+bool InitGPCSearch(void);
+void CleanLettersFile(void);
+void WriteLettersFile(const char* FileName);
+int ReadLettersFile(const char* FileName);
+void CleanPhonemesFile(void);
+void WritePhonemesFile(const char* FileName);
+int ReadPhonemesFile(const char* FileName);
+void CleanPropertiesFile(void);
+char* trim(char *buf);
+int ReadPropertiesFile(const char* FileName);
+void WritePropertiesFile(const char* FileName);
+void CleanVocabularyFile(void);
+void WriteVocabularyFile(const char* FileName);
+DRC_Float CFSCalc(int Freqency,DRC_Float lfMaximum);
+int ReadVocabularyFile(const char* FileName);
+int SpcStrNCmp(const char* str1, const char* str2, int len);
+void DisplayHomographs(FILE* fh);
+void DisplayHomophones(FILE* fh);
+FILE* OpenOutputFile(const char* ParentDir,const char* RunDir,const char* FileName,const char* Extn);
+int ReadBatchFile(const char* FileName);
+void DspNeighbourTtl(FILE *fh);
+bool IsNeighbour(const char* word, const char* nonword);
+void DspNeighbourhood(FILE* fh,const char* nonword);
+void WriteBatchStatsHdr(FILE* fh);
+void ClearBatchStatistics(void);
+DRC_Float sqr(DRC_Float num);
+void DspMean(FILE* fh,const char* good,const char* bad,t_StatList& Stats);
+void DspStdDev(FILE* fh,char* good,const char* bad,t_StatList& Stats);
+void RTTotal(t_StatList& Return,t_StatList& Stats1,t_StatList& Stats2);
+void WriteBatchStats(FILE* fh);
+int ReadDriverFile(const char* FileName);
+void CreateOutDir(const char* OutDir);
 
 #endif // _DRC_FileIO_h
 

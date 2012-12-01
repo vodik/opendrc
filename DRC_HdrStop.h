@@ -68,9 +68,9 @@
 #include "DRC_FileIO.h"
 #include "Batch_y.h"
 
-#include "DRC_CmdLine.p"
-#include "DRC_FileIO.p"
-#include "DRC_Core.p"
-#include "DRC_Main.p"
+#include "DRC_CmdLine.h"
+#include "DRC_FileIO.h"
+#include "DRC_Core.h"
+#include "DRC_Main.h"
 
 #endif // _H_DRC_HdrStop
