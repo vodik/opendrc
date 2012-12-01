@@ -406,7 +406,7 @@ t_DRCParams DRCParams={DRC_IParams,DRC_FParams,DRC_SParams,DRC_BParams};
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-t_iparam* FindIParam(char* Name,bool FailHard)
+t_iparam* FindIParam(const char* Name,bool FailHard)
 {
     bool NotFound=true;
     t_iparam* ip=DRC_IParams;
@@ -435,7 +435,7 @@ t_iparam* FindIParam(char* Name,bool FailHard)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-t_fparam* FindFParam(char* Name,bool FailHard)
+t_fparam* FindFParam(const char* Name,bool FailHard)
 {
     bool NotFound=true;
     t_fparam* fp=DRC_FParams;
@@ -464,7 +464,7 @@ t_fparam* FindFParam(char* Name,bool FailHard)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-t_sparam* FindSParam(char* Name,bool FailHard)
+t_sparam* FindSParam(const char* Name,bool FailHard)
 {
     bool NotFound=true;
     t_sparam* sp=DRC_SParams;
@@ -523,7 +523,7 @@ t_bparam* FindBParam(const char* Name,bool FailHard)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-void* FindParam(char* Name)
+void* FindParam(const char* Name)
 {
     void *rtn=NULL;
 
@@ -549,7 +549,7 @@ void* FindParam(char* Name)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-char* FindLanguageParam(char* Name,bool FailHard)
+char* FindLanguageParam(const char* Name,bool FailHard)
 {
     bool NotFound=true;
     t_Properties* lp=Properties;
