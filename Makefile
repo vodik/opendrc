@@ -3,11 +3,11 @@ CCXFLAGS := -std=c++11 -Wall -Wextra -pedant
 SRC = ${wildcard *.cpp}
 OBJ = ${SRC:.cpp=.o}
 
-OpenDRC: ${OBJ}
+drc: ${OBJ}
 	${CXX} ${CXXFLAGS} ${LDFLAGS} ${OBJ} ${LDLIBS} -o $@
 
 clean:
-	${RM} OpenDRC ${OBJ}
+	${RM} drc ${OBJ}
 
 .PHONY: clean install uninstall
 
