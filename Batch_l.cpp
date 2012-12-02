@@ -41,8 +41,6 @@
 #define YY_USE_CONST
 
 #ifdef __TURBOC__
- #pragma warn -rch
- #pragma warn -use
 #include <io.h>
 #include <stdlib.h>
 #define YY_USE_CONST

@@ -41,7 +41,6 @@
 //------------------------------------------------------------------------------
 #ifndef _DRC_CmdLine_h
 #define _DRC_CmdLine_h
-/* #pragma message in DRC_CmdLine.h */
 
 //------------------------------------------------------------------------------
 // Constants defining maximum number of command line arguments we can store and

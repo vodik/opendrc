@@ -44,7 +44,6 @@
 
 #ifndef DRC_CoreH
 #define DRC_CoreH
-/* #pragma message in DRC_Core.h */
 //---------------------------------------------------------------------------
 
 

@@ -71,7 +71,6 @@
 
 #include <stdio.h>
 
-/* #pragma message ("in debug.h") */
 
 #define DBGMAX 100
 
@@ -173,7 +172,6 @@
             #endif
         }
 #else
-    #pragma message ("No OutputDebugString() function")
 #endif
 
 // -----------------------------------------------------------------------------
@@ -324,7 +322,6 @@
     #define debugraw(fmt,arg1)
 #endif  //DEBUG
 
-/* #pragma message ("out debug.h") */
 
 #endif  //_DEBUG_H
 
