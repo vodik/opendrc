@@ -87,14 +87,6 @@
 //#define DEBUG
 #include "debug.h"
 
-char* Generic_l[]={
-	"$Author: alan $",
-	"$Date: 2011-03-14 16:50:31-04 $",
-	"$Revision: 1.10 $",
-	"$RCSfile: Generic.l,v $",
-	"$Source: D:\\Repository\\D\\Dev\\Psych499\\Generic.l,v $"
-};
-
 #define yylval	Genericlval
 #define yyerror Genericerror
 #define yywrap  Genericwrap

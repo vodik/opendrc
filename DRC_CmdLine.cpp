@@ -165,15 +165,6 @@
 //#define DEBUG
 #include "debug.h"
 
-/* const char* DRC_CmdLine[]={ */
-/*     "$Author: alan $", */
-/*     "$Date: 2011-03-14 23:56:25-04 $", */
-/*     "$Revision: 1.22 $", */
-/*     "$RCSfile: DRC_CmdLine.cpp,v $", */
-/*     "$Source: D:\\Repository\\D\\Dev\\Psych499\\DRC_CmdLine.cpp,v $" */
-/* }; */
-
-
 //------------------------------------------------------------------------------
 // Defines and Global variables for this system.
 //------------------------------------------------------------------------------

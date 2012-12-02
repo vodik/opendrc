@@ -97,14 +97,6 @@
 //#define DEBUG
 #include "debug.h"
 
-char* Batch_l[]={
-	"$Author: alan $",
-	"$Date: 2011-03-14 16:50:47-04 $",
-	"$Revision: 1.12 $",
-	"$RCSfile: Batch.l,v $",
-	"$Source: D:\\Repository\\D\\Dev\\Psych499\\Batch.l,v $"
-};
-
 #define yylval	Batchlval
 #define yyerror Batcherror
 #define yywrap  Batchwrap

@@ -142,86 +142,7 @@
 
 const char* DRC_Model_Version="1.0 (DRC1.2 Equivalent)";
 
-static const char* DRC_Main[]={
-    "$Author: alan $",
-    "$Date: 2011-03-14 17:04:07-04 $",
-    "$Revision: 1.25 $",
-    "$RCSfile: DRC_Main.cpp,v $",
-    "$Source: D:\\Repository\\D\\Dev\\Psych499\\DRC_Main.cpp,v $"
-};
-
-static const char* DRC_CmdLine[]={
-    "$Author: alan $",
-    "$Date: 2011-03-14 23:56:25-04 $",
-    "$Revision: 1.22 $",
-    "$RCSfile: DRC_CmdLine.cpp,v $",
-    "$Source: D:\\Repository\\D\\Dev\\Psych499\\DRC_CmdLine.cpp,v $"
-};
-
-static const char* DRC_FileIO[]={
-    "$Author: alan $",
-    "$Date: 2011-03-14 17:02:30-04 $",
-    "$Revision: 1.48 $",
-    "$RCSfile: DRC_FileIO.cpp,v $",
-    "$Source: D:\\Repository\\D\\Dev\\Psych499\\DRC_FileIO.cpp,v $"
-};
-
-static const char* DRC_Core[]={
-    "$Author: alan $",
-    "$Date: 2011-03-14 17:00:23-04 $",
-    "$Revision: 1.57 $",
-    "$RCSfile: DRC_Core.cpp,v $",
-    "$Source: D:\\Repository\\D\\Dev\\Psych499\\DRC_Core.cpp,v $"
-};
-
-static const char* Batch_l[]={
-    "$Author: alan $",
-    "$Date: 2011-03-14 16:46:17-04 $",
-    "$Revision: 1.13 $",
-    "$RCSfile: Batch_l.cpp,v $",
-    "$Source: D:\\Repository\\D\\Dev\\Psych499\\Batch_l.cpp,v $"
-};
-
-static const char* Batch_y[]={
-    "$Author: alan $",
-    "$Date: 2011-03-14 16:46:18-04 $",
-    "$Revision: 1.13 $",
-    "$RCSfile: Batch_y.cpp,v $",
-    "$Source: D:\\Repository\\D\\Dev\\Psych499\\Batch_y.cpp,v $"
-};
-
-static const char* Generic_l[]={
-    "$Author: alan $",
-    "$Date: 2011-03-14 16:46:17-04 $",
-    "$Revision: 1.12 $",
-    "$RCSfile: Generic_l.cpp,v $",
-    "$Source: D:\\Repository\\D\\Dev\\Psych499\\Generic_l.cpp,v $"
-};
-
-static char* Terminate(char* start,char* fence);
 static void Init(void);
-
-//---------------------------------------------------------------------------
-// Routine:
-// Input:
-// Output:
-// SideEffects:
-// Errors:
-//---------------------------------------------------------------------------
-const char* Terminate(const char* start, __attribute__((unused)) const char* fence)
-{
-	/* XXX: FIX */
-    /* if((uintptr_t)fence<1000){ */
-    /*     start[(uintptr_t)fence]=0; */
-    /* }else{ */
-    /*     char* ps=strstr(start,fence); */
-    /*     if(ps!=NULL){ */
-    /*         *ps=0; */
-    /*     } */
-    /* } */
-    return start;
-}
-
 
 //---------------------------------------------------------------------------
 // Routine:
@@ -233,35 +154,6 @@ const char* Terminate(const char* start, __attribute__((unused)) const char* fen
 void PrtVersion(FILE* fh)
 {
     pfprintf(fh,"DRC UofW 1.2\n");
-    pfprintf(fh,"Modules:\n");
-    pfprintf(fh,"   %-20s %6s %20s\n",
-        Terminate(DRC_Main[3]+10,",v $"),
-        Terminate(DRC_Main[2]+11," $"),
-        Terminate(DRC_Main[1]+7,(char*)19));
-    pfprintf(fh,"   %-20s %6s %20s\n",
-        Terminate(DRC_CmdLine[3]+10,",v $"),
-        Terminate(DRC_CmdLine[2]+11," $"),
-        Terminate(DRC_CmdLine[1]+7,(char*)19));
-    pfprintf(fh,"   %-20s %6s %20s\n",
-        Terminate(DRC_FileIO[3]+10,",v $"),
-        Terminate(DRC_FileIO[2]+11," $"),
-        Terminate(DRC_FileIO[1]+7,(char*)19));
-    pfprintf(fh,"   %-20s %6s %20s\n",
-        Terminate(DRC_Core[3]+10,",v $"),
-        Terminate(DRC_Core[2]+11," $"),
-        Terminate(DRC_Core[1]+7,(char*)19));
-    pfprintf(fh,"   %-20s %6s %20s\n",
-        Terminate(Batch_l[3]+10,",v $"),
-        Terminate(Batch_l[2]+11," $"),
-        Terminate(Batch_l[1]+7,(char*)19));
-    pfprintf(fh,"   %-20s %6s %20s\n",
-        Terminate(Batch_y[3]+10,",v $"),
-        Terminate(Batch_y[2]+11," $"),
-        Terminate(Batch_y[1]+7,(char*)19));
-    pfprintf(fh,"   %-20s %6s %20s\n",
-        Terminate(Generic_l[3]+10,",v $"),
-        Terminate(Generic_l[2]+11," $"),
-        Terminate(Generic_l[1]+7,(char*)19));
 }
 
 //---------------------------------------------------------------------------
