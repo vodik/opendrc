@@ -442,12 +442,9 @@
 //#define DEBUG
 #include "debug.h"
 
-
-
-
 // This copyright notice and license are included with the intention of keeping
 // this program and all its derivatives open-sourced.
-const char *Copyright[]={
+static const char *Copyright[]={
     "; OpenDRC  Copyright (C) 2011  Alan Angold\n",
     ";   This program comes with ABSOLUTELY NO WARRANTY.  This is free software, and\n",
     ";   you are welcome to redistribute it under certain conditions.  See the included\n",
@@ -457,64 +454,57 @@ const char *Copyright[]={
     0
 };
 
+static char  VisualBuffer[2*WORDSZEXTN]; // String input to the feature layer.
+static int   BufferIdx;        // Index to word for sublexical path offset by word terminator (ie blanks).
 
-//------------------------------------------------------------------------------
-#pragma package(smart_init)
-//------------------------------------------------------------------------------
+static DRC_Float FeatureLayer[WORDSZ][FEATURES];
+static DRC_Float FeatureLayerTP1[WORDSZ][FEATURES];
 
-
-
-char  VisualBuffer[2*WORDSZEXTN]; // String input to the feature layer.
-int   BufferIdx;        // Index to word for sublexical path offset by word terminator (ie blanks).
-
-DRC_Float FeatureLayer[WORDSZ][FEATURES];
-DRC_Float FeatureLayerTP1[WORDSZ][FEATURES];
-
-DRC_Float LetterLayer[WORDSZ][LETTERS];
-DRC_Float LetterLayerTP1[WORDSZ][LETTERS];
+static DRC_Float LetterLayer[WORDSZ][LETTERS];
+static DRC_Float LetterLayerTP1[WORDSZ][LETTERS];
 
 #define EMPTYCELL   -1
-DRC_Float OIL_Words[OILWORDS];
-DRC_Float OIL_WordsTP1[OILWORDS];
-int       OIL_ShortListTp0[OILWORDS];
-int       OIL_ShortListTp1[OILWORDS];
-int       OIL_ShortListIdx=0;
+static DRC_Float OIL_Words[OILWORDS];
+static DRC_Float OIL_WordsTP1[OILWORDS];
+static int       OIL_ShortListTp0[OILWORDS];
+static int       OIL_ShortListTp1[OILWORDS];
+static int       OIL_ShortListIdx=0;
 
-DRC_Float POL_Words[POLWORDS];
-DRC_Float POL_WordsTP1[POLWORDS];
-int       POL_ShortListTp0[POLWORDS];
-int       POL_ShortListTp1[POLWORDS];
-int       POL_ShortListIdx=0;
+static DRC_Float POL_Words[POLWORDS];
+static DRC_Float POL_WordsTP1[POLWORDS];
+static int       POL_ShortListTp0[POLWORDS];
+static int       POL_ShortListTp1[POLWORDS];
+static int       POL_ShortListIdx=0;
 
-int*      OILPOL_Sort=NULL;
+static int*      OILPOL_Sort=NULL;
 
-DRC_Float PhonemeLayer[WORDSZ][PHONEMES];
-DRC_Float PhonemeLayerTP1[WORDSZ][PHONEMES];
+static DRC_Float PhonemeLayer[WORDSZ][PHONEMES];
+static DRC_Float PhonemeLayerTP1[WORDSZ][PHONEMES];
 
-char      GPCPhonemeBuffer[MAXINPUTBUF];
-char      GPCPhonemeMask[MAXINPUTBUF];
-DRC_Float GPC_InputActivation[WORDSZEXTN];
-DRC_Float GPC_OutputActivation[WORDSZ][PHONEMES];
-DRC_Float GPC_OutputActivationTP1[WORDSZ][PHONEMES];
+static char      GPCPhonemeBuffer[MAXINPUTBUF];
+static char      GPCPhonemeMask[MAXINPUTBUF];
+static DRC_Float GPC_InputActivation[WORDSZEXTN];
+static DRC_Float GPC_OutputActivation[WORDSZ][PHONEMES];
+static DRC_Float GPC_OutputActivationTP1[WORDSZ][PHONEMES];
 
-t_solution LrgstPartSoln;
-int        LrgstPartUnMatchChars;
+static t_solution LrgstPartSoln;
+static int        LrgstPartUnMatchChars;
 
 
-std::vector <t_solution> GPCSolns;
-t_gpcrule* MatchedRules[MAXINPUTBUF];  // List of pointers to matching rules in GPCRoute.
-int        MatchedRulesIdx=0; // Index into above array.
+static std::vector <t_solution> GPCSolns;
+static t_gpcrule* MatchedRules[MAXINPUTBUF];  // List of pointers to matching rules in GPCRoute.
+static int        MatchedRulesIdx=0; // Index into above array.
 
-const char* STR_PosnIDs = "NbmeA---------------";
+static const char* STR_PosnIDs = "NbmeA---------------";
 
 // Variables to detect and save the most activated POL word index.
-std::vector <char*> POLOutputWord;
-char  GPCWord[MAXINPUTBUF];
+static std::vector <char*> POLOutputWord;
+static char  GPCWord[MAXINPUTBUF];
 
 
 
 
-char PBString[WORDSZ+2];// String version of the phoneme string (most activated phonemes).
+static char PBString[WORDSZ+2];// String version of the phoneme string (most activated phonemes).
 
 int IndexLetter[256];   // ASCII character -> Letters table index.
 int IndexPhoneme[256];  // Phoneme (ASCII character) -> Phoneme table index.
@@ -533,16 +523,16 @@ int IndexPhoneme[256];  // Phoneme (ASCII character) -> Phoneme table index.
 
 #define OnFlag(flg)        if(FindBParam(flg)->Value)
 
-bool FLG_OutExtended = false;  // Flag:When to output extended format output.
+static bool FLG_OutExtended = false;  // Flag:When to output extended format output.
 
 // Total activations for layer.
-DRC_Float DRC_FL_TotalAct = 0.0;
-DRC_Float DRC_LL_TotalAct = 0.0;
-DRC_Float DRC_OIL_TotalAct = 0.0;
-DRC_Float DRC_POL_TotalAct = 0.0;
-DRC_Float DRC_PB_TotalAct = 0.0;
-DRC_Float DRC_GPC_TotalAct = 0.0;
-DRC_Float DRC_GPCR_TotalAct = 0.0;
+static DRC_Float DRC_FL_TotalAct = 0.0;
+static DRC_Float DRC_LL_TotalAct = 0.0;
+static DRC_Float DRC_OIL_TotalAct = 0.0;
+static DRC_Float DRC_POL_TotalAct = 0.0;
+static DRC_Float DRC_PB_TotalAct = 0.0;
+static DRC_Float DRC_GPC_TotalAct = 0.0;
+static DRC_Float DRC_GPCR_TotalAct = 0.0;
 
 
 //
@@ -552,56 +542,58 @@ DRC_Float DRC_GPCR_TotalAct = 0.0;
 //    and Reading Aloud" paper by Coltheart et. al. p218
 
 // General Parameters              COMMENTS
-DRC_Float GP_ActivationRate;      // Effect of incoming E/I of level on the (t+1) activation rate.
+static DRC_Float GP_ActivationRate;      // Effect of incoming E/I of level on the (t+1) activation rate.
 DRC_Float GP_FrequencyScale;      // The scale values for the CFSi calculations.
-DRC_Float GP_ReadingAloudCrit;    // Gating criterion to determine when processing finished (applied at end)
-DRC_Float GP_DisplayThreshold;    // Threshold for display of individual letters etc.
+static DRC_Float GP_ReadingAloudCrit;    // Gating criterion to determine when processing finished (applied at end)
+static DRC_Float GP_DisplayThreshold;    // Threshold for display of individual letters etc.
 
 // Feature Level
-DRC_Float FL_FeatureLetterExcit;  // Excitation and Inhibition (E/I) from Feature->Letter layer.
-DRC_Float FL_FeatureLetterInhib;
-DRC_Float FL_Noise;               // Random noise inserted at this level (NOT Implemented)
-DRC_Float FL_Decay;               // Decay of activation at this level.
+static DRC_Float FL_FeatureLetterExcit;  // Excitation and Inhibition (E/I) from Feature->Letter layer.
+static DRC_Float FL_FeatureLetterInhib;
+static DRC_Float FL_Noise;               // Random noise inserted at this level (NOT Implemented)
+static DRC_Float FL_Decay;               // Decay of activation at this level.
 
 // Letter Level
-DRC_Float LL_LetterOrthoExcit;    // E/I from Letter layer forward to OIL
-DRC_Float LL_LetterOrthoInhib;
-DRC_Float LL_LetterLateralInhib;  // Lateral inhibition between active nodes in column of word.
-DRC_Float LL_Noise;               // Random noise inserted at this level (NOT Implemented)
-DRC_Float LL_Decay;               // Decay of activation at this level.
+static DRC_Float LL_LetterOrthoExcit;    // E/I from Letter layer forward to OIL
+static DRC_Float LL_LetterOrthoInhib;
+static DRC_Float LL_LetterLateralInhib;  // Lateral inhibition between active nodes in column of word.
+static DRC_Float LL_Noise;               // Random noise inserted at this level (NOT Implemented)
+static DRC_Float LL_Decay;               // Decay of activation at this level.
 
 // Orthographic Lexicon
-DRC_Float OL_OrthoLetterExcit;    // Feedback E/I from OIL --> Letter level.
-DRC_Float OL_OrthoLetterInhib;
-DRC_Float OL_OrthoPhonoExcit;     // Feedforward E/I from OIL --> POL level
-DRC_Float OL_OrthoPhonoInhib;
-DRC_Float OL_OrthoLateralInhib;   // Lateral inhibition between activated words in OIL
-DRC_Float OL_Noise;               // Random noise inserted at this level (NOT Implemented)
-DRC_Float OL_Decay;               // Decay of activation at this level.
+static DRC_Float OL_OrthoLetterExcit;    // Feedback E/I from OIL --> Letter level.
+static DRC_Float OL_OrthoLetterInhib;
+static DRC_Float OL_OrthoPhonoExcit;     // Feedforward E/I from OIL --> POL level
+static DRC_Float OL_OrthoPhonoInhib;
+static DRC_Float OL_OrthoLateralInhib;   // Lateral inhibition between activated words in OIL
+static DRC_Float OL_Noise;               // Random noise inserted at this level (NOT Implemented)
+static DRC_Float OL_Decay;               // Decay of activation at this level.
 
 // Phonological Lexicon
-DRC_Float PL_PhonoOrthoExcit;     // Feedback E/I of activated entries from POL --> OIL level.
-DRC_Float PL_PhonoOrthoInhib;
-DRC_Float PL_PhonoPhonemeExcit;   // Feedforward E/I of active entries from POL --> Phoneme buffer(PB) level.
-DRC_Float PL_PhonoPhonemeInhib;
-DRC_Float PL_PhonoLateralInhib;   // Lateral inhibition between activated words in POL
-DRC_Float PL_Noise;               // Random noise inserted at this level (NOT Implemented)
-DRC_Float PL_Decay;               // Decay of activation at this level.
+static DRC_Float PL_PhonoOrthoExcit;     // Feedback E/I of activated entries from POL --> OIL level.
+static DRC_Float PL_PhonoOrthoInhib;
+static DRC_Float PL_PhonoPhonemeExcit;   // Feedforward E/I of active entries from POL --> Phoneme buffer(PB) level.
+static DRC_Float PL_PhonoPhonemeInhib;
+static DRC_Float PL_PhonoLateralInhib;   // Lateral inhibition between activated words in POL
+static DRC_Float PL_Noise;               // Random noise inserted at this level (NOT Implemented)
+static DRC_Float PL_Decay;               // Decay of activation at this level.
 
 // Phoneme Level
-DRC_Float EL_PhonemePhonoExcit;   // Feedback E/I of activated phonemes from PB --> POL level.
-DRC_Float EL_PhonemePhonoInhib;
-DRC_Float EL_PhonemeLateralInhib; // Lateral inhibition between activated phonemes in phoneme buffer.
-DRC_Float EL_Noise;               // Random noise inserted at this level (NOT Implemented)
-DRC_Float EL_Decay;               // Decay of activation at this level.
-DRC_Float EL_UnsupportedDecay;    // Decay of activation for phonemes with net input <= 0.0
+static DRC_Float EL_PhonemePhonoExcit;   // Feedback E/I of activated phonemes from PB --> POL level.
+static DRC_Float EL_PhonemePhonoInhib;
+static DRC_Float EL_PhonemeLateralInhib; // Lateral inhibition between activated phonemes in phoneme buffer.
+static DRC_Float EL_Noise;               // Random noise inserted at this level (NOT Implemented)
+static DRC_Float EL_Decay;               // Decay of activation at this level.
+static DRC_Float EL_UnsupportedDecay;    // Decay of activation for phonemes with net input <= 0.0
 
 // GPC Route
-DRC_Float GPC_GPCPhonemeExcit;
-DRC_Float GPC_GPCCriticalPhonology;
-int       GPC_GPCOnset;
-//int   GPC_CyclesB4NextLetter;  // Obsolete in DRC1.2
-bool      GPC_DRC12UnSupDecayTrigErr;  // Flag which turns on/off the compensation for a bug in DRC1.2
+static DRC_Float GPC_GPCPhonemeExcit;
+static DRC_Float GPC_GPCCriticalPhonology;
+static int       GPC_GPCOnset;
+static //int   GPC_CyclesB4NextLetter;  // Obsolete in DRC1.2
+
+/* XXX: WTF? */
+static bool      GPC_DRC12UnSupDecayTrigErr;  // Flag which turns on/off the compensation for a bug in DRC1.2
                                  // The bug is that DRC1.2 sometimes doesn't apply the UnsupportedDecay
                                  // to a phoneme when it becomes unsupported (activation>0 to ==0).
 
@@ -617,8 +609,69 @@ bool      GPC_DRC12UnSupDecayTrigErr;  // Flag which turns on/off the compensati
 // Errors:
 //---------------------------------------------------------------------------
 
-int* OIL_Index=NULL;
-int* POL_Index=NULL;
+static int* OIL_Index=NULL;
+static int* POL_Index=NULL;
+
+static int OIL_CharNext(int chridx,int column,int prev);
+static int POL_CharNext(int phoidx,int column,int prev);
+static char* Trim(char* str);
+static bool fequal(DRC_Float a,DRC_Float b);
+static int LetterIdx(char letter);
+static void IndexLetters(void);
+static int PhonemeIdx(char phoneme);
+static void DspMatrix(FILE* fh, const char* Title, const char* Format, DRC_Float* Array, int Width, int Height, bool Invert);
+static inline DRC_Float ActDynamics(DRC_Float n_i,DRC_Float a_i,DRC_Float Decay);
+static void ClearShortLists(bool First);
+static void CreatePBString(void);
+static bool CorrectOutput(const char *Word, int cycle,int MaxCycles);
+static void PrtCopyright(FILE* fh);
+static void DRC_DisplayTotals(int cycle,FILE* fh);
+static void DRC_CalcFeatures(int cycle,FILE* fh);
+static void DRC_CalcLetters(int cycle,FILE* fh);
+static DRC_Float* DRC_CalcFeatLetterEI(const char* str);
+static DRC_Float* DRC_CalcOILLetterEI(void);
+static DRC_Float* DRC_CalcLLLateralEI(void);
+static void DRC_CalcOILWords(int cycle,FILE* fh);
+static DRC_Float* DRC_CalcLetterOIL_EI(void);
+static inline bool HomographKeyEntry(int w);
+static inline bool HomographEntry(int w);
+static inline bool HomophoneKeyEntry(int w);
+static inline bool HomophoneEntry(int w);
+static inline bool NormalEntry(int w);
+static int GetHomographKey(int entry);
+static DRC_Float* DRC_CalcPhonoOIL_EI(void);
+static DRC_Float* DRC_CalcOILLateral_EI(void);
+static void DRC_CalcPOLWords(int cycle,FILE* fh);
+static int GetHomophoneKey(int entry);
+static DRC_Float* DRC_CalcOILPhono_EI(void);
+static DRC_Float* DRC_CalcPhonemePhono_EI(void);
+static DRC_Float* DRC_CalcPhonoLateral_EI(void);
+static void DRC_CalcPhonemes(int cycle,FILE* fh);
+static DRC_Float* DRC_CalcPhonoPhoneme_EI(void);
+static DRC_Float* DRC_CalcPhonemeLateral_EI(void);
+static DRC_Float* DRC_CalcGPCPhoneme_EI(int cycle);
+static void DRC_ClearPartialSoln(void);
+static void DRC_CalcGPCRoute(int cycle,int NumCharGPCR,bool& WordShifted,FILE* fh);
+static void DRC_UpdActFromGPCR(FILE* fh,int cycle,const char* word);
+static void DRC_UpdPBFromGPC(FILE* fh,int cycle,const char* word);
+static void GPC_CreateWord(void);
+static void DRC_DspDRCTranslations(FILE* fh,int cycle);
+static void DRC_DspGPCActivations(FILE* fh,int cycle);
+static int FirstNonBodyRuleSoln(void);
+static void DRC_GPCRouteShift(int cycle,int& GPCRChars,bool& ChgFlag,FILE* fh);
+static void SavePartSuccess(const char* word,const char* mask);
+static void SaveSuccess(const char* word);
+static bool CompletelyMatched(const char* mask);
+static void MergeMask(const char* mask,int start,t_gpcrule* rule);
+static void UnMergeMask(const char* mask,int start,t_gpcrule* rule);
+static bool FieldMatch(const char* word,const char* mask,t_gpcrule* rule,int start,int end,int* LetPhoIdx);
+static int FindStart(const char* mask);
+static int NumChr(const char* mask,char Special);
+static void DRC_GPCFind(const char* word,const char* mask,int start, int end, bool GotTerm);
+static void DRC_GPCApplyOutRules(bool GotTerm);
+static bool DRC_TestOutput(int Cycle,FILE* fh);
+static void DRC_FinalReport(FILE* fh);
+static void DRC_Cleanup(FILE* fh);
 
 void OILPOL_AddWords(int VocabIdx)
 {

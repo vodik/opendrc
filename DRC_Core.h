@@ -101,7 +101,6 @@ extern int IndexPhoneme[256];  // Phoneme (ASCII character) -> Phoneme table ind
 
 typedef enum {wpNone=0,wpBegin=1,wpMedial=2,wpEnd=3,wpAny=4} eWrdPosn;
 typedef enum {clsNone=0,clsOut=1,clsBody=2,clsMulti=3,clsCS=4,clsTwo=5,clsMphon=6,clsSing=7} eGPCClass;
-const extern char* STR_PosnIDs;
 
 #define MAXGPCRULES 1100
 typedef struct{
@@ -137,126 +136,18 @@ typedef struct {
     DRC_Float   Activations[MAXINPUTBUF]; // The activations of the phonemes at end of GPC Route.
 }t_solution;
 
-
-// General Parameters
-extern DRC_Float GP_ActivationRate;
+// XXX: Fix this nonsense
 extern DRC_Float GP_FrequencyScale;
-extern DRC_Float GP_ReadingAloudCrit;
-
-// Feature Level
-extern DRC_Float FL_FeatureLetterExcit;
-extern DRC_Float FL_FeatureLetterInhib;
-extern DRC_Float FL_Noise;
-extern DRC_Float FL_Decay;
-
-// Letter Level
-extern DRC_Float LL_LetterOrthoExcit;
-extern DRC_Float LL_LetterOrthoInhib;
-extern DRC_Float LL_LetterLateralInhib;
-extern DRC_Float LL_Noise;
-extern DRC_Float LL_Decay;
-
-// Orthographic Lexicon
-extern DRC_Float OL_OrthoLetterExcit;
-extern DRC_Float OL_OrthoLetterInhib;
-extern DRC_Float OL_OrthoPhonoExcit;
-extern DRC_Float OL_OrthoPhonoInhib;
-extern DRC_Float OL_OrthoLateralInhib;
-extern DRC_Float OL_Noise;
-extern DRC_Float OL_Decay;
-
-// Phonological Lexicon
-extern DRC_Float PL_PhonoOrthoExcit;
-extern DRC_Float PL_PhonoOrthoInhib;
-extern DRC_Float PL_PhonoPhonemeExcit;
-extern DRC_Float PL_PhonoPhonemeInhib;
-extern DRC_Float PL_PhonoLateralInhib;
-extern DRC_Float PL_Noise;
-extern DRC_Float PL_Decay;
-
-// Phoneme Level
-extern DRC_Float EL_PhonemePhonoExcit;
-extern DRC_Float EL_PhonemePhonoInhib;
-extern DRC_Float EL_PhonemeLateralInhib;
-extern DRC_Float EL_Noise;
-extern DRC_Float EL_Decay;
-extern DRC_Float EL_UnsupportedDecay;
-
-// GPC Route
-extern DRC_Float GPC_GPCPhonemeExcit;
-extern DRC_Float GPC_GPCCriticalPhonology;
-extern int       GPC_GPCOnset;
-// extern int   GPC_CyclesB4NextLetter;     // Obsolete in DRC1.2
 
 /* XXX: From precompiled header */
 void OILPOL_AddWords(int VocabIdx);
-int OIL_CharNext(int chridx,int column,int prev);
-int POL_CharNext(int phoidx,int column,int prev);
-char* Trim(char* str);
-bool fequal(DRC_Float a,DRC_Float b);
-int LetterIdx(char letter);
-void IndexLetters(void);
-int PhonemeIdx(char phoneme);
 void IndexPhonemes(void);
-void DspMatrix(FILE* fh, const char* Title, const char* Format, DRC_Float* Array, int Width, int Height, bool Invert);
-inline DRC_Float ActDynamics(DRC_Float n_i,DRC_Float a_i,DRC_Float Decay);
-void ClearShortLists(bool First);
 void DRC_ProcessWord(int MaxCycles,const char *TestWord,const char* Category);
-void CreatePBString(void);
-bool CorrectOutput(const char *Word, int cycle,int MaxCycles);
 void DRC_DisplayHeader(FILE* fh);
-void PrtCopyright(FILE* fh);
-void DRC_DisplayTotals(int cycle,FILE* fh);
 void UpdateParamTables(FILE* fh,const char* Name,const char* Value);
 void UpdateLocalParams(void);
 void DRC_ResetSystem(void);
 void DRC_PropagateActivation(int cycle,FILE* fh);
-void DRC_CalcFeatures(int cycle,FILE* fh);
-void DRC_CalcLetters(int cycle,FILE* fh);
-DRC_Float* DRC_CalcFeatLetterEI(const char* str);
-DRC_Float* DRC_CalcOILLetterEI(void);
-DRC_Float* DRC_CalcLLLateralEI(void);
-void DRC_CalcOILWords(int cycle,FILE* fh);
-DRC_Float* DRC_CalcLetterOIL_EI(void);
-inline bool HomographKeyEntry(int w);
-inline bool HomographEntry(int w);
-inline bool HomophoneKeyEntry(int w);
-inline bool HomophoneEntry(int w);
-inline bool NormalEntry(int w);
-int GetHomographKey(int entry);
-DRC_Float* DRC_CalcPhonoOIL_EI(void);
-DRC_Float* DRC_CalcOILLateral_EI(void);
-void DRC_CalcPOLWords(int cycle,FILE* fh);
-int GetHomophoneKey(int entry);
-DRC_Float* DRC_CalcOILPhono_EI(void);
-DRC_Float* DRC_CalcPhonemePhono_EI(void);
-DRC_Float* DRC_CalcPhonoLateral_EI(void);
-void DRC_CalcPhonemes(int cycle,FILE* fh);
-DRC_Float* DRC_CalcPhonoPhoneme_EI(void);
-DRC_Float* DRC_CalcPhonemeLateral_EI(void);
-DRC_Float* DRC_CalcGPCPhoneme_EI(int cycle);
-void DRC_ClearPartialSoln(void);
-void DRC_CalcGPCRoute(int cycle,int NumCharGPCR,bool& WordShifted,FILE* fh);
-void DRC_UpdActFromGPCR(FILE* fh,int cycle,const char* word);
-void DRC_UpdPBFromGPC(FILE* fh,int cycle,const char* word);
-void GPC_CreateWord(void);
-void DRC_DspDRCTranslations(FILE* fh,int cycle);
-void DRC_DspGPCActivations(FILE* fh,int cycle);
-int FirstNonBodyRuleSoln(void);
-void DRC_GPCRouteShift(int cycle,int& GPCRChars,bool& ChgFlag,FILE* fh);
-void SavePartSuccess(const char* word,const char* mask);
-void SaveSuccess(const char* word);
-bool CompletelyMatched(const char* mask);
-void MergeMask(const char* mask,int start,t_gpcrule* rule);
-void UnMergeMask(const char* mask,int start,t_gpcrule* rule);
-bool FieldMatch(const char* word,const char* mask,t_gpcrule* rule,int start,int end,int* LetPhoIdx);
-int FindStart(const char* mask);
-int NumChr(const char* mask,char Special);
-void DRC_GPCFind(const char* word,const char* mask,int start, int end, bool GotTerm);
-void DRC_GPCApplyOutRules(bool GotTerm);
-bool DRC_TestOutput(int Cycle,FILE* fh);
-void DRC_FinalReport(FILE* fh);
-void DRC_Cleanup(FILE* fh);
 
 #endif
 
