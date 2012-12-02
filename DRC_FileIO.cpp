@@ -407,6 +407,22 @@ void File_Line_Display(void)
 t_parameter Parameters[MAXPARAM];
 int         ParametersIdx=0;
 
+static void WriteParamFile(char* FileName);
+static void OutputParamFile(FILE* fh);
+static void DRC_GPCSetField(t_gpcrule* rule);
+static int GPCRuleSort(const void *a,const void *b);
+static void SortGPCRules(void);
+static bool InitGPCSearch(void);
+static char* trim(char *buf);
+static DRC_Float CFSCalc(int Freqency,DRC_Float lfMaximum);
+static void WriteBatchStatsHdr(FILE* fh);
+static void ClearBatchStatistics(void);
+static DRC_Float sqr(DRC_Float num);
+static void DspMean(FILE* fh,const char* good,const char* bad,t_StatList& Stats);
+static void DspStdDev(FILE* fh,char* good,const char* bad,t_StatList& Stats);
+static void RTTotal(t_StatList& Return,t_StatList& Stats1,t_StatList& Stats2);
+static int ReadDriverFile(const char* FileName);
+
 //---------------------------------------------------------------------------
 // Routine: CleanParamFile() - Routine clean up the parameters structure.
 // Input:   Parameters[] array.
@@ -720,35 +736,36 @@ int ReadParamFile(const char* FileName)
 
 // Class names of the GPCRules file rules: Body, Multi(ple),Two,M(ulti)Phon(ic),
 // C(ontext)S(ensitive), Sing(le), Out(put).
-const char*     GPCRuleClassNames[]={"?","body","multi","two","mphon","cs","sing","out"};
+static const char*     GPCRuleClassNames[]={"?","body","multi","two","mphon","cs","sing","out"};
 // Storage for the GPCRules file.
-t_gpcrule GPCRules[MAXGPCRULES];
+static t_gpcrule GPCRules[MAXGPCRULES];
 // Index into GPCRules[] array. After loaded its size.
-int       GPCRulesIdx=0;
+static int       GPCRulesIdx=0;
 
 // Field store is an malloc'ed array that stores the individual specific context
 // fields defined in the GPC rules file (i.e. "[rls]").
 bool *GPCFieldStore=NULL;
-int   GPCFieldStoreIdx=-1;
+static int   GPCFieldStoreIdx=-1;
 
 
 // Section pointers for each section of GPCRules.
 t_gpcrule* GPCList_BodyStart=NULL;
-t_gpcrule* GPCList_BodyEnd=NULL;
-t_gpcrule* GPCList_MultiplesStart=NULL;
-t_gpcrule* GPCList_MultiplesEnd=NULL;
-t_gpcrule* GPCList_DoublesStart=NULL;
-t_gpcrule* GPCList_DoublesEnd=NULL;
-t_gpcrule* GPCList_MultiPhonemesStart=NULL;
-t_gpcrule* GPCList_MultiPhonemesEnd=NULL;
-t_gpcrule* GPCList_ContextSensitiveStart=NULL;
-t_gpcrule* GPCList_ContextSensitiveEnd=NULL;
-t_gpcrule* GPCList_SinglesStart=NULL;
-t_gpcrule* GPCList_SinglesEnd=NULL;
+static t_gpcrule* GPCList_BodyEnd=NULL;
+static t_gpcrule* GPCList_MultiplesStart=NULL;
+static t_gpcrule* GPCList_MultiplesEnd=NULL;
+static t_gpcrule* GPCList_DoublesStart=NULL;
+static t_gpcrule* GPCList_DoublesEnd=NULL;
+static t_gpcrule* GPCList_MultiPhonemesStart=NULL;
+static t_gpcrule* GPCList_MultiPhonemesEnd=NULL;
+static t_gpcrule* GPCList_ContextSensitiveStart=NULL;
+static t_gpcrule* GPCList_ContextSensitiveEnd=NULL;
+static t_gpcrule* GPCList_SinglesStart=NULL;
+static t_gpcrule* GPCList_SinglesEnd=NULL;
 t_gpcrule* GPCList_OutputStart=NULL;
-t_gpcrule* GPCList_OutputEnd=NULL;
-t_gpcrule* GPCList_End=NULL;
+static t_gpcrule* GPCList_OutputEnd=NULL;
+static t_gpcrule* GPCList_End=NULL;
 
+/* XXX: Why are these defined here, but declared elsewhere? */
 int        GPCBodyRules=0;   // Number of body rules.
 int        GPCMultiRules=0;  // Number of multi-letter rules.                   #1
 int        GPCTwoRules=0;    // Number of two-letter rules.                     #3
@@ -3035,8 +3052,8 @@ void WriteBatchStats(FILE* fh)
 // each input line.  The procedure should be recursive in case it is called by
 // a '-p' parameter within the driver file.
 //------------------------------------------------------------------------------
-char*    Driver[MAXDRIVER];
-int      DriverIdx=1; // No data in first entry because it is ignored by ProcessCmdLineArgs().
+static char*    Driver[MAXDRIVER];
+static int      DriverIdx=1; // No data in first entry because it is ignored by ProcessCmdLineArgs().
 
 //---------------------------------------------------------------------------
 // Routine:
@@ -3137,7 +3154,7 @@ void CreateOutDir(const char* OutDir)
         if(FileIndex==0){
             // This directory cannot be produced in MS Windows so we will
             // always suffix it with a number.
-            if(strcasecmp(OutDir,"con")==0) {
+            if(strcmp(OutDir,"con")==0) {
                 FileIndex++;
                 continue;
             }
@@ -3148,11 +3165,7 @@ void CreateOutDir(const char* OutDir)
         }
 
         // Try to make the directory to see if it already exists.
-#ifdef __BORLANDC__
-        if(mkdir(buf)>=0){
-#elif __GNUC__
-        if(mkdir(buf,0xffff)>=0){
-#endif
+        if(mkdir(buf, S_IRWXU)>=0){
             // Success, so mkdir() created it.
             strcpy(OutRunDirBuf,buf);
             FLG_OutDirCreated=true;
@@ -3162,25 +3175,3 @@ void CreateOutDir(const char* OutDir)
     }
 
 }
-
-
-//------------------------------------------------------------------------------
-// End of $RCSfile: DRC_FileIO.cpp,v $
-//------------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

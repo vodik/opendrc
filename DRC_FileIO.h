@@ -121,9 +121,6 @@ extern int      FeaturesIdx;
 #define FLDStateMeta        3
 
 extern bool *GPCFieldStore;
-extern int   GPCFieldStoreIdx;
-
-
 
 #define MAXPARAM 50
 typedef struct{
@@ -167,28 +164,8 @@ extern t_Stats Stats;
 extern int File_Line_Num;
 extern char File_Line[MAXLINE];
 
-extern char*     GPCIdxValues;
-extern char*     VowelConsonant;
-extern int       GPCIdxValuesSz;
-extern const char*     GPCRuleClassNames[];
-extern t_gpcrule GPCRules[MAXGPCRULES];
-extern int       GPCRulesIdx;
-// Section pointers;
 extern t_gpcrule* GPCList_BodyStart;
-extern t_gpcrule* GPCList_BodyEnd;
-extern t_gpcrule* GPCList_MultiplesStart;
-extern t_gpcrule* GPCList_MultiplesEnd;
-extern t_gpcrule* GPCList_DoublesStart;
-extern t_gpcrule* GPCList_DoublesEnd;
-extern t_gpcrule* GPCList_MultiPhonemesStart;
-extern t_gpcrule* GPCList_MultiPhonemesEnd;
-extern t_gpcrule* GPCList_ContextSensitiveStart;
-extern t_gpcrule* GPCList_ContextSensitiveEnd;
-extern t_gpcrule* GPCList_SinglesStart;
-extern t_gpcrule* GPCList_SinglesEnd;
 extern t_gpcrule* GPCList_OutputStart;
-extern t_gpcrule* GPCList_OutputEnd;
-extern t_gpcrule* GPCList_End;
 
 extern char OutParentDirBuf[];
 extern char OutRunDirBuf[];
@@ -198,17 +175,11 @@ extern int PhonemeList[MAXVOCAB];
 
 /* XXX: From precompiled header */
 void CleanParamFile(void);
-void WriteParamFile(char* FileName);
-void OutputParamFile(FILE* fh);
 int ReadParamFile(const char* FileName);
 void CleanGPCRulesFile(void);
 void WriteGPCRulesFile(const char* FileName);
-void DRC_GPCSetField(t_gpcrule* rule);
 int ReadGPCRulesFile(const char* FileName);
-int GPCRuleSort(const void *a,const void *b);
-void SortGPCRules(void);
 t_gpcrule* GPC_NextRule(t_gpcrule* rule);
-bool InitGPCSearch(void);
 void CleanLettersFile(void);
 void WriteLettersFile(const char* FileName);
 int ReadLettersFile(const char* FileName);
@@ -216,14 +187,11 @@ void CleanPhonemesFile(void);
 void WritePhonemesFile(const char* FileName);
 int ReadPhonemesFile(const char* FileName);
 void CleanPropertiesFile(void);
-char* trim(char *buf);
 int ReadPropertiesFile(const char* FileName);
 void WritePropertiesFile(const char* FileName);
 void CleanVocabularyFile(void);
 void WriteVocabularyFile(const char* FileName);
-DRC_Float CFSCalc(int Freqency,DRC_Float lfMaximum);
 int ReadVocabularyFile(const char* FileName);
-int SpcStrNCmp(const char* str1, const char* str2, int len);
 void DisplayHomographs(FILE* fh);
 void DisplayHomophones(FILE* fh);
 FILE* OpenOutputFile(const char* ParentDir,const char* RunDir,const char* FileName,const char* Extn);
@@ -231,14 +199,7 @@ int ReadBatchFile(const char* FileName);
 void DspNeighbourTtl(FILE *fh);
 bool IsNeighbour(const char* word, const char* nonword);
 void DspNeighbourhood(FILE* fh,const char* nonword);
-void WriteBatchStatsHdr(FILE* fh);
-void ClearBatchStatistics(void);
-DRC_Float sqr(DRC_Float num);
-void DspMean(FILE* fh,const char* good,const char* bad,t_StatList& Stats);
-void DspStdDev(FILE* fh,char* good,const char* bad,t_StatList& Stats);
-void RTTotal(t_StatList& Return,t_StatList& Stats1,t_StatList& Stats2);
 void WriteBatchStats(FILE* fh);
-int ReadDriverFile(const char* FileName);
 void CreateOutDir(const char* OutDir);
 
 #endif // _DRC_FileIO_h

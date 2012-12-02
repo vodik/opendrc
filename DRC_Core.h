@@ -54,13 +54,6 @@
 
 #define FEATURES   14
 
-// Need to replace the following four defines with the following variables (to be
-// set in the FileIO routines.  However, which instances should be changed and which
-// should be left the same is not immediately obvious.  Problem left for later.
-extern int NumLetters;
-extern int NumOILWords;
-extern int NumPOLWords;
-extern int NumPhonemes;
 #define LETTERS    27
 #define OILWORDS   MAXVOCAB
 #define POLWORDS   OILWORDS
@@ -115,8 +108,8 @@ typedef struct{
     DRC_Float Unknown3;       // Always seems to be 1.0
 }t_gpcrule;
 
-extern t_gpcrule GPCRules[MAXGPCRULES];
-extern int       GPCRulesIdx;
+/* extern t_gpcrule GPCRules[MAXGPCRULES]; */
+/* extern int       GPCRulesIdx; */
 extern int       GPCBodyRules;   // Number of body rules.
 extern int       GPCMultiRules;  // Number of multi-letter rules.
 extern int       GPCTwoRules;    // Number of two-letter rules.
@@ -125,7 +118,6 @@ extern int       GPCCSRules;     // Number of context-sensitive rules.
 extern int       GPCSingRules;   // Number of single-letter rules.
 extern int       GPCOutRules;    // Number of output rules.
 extern int       GPCStressRules; // Number of stress rules (not implemented).
-
 
 // One solution to the GPC translation of the incoming word fragment.
 typedef struct {
