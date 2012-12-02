@@ -651,7 +651,7 @@ const char *HelpMessage[]={
     ""
 };
 
-int HelpMessageSz=sizeof(HelpMessage)/sizeof(char*);
+int HelpMessageSz=sizeof(HelpMessage)/sizeof(HelpMessage[0]);
 
 //------------------------------------------------------------------------------
 // Structure and data for command line arguments.
