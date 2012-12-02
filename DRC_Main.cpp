@@ -140,10 +140,9 @@
 #define DBGvars
 #include "debug.h"
 
-
 const char* DRC_Model_Version="1.0 (DRC1.2 Equivalent)";
 
-const char* DRC_Main[]={
+static const char* DRC_Main[]={
     "$Author: alan $",
     "$Date: 2011-03-14 17:04:07-04 $",
     "$Revision: 1.25 $",
@@ -151,7 +150,7 @@ const char* DRC_Main[]={
     "$Source: D:\\Repository\\D\\Dev\\Psych499\\DRC_Main.cpp,v $"
 };
 
-const char* DRC_CmdLine[]={
+static const char* DRC_CmdLine[]={
     "$Author: alan $",
     "$Date: 2011-03-14 23:56:25-04 $",
     "$Revision: 1.22 $",
@@ -159,7 +158,7 @@ const char* DRC_CmdLine[]={
     "$Source: D:\\Repository\\D\\Dev\\Psych499\\DRC_CmdLine.cpp,v $"
 };
 
-const char* DRC_FileIO[]={
+static const char* DRC_FileIO[]={
     "$Author: alan $",
     "$Date: 2011-03-14 17:02:30-04 $",
     "$Revision: 1.48 $",
@@ -167,7 +166,7 @@ const char* DRC_FileIO[]={
     "$Source: D:\\Repository\\D\\Dev\\Psych499\\DRC_FileIO.cpp,v $"
 };
 
-const char* DRC_Core[]={
+static const char* DRC_Core[]={
     "$Author: alan $",
     "$Date: 2011-03-14 17:00:23-04 $",
     "$Revision: 1.57 $",
@@ -175,7 +174,7 @@ const char* DRC_Core[]={
     "$Source: D:\\Repository\\D\\Dev\\Psych499\\DRC_Core.cpp,v $"
 };
 
-const char* Batch_l[]={
+static const char* Batch_l[]={
     "$Author: alan $",
     "$Date: 2011-03-14 16:46:17-04 $",
     "$Revision: 1.13 $",
@@ -183,7 +182,7 @@ const char* Batch_l[]={
     "$Source: D:\\Repository\\D\\Dev\\Psych499\\Batch_l.cpp,v $"
 };
 
-const char* Batch_y[]={
+static const char* Batch_y[]={
     "$Author: alan $",
     "$Date: 2011-03-14 16:46:18-04 $",
     "$Revision: 1.13 $",
@@ -191,13 +190,16 @@ const char* Batch_y[]={
     "$Source: D:\\Repository\\D\\Dev\\Psych499\\Batch_y.cpp,v $"
 };
 
-const char* Generic_l[]={
+static const char* Generic_l[]={
     "$Author: alan $",
     "$Date: 2011-03-14 16:46:17-04 $",
     "$Revision: 1.12 $",
     "$RCSfile: Generic_l.cpp,v $",
     "$Source: D:\\Repository\\D\\Dev\\Psych499\\Generic_l.cpp,v $"
 };
+
+static char* Terminate(char* start,char* fence);
+static void Init(void);
 
 //---------------------------------------------------------------------------
 // Routine:
@@ -208,6 +210,7 @@ const char* Generic_l[]={
 //---------------------------------------------------------------------------
 const char* Terminate(const char* start, __attribute__((unused)) const char* fence)
 {
+	/* XXX: FIX */
     /* if((uintptr_t)fence<1000){ */
     /*     start[(uintptr_t)fence]=0; */
     /* }else{ */
@@ -260,70 +263,6 @@ void PrtVersion(FILE* fh)
         Terminate(Generic_l[2]+11," $"),
         Terminate(Generic_l[1]+7,(char*)19));
 }
-
-//------------------------------------------------------------------------------
-// Routine to check to see if two strings are identical except for case.
-//------------------------------------------------------------------------------
-
-//---------------------------------------------------------------------------
-// Routine:
-// Input:
-// Output:
-// SideEffects:
-// Errors:
-//---------------------------------------------------------------------------
-/* ProtoType */
-/* bool MatchStr(char *str1,char *str2){ */
-/*     bool rtn=false; */
-/*     char buf1[500]; */
-/*     char buf2[500]; */
-
-/*     strcpy(buf1,str1); */
-/*     strlwr(buf1); */
-/*     strcpy(buf2,str2); */
-/*     strlwr(buf2); */
-
-/*     if(strcmp(buf1,buf2)==0){ */
-/*         rtn=true; */
-/*     } */
-/*     return(rtn); */
-/* } */
-
-//---------------------------------------------------------------------------
-// Routine:
-// Input:
-// Output:
-// SideEffects:
-// Errors:
-//---------------------------------------------------------------------------
-bool atob(const char* str)
-{
-    switch (*str) {
-    case 't':
-    case 'T':
-    case 'y':
-    case 'Y':
-        return true;
-    default:
-        return false;
-    }
-
-    /* char buf[10]; */
-    /* bool rtn=false; */
-
-    /* strncpy(buf,str,9); */
-    /* strlwr(buf); */
-    /* if((strcmp(buf,"true")==0)|| */
-    /*    (strcmp(buf,"t")==0)|| */
-    /*    (strcmp(buf,"yes")==0)|| */
-    /*    (strcmp(buf,"y")==0)) */
-    /* { */
-    /*     rtn=true; */
-    /* } */
-    /* return(rtn); */
-}
-
-
 
 //---------------------------------------------------------------------------
 // Routine:
@@ -474,7 +413,6 @@ void pfputc(char chr,FILE *fh)
     }
 }
 
-
 //---------------------------------------------------------------------------
 // Routine:
 // Input:
@@ -482,7 +420,6 @@ void pfputc(char chr,FILE *fh)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-#pragma argsused
 int main(int argc, char* argv[])
 {
     DBGOpen("DRC.dbg");

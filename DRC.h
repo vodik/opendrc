@@ -82,12 +82,7 @@ typedef union GENERICSTYPE
 } GENERICSTYPE;
 extern GENERICSTYPE Genericlval;
 
-
 extern const char* DRC_Model_Version;
-
-
-
-
 
 #define CMD_Data      100
 #define CMD_Param     101
@@ -118,21 +113,6 @@ typedef struct DRC_COMMAND {
         t_DRCAutoReset AutoReset;
     };
 }t_DRCCmd;
-
-
-
-
-
-// All the version information arrays.
-extern const char* DRC_Main[];
-extern const char* DRC_CmdLine[];
-extern const char* DRC_FileIO[];
-extern const char* DRC_Core[];
-extern const char* Batch_l[];
-extern const char* Batch_y[];
-extern const char* Generic_l[];
-
-
 
 extern char File_Line[MAXLINE];
 extern void File_Line_Display();
