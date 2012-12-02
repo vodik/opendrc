@@ -180,47 +180,52 @@
 
 #define MAXERR 10
 
-FILE* fh_BatchFile=stdin;
+static FILE* fh_BatchFile=stdin;
 
-int Set_Language(char **arglist);
-int Set_VisualFeatureLetterUnits(char **arglist);
-int Set_PhonemeUnits(char **arglist);
-int Set_SetParameter(char **arglist);
-int Set_ReadParameterFile(char **arglist);
-int Set_SeparateHomophoneFlag(char **arglist);
-int Set_ContinueToMaxCycles(char **arglist);
-int Set_ProcessBatchFile(char **arglist);
-int Set_TestBatchOnly(char **arglist);
-int Set_BatchProcessLimits(char **arglist);
-int Set_MaxIncorrectResults(char **arglist);
-int Set_RepeatSimulation(char **arglist);
-int Set_ActivationFileExt(char **arglist);
-int Set_SaveActivationLvls(char **arglist);
-int Set_ReportExtraInfo(char **arglist);
-int Set_OutputFlags(char **arglist);
-int Set_ReportActGreater(char **arglist);
-int Set_NoOutputFiles(char **arglist);
-int Set_RTFileExtn(char **arglist);
-int Set_OutputDirectory(char **arglist);
-int Set_ReportSimDuration(char **arglist);
-int Set_Verbalize(char **arglist);
-int ListIrregularWords(char **arglist);
-int ListIrregularStressWords(char **arglist);
-int ApplyGPCRules(char **arglist);
-int ListRegularWords(char **arglist);
-int ApplyGPCStressRules(char **arglist);
-int ListWhammies(char **arglist);
-int DisplayHelp(char **arglist);
-int DisplayVersion(char **arglist);
-int ReadCmdLineOptionsFile(char **arglist);
-int Cmd_DspNeighbourhood(char **arglist);
-int Cmd_DspHomographs(char **arglist);
-int Cmd_DspHomophones(char **arglist);
+static void* FindParam(char* Name);
+static bool MatchArg(const char *flag,const char *arg);
+static void TestAndCall(int &idx,int argc,char **argv,int (*func)(char **argv));
+static void ErrCmdSwt(char *str);
+
+static int Set_Language(char **arglist);
+static int Set_VisualFeatureLetterUnits(char **arglist);
+static int Set_PhonemeUnits(char **arglist);
+static int Set_SetParameter(char **arglist);
+static int Set_ReadParameterFile(char **arglist);
+static int Set_SeparateHomophoneFlag(char **arglist);
+static int Set_ContinueToMaxCycles(char **arglist);
+static int Set_ProcessBatchFile(char **arglist);
+static int Set_TestBatchOnly(char **arglist);
+static int Set_BatchProcessLimits(char **arglist);
+static int Set_MaxIncorrectResults(char **arglist);
+static int Set_RepeatSimulation(char **arglist);
+static int Set_ActivationFileExt(char **arglist);
+static int Set_SaveActivationLvls(char **arglist);
+static int Set_ReportExtraInfo(char **arglist);
+static int Set_OutputFlags(char **arglist);
+static int Set_ReportActGreater(char **arglist);
+static int Set_NoOutputFiles(char **arglist);
+static int Set_RTFileExtn(char **arglist);
+static int Set_OutputDirectory(char **arglist);
+static int Set_ReportSimDuration(char **arglist);
+static int Set_Verbalize(char **arglist);
+static int ListIrregularWords(char **arglist);
+static int ListIrregularStressWords(char **arglist);
+static int ApplyGPCRules(char **arglist);
+static int ListRegularWords(char **arglist);
+static int ApplyGPCStressRules(char **arglist);
+static int ListWhammies(char **arglist);
+static int DisplayHelp(char **arglist);
+static int DisplayVersion(char **arglist);
+static int ReadCmdLineOptionsFile(char **arglist);
+static int Cmd_DspNeighbourhood(char **arglist);
+static int Cmd_DspHomographs(char **arglist);
+static int Cmd_DspHomophones(char **arglist);
 
 //------------------------------------------------------------------------------
 // Default DRC Parameters
 //------------------------------------------------------------------------------
-t_iparam DRC_IParams[]={
+static t_iparam DRC_IParams[]={
     // GPC Route Parameters
     {"GPCOnset",                      26,      26, "Cycles before first letter available to GPCRoute"},
     // Other parameters.
@@ -294,7 +299,7 @@ t_fparam DRC_FParams[]={
     {NULL,0.0,0.0,NULL}
 };
 
-t_sparam DRC_SParams[]={
+static t_sparam DRC_SParams[]={
     {"LanguageDirectory",        "english1.1.6","english1.1.6", ""},
     {"OutputDirectory",          OutParentDirBuf,".",           ""},
     {"OutputRTFileExt",          "rt","rt",                     ""},
@@ -307,7 +312,7 @@ t_sparam DRC_SParams[]={
     {NULL,NULL,NULL,NULL}
 };
 
-t_bparam DRC_BParams[]={
+static t_bparam DRC_BParams[]={
     {"AutoReset",                 true,  true,  ""},
     {"ApplyGPCRules",             false, false, ""},
     {"ApplyGPCStressRules",       false, false, ""},
@@ -394,10 +399,6 @@ t_bparam DRC_BParams[]={
 
     {NULL,false,false,NULL}
 };
-
-t_DRCParams DRCParams={DRC_IParams,DRC_FParams,DRC_SParams,DRC_BParams};
-
-
 
 //---------------------------------------------------------------------------
 // Routine:

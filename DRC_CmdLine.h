@@ -64,7 +64,6 @@ typedef struct{
     int    Default;
     const char*  Comment;
 }t_iparam;
-extern t_iparam DRC_IParams[];
 
 typedef struct{
     const char*      Name;
@@ -80,7 +79,6 @@ typedef struct{
     const char*  Default;
     const char*  Comment;
 }t_sparam;
-extern t_sparam DRC_SParams[];
 
 typedef struct{
     const char*  Name;
@@ -88,15 +86,6 @@ typedef struct{
     bool   Default;
     const char*  Comment;
 }t_bparam;
-extern t_bparam DRC_BParams[];
-
-typedef struct{
-    t_iparam *IP;
-    t_fparam *FP;
-    t_sparam *SP;
-    t_bparam *BP;
-}t_DRCParams;
-extern t_DRCParams DRCParams;
 
 t_iparam* FindIParam(const char* Name,bool FailHard=true);
 t_fparam* FindFParam(const char* Name,bool FailHard=true);
@@ -105,13 +94,8 @@ t_bparam* FindBParam(const char* Name,bool FailHard=true);
 
 char* FindLanguageParam(const char* Name,bool FailHard=true);
 
-/* XXX: From precompiled header */
-void* FindParam(char* Name);
 void ProcessCmdLineArgs(int argc,char **argv);
 void WriteRTFileHeader(FILE* fh,bool batch,const char* word);
-bool MatchArg(const char *flag,const char *arg);
-void TestAndCall(int &idx,int argc,char **argv,int (*func)(char **argv));
-void ErrCmdSwt(char *str);
 
 #endif // _DRC_CmdLine_h
 
