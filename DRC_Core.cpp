@@ -650,7 +650,7 @@ static DRC_Float* DRC_CalcPhonoPhoneme_EI(void);
 static DRC_Float* DRC_CalcPhonemeLateral_EI(void);
 static DRC_Float* DRC_CalcGPCPhoneme_EI(int cycle);
 static void DRC_ClearPartialSoln(void);
-static void DRC_CalcGPCRoute(int cycle,int NumCharGPCR,bool& WordShifted,FILE* fh);
+static void DRC_CalcGPCRoute(int cycle,size_t NumCharGPCR,bool& WordShifted,FILE* fh);
 static void DRC_UpdActFromGPCR(FILE* fh,int cycle,const char* word);
 static void DRC_UpdPBFromGPC(FILE* fh,int cycle,const char* word);
 static void GPC_CreateWord(void);
@@ -661,12 +661,12 @@ static void DRC_GPCRouteShift(int cycle,int& GPCRChars,bool& ChgFlag,FILE* fh);
 static void SavePartSuccess(const char* word,const char* mask);
 static void SaveSuccess(const char* word);
 static bool CompletelyMatched(const char* mask);
-static void MergeMask(const char* mask,int start,t_gpcrule* rule);
-static void UnMergeMask(const char* mask,int start,t_gpcrule* rule);
-static bool FieldMatch(const char* word,const char* mask,t_gpcrule* rule,int start,int end,int* LetPhoIdx);
+static void MergeMask(const char* mask,size_t start,t_gpcrule* rule);
+static void UnMergeMask(const char* mask,size_t start,t_gpcrule* rule);
+static bool FieldMatch(const char* word,const char* mask,t_gpcrule* rule,size_t start,size_t end,int* LetPhoIdx);
 static int FindStart(const char* mask);
 static int NumChr(const char* mask,char Special);
-static void DRC_GPCFind(const char* word,const char* mask,int start, int end, bool GotTerm);
+static void DRC_GPCFind(const char* word,const char* mask,size_t start, size_t end, bool GotTerm);
 static void DRC_GPCApplyOutRules(bool GotTerm);
 static bool DRC_TestOutput(int Cycle,FILE* fh);
 static void DRC_FinalReport(FILE* fh);
@@ -675,7 +675,7 @@ static void DRC_Cleanup(FILE* fh);
 void OILPOL_AddWords(int VocabIdx)
 {
     if(OILPOL_Sort==NULL){
-        int len=max(OILWORDS,POLWORDS);
+        size_t len=max(OILWORDS,POLWORDS);
 
         // Array that will contain linked list of all the words with a particular
         // character (or phoneme) in that position in the grapheme(phoneme) word.
@@ -1011,7 +1011,7 @@ static void strlwr(char *str)
 {
     char* p = str;
     for (; *p != '\0'; ++p)
-        *p = tolower(*p);
+        *p = (char)tolower(*p);
 }
 
 void DRC_ProcessWord(int MaxCycles,const char *TestWord,const char* UNUSED Category)
@@ -1058,7 +1058,7 @@ void DRC_ProcessWord(int MaxCycles,const char *TestWord,const char* UNUSED Categ
     DRC_DisplayHeader(fh);
 
     // Clear out the solutions vector.
-    for(int s=0;s<(int)GPCSolns.size();s++) {
+    for(size_t s=0;s<GPCSolns.size();s++) {
         if(GPCSolns[s].WordFrag!=NULL) free(GPCSolns[s].WordFrag);
         if(GPCSolns[s].PhonemeFrag!=NULL) free(GPCSolns[s].PhonemeFrag);
     }
@@ -1076,7 +1076,7 @@ void DRC_ProcessWord(int MaxCycles,const char *TestWord,const char* UNUSED Categ
         DRC_CalcPOLWords(cycle,fh);
 
         // Determine the GPC Route activations.
-        DRC_CalcGPCRoute(cycle,PromotedGPCRChars,FLG_GPCRInpChg,fh);
+        DRC_CalcGPCRoute(cycle,(size_t)PromotedGPCRChars,FLG_GPCRInpChg,fh);
 
         DRC_CalcPhonemes(cycle,fh);
         DRC_PropagateActivation(cycle,fh);
@@ -1191,7 +1191,7 @@ bool CorrectOutput(const char *Word, int cycle,int MaxCycles)
 
         // Check to see if this word is in our vocabulary (at least a homophone of it).
         bool InVocab=false;
-        for(int w=0; w<VocabularyIdx; w++){
+        for(size_t w=0; w<VocabularyIdx; w++){
             if(strcmp(Vocabulary[w].Word,Word)==0){
                 InVocab=true;
                 break;
@@ -1245,10 +1245,10 @@ void DRC_DisplayHeader(FILE* fh)
         // The +1 on these values are because the indices are zero-based (0,1,2, ..., n-1)
         pfprintf(fh,"; - Letters: %d Visual Features: %d Phonemes: %d Stress Types: %d\n",
             LettersIdx+1,FeaturesIdx,PhonemesIdx+1,StressIdx);
-        pfprintf(fh,"; - Orthographic Lexicon entries: %d (skipped %d that were too large)\n",
-            (VocabularyIdx-MINVOCAB)-HomoGraphemeCombined,DiscardedWords);
-        pfprintf(fh,"; - Phonological Lexicon entries: %d (using %s entries for homophones)\n",
-            (VocabularyIdx-MINVOCAB)-HomoPhonemeCombined,
+        pfprintf(fh,"; - Orthographic Lexicon entries: %zd (skipped %d that were too large)\n",
+            (VocabularyIdx-MINVOCAB)-(size_t)HomoGraphemeCombined,DiscardedWords);
+        pfprintf(fh,"; - Phonological Lexicon entries: %zd (using %s entries for homophones)\n",
+            (VocabularyIdx-MINVOCAB)-(size_t)HomoPhonemeCombined,
             (FindBParam("SeparateHomophones")->Value)?"SEPARATE":"COMBINED");
         pfprintf(fh,"; - Multi-Letter rules: %d Context-Sensitive rules: %d Two-Letter rules: %d\n",
             GPCMultiRules,GPCCSRules,GPCTwoRules);
@@ -1960,16 +1960,16 @@ void DRC_CalcOILWords(int cycle,FILE* fh)
     bool FLG_Found=false;
     DRC_OIL_TotalAct=0.0;
     if(FLG_OutExtended) pfprintf(fh,"Activated OIL words (cycle %d)\n",cycle);
-    for(int w=MINVOCAB; w<VocabularyIdx; w++){
+    for(size_t w=MINVOCAB; w<VocabularyIdx; w++){
         OIL_WordsTP1[w] = ActDynamics(LL_EI[w]+PL_EI[w]-OILLateral_EI[w]+Vocabulary[w].Written.CFS, OIL_Words[w], OL_Decay);
         if(OIL_WordsTP1[w]>0.0){
             // Flag the words in the OIL that have activation for the next cycle.
-            OIL_ShortListTp1[OIL_ShortListIdx++]=w;
+            OIL_ShortListTp1[OIL_ShortListIdx++]=(int)w;
             if(OIL_WordsTP1[w]>GP_DisplayThreshold){
                 FLG_Found=true;
                 OnFlag("OILDRC"){
                     if(FLG_OutExtended) {
-                        pfprintf(fh,"  Cycle%03d Orth %8.6f '%s' (%d)\n",cycle,OIL_WordsTP1[w],Vocabulary[w].Word,w);
+                        pfprintf(fh,"  Cycle%03d Orth %8.6f '%s' (%zd)\n",cycle,OIL_WordsTP1[w],Vocabulary[w].Word,w);
                     }else{
                         pfprintf(fh,"Cycle%d Orth %8.6f %s\n",cycle,OIL_WordsTP1[w],Vocabulary[w].Word);
                     }
@@ -2048,7 +2048,7 @@ DRC_Float* DRC_CalcLetterOIL_EI()
         // Now set all the OIL words to the total inhibition value (default
         // condition where for the test word no letters in any columns match
         // their corresponding letters in the test word).
-        for(int w=MINVOCAB; w<VocabularyIdx; w++){
+        for(size_t w=MINVOCAB; w<VocabularyIdx; w++){
             OILLayerEI[w]=TotalInhibition;
         }
 
@@ -2364,7 +2364,7 @@ void DRC_CalcPOLWords(int cycle,FILE* fh)
     bool FLG_Found=false;
     DRC_POL_TotalAct=0.0;
     if(FLG_OutExtended) pfprintf(fh,"Activated POL words (cycle %d)\n",cycle);
-    for(int p=MINVOCAB; p<VocabularyIdx; p++){
+    for(size_t p=MINVOCAB; p<VocabularyIdx; p++){
         int w=PhonemeList[p];
         POL_WordsTP1[w]=ActDynamics(OIL_EI[w]+PB_EI[w]-POLLateral_EI[w]+Vocabulary[w].Spoken.CFS, POL_Words[w], PL_Decay);
         if(POL_WordsTP1[w]>0.0){
@@ -2583,9 +2583,9 @@ DRC_Float* DRC_CalcPhonemePhono_EI()
         // if none of them had any phoneme matches in any column. We will next excite
         // only those words that share a phoneme in common with the active phonemes
         // in the PB.
-        for(int w=0; w<POLWORDS; w++){
+        for(size_t w=0; w<POLWORDS; w++){
             // Length(len) is the index of the '+' because len is index of '\0'.
-            int len=strlen(Vocabulary[w].Phoneme);
+            size_t len=strlen(Vocabulary[w].Phoneme);
             if(len>= WORDSZ) len=WORDSZ-1;  // Adjust for the boundary condition.
             POLLayerEI[w] = -CumlativeInhib[len];
         }
@@ -2993,7 +2993,7 @@ void DRC_ClearPartialSoln()
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-void DRC_CalcGPCRoute(int cycle,int NumCharGPCR,bool& WordShifted,FILE* fh)
+void DRC_CalcGPCRoute(int cycle,size_t NumCharGPCR,bool& WordShifted,FILE* fh)
 {
     char word[WORDSZEXTN];
 
@@ -3027,7 +3027,7 @@ void DRC_CalcGPCRoute(int cycle,int NumCharGPCR,bool& WordShifted,FILE* fh)
     if(strchr(word,'+')==NULL) strcat(word,"+");
 
     // Get the length of the actual word.
-    int  WordLen=strlen(word)-1;
+    size_t WordLen=strlen(word)-1;
 
     // Storage for the presented word and it's corresponding usage mask.
     char WordBuf[WORDSZEXTN];
@@ -3041,7 +3041,7 @@ void DRC_CalcGPCRoute(int cycle,int NumCharGPCR,bool& WordShifted,FILE* fh)
     memset(WordBuf,0,sizeof(WordBuf));
     strncpy(WordBuf,word,NumCharGPCR);
     memset(MaskBuf,0,sizeof(MaskBuf));
-    for(int i=0;i<WORDSZEXTN;i++){
+    for(size_t i=0;i<WORDSZEXTN;i++){
         if(i<NumCharGPCR){
             if(i<WordLen){
                 MaskBuf[i]=MASK_SPACE;
@@ -3104,9 +3104,9 @@ void DRC_UpdActFromGPCR(FILE* UNUSED fh,int UNUSED cycle,const char* word)
     // Just set the input array of activations to the letters in the word.
     // The letters in the word have been determined by searching the LetterLayer
     // array to determine the most activated letter in each column.
-    int  WordLen=strlen(word);
+    size_t WordLen=strlen(word);
     memset(GPC_InputActivation,0,sizeof(GPCPhonemeMask));
-    for(int c=0;c<WordLen;c++){              // Include word terminator in activations.
+    for(size_t c=0;c<WordLen;c++){              // Include word terminator in activations.
         int  chr=word[c];                    // Get appropriate letter in word
         int  idx=IndexLetter[tolower(chr)];  // Get its index value chr=[a..z] idx=[0..25]
         GPC_InputActivation[c]=LetterLayer[c][idx];
@@ -3117,14 +3117,14 @@ void DRC_UpdActFromGPCR(FILE* UNUSED fh,int UNUSED cycle,const char* word)
     // most activated letter in each column of the LL is averaged over each input
     // grapheme for the GPC rule and then distributed as is to all the output
     // phoneme activations for that rule.
-    for(int s=0;s<(int)GPCSolns.size();s++){
+    for(size_t s=0;s<GPCSolns.size();s++){
         // Zero out this solutions activations.
-        for(int a=0;a<MAXINPUTBUF;a++) GPCSolns[s].Activations[a]=0.0;
+        for(size_t a=0;a<MAXINPUTBUF;a++) GPCSolns[s].Activations[a]=0.0;
 
         // Mark all input characters as unused by a rule. The purpose of this array
         // is to mark which letters of the input word have been used in calculation
         // of the phoneme activations.
-        for(int r=0;r<MAXINPUTBUF;r++) RuleUsed[r]=0;
+        for(size_t r=0;r<MAXINPUTBUF;r++) RuleUsed[r]=0;
 
         // Have to calculate the activations each cycle (because the input activations
         // will change each cycle) as the input letter level activations change.
@@ -3139,15 +3139,15 @@ void DRC_UpdActFromGPCR(FILE* UNUSED fh,int UNUSED cycle,const char* word)
                 DRC_Float TotalRuleAct=0.0;
                 int       TotalRuleGraphemes=0;
                 // Just searching for the first zero gives us the first unused character position.
-                int       start=strlen(RuleUsed);
-                for(int f=0;f<(int)strlen((const char*)rule->Fields);f++){
+                size_t start=strlen(RuleUsed);
+                for(size_t f=0;f<strlen((const char*)rule->Fields);f++){
                     int Field=rule->Fields[f];
-                    int PreContext=rule->PreContext;
+                    size_t PreContext=rule->PreContext;
                     // If the current field is a simple field then tally the
                     // corresponding input activation.
                     if((Field>=FLD_SIMPLEMIN)&&(Field<=FLD_SIMPLEMAX)&&(rule->Class!=clsOut)){
                         TotalRuleAct += GPC_InputActivation[start-PreContext+f];
-                        RuleUsed[start-PreContext+f]='0'+r;
+                        RuleUsed[start-PreContext+f]='0'+(char)r;
                         TotalRuleGraphemes++;
                         chrposn++;
                     }
@@ -3204,15 +3204,15 @@ void DRC_UpdActFromGPCR(FILE* UNUSED fh,int UNUSED cycle,const char* word)
                 DRC_Float TotalRuleAct=0.0;
                 int       TotalRuleGraphemes=0;
                 // Just searching for the first zero gives us the first unused character position.
-                int       start=strlen(RuleUsed);
-                for(int f=0;f<(int)strlen((const char*)rule->Fields);f++){
+                size_t    start=strlen(RuleUsed);
+                for(size_t f=0;f<strlen((const char*)rule->Fields);f++){
                     int Field=rule->Fields[f];
-                    int PreContext=rule->PreContext;
+                    size_t PreContext=rule->PreContext;
                     // If the current field is a simple field then tally the
                     // corresponding input activation.
                     if((Field>=FLD_SIMPLEMIN)&&(Field<=FLD_SIMPLEMAX)&&(rule->Class!=clsOut)){
-                        TotalRuleAct += GPC_InputActivation[start-PreContext+f];
-                        RuleUsed[start-PreContext+f]='0'+r;
+                        TotalRuleAct += GPC_InputActivation[start-(size_t)PreContext+f];
+                        RuleUsed[start-(size_t)PreContext+f]='0'+(char)r;
                         TotalRuleGraphemes++;
                         chrposn++;
                     }
@@ -3263,17 +3263,17 @@ void DRC_UpdPBFromGPC(FILE* UNUSED fh,int UNUSED cycle,const char* UNUSED word)
     memset(GPC_OutputActivationTP1,0,sizeof(GPC_OutputActivationTP1));
 
     if(GPCSolns.size()>0){
-        int fnbrs=FirstNonBodyRuleSoln();
+        size_t fnbrs=(size_t)FirstNonBodyRuleSoln();
 
         // Determine which solution (0,fnbrs) is the key solution (GPC not GPCR).
-        int soln=0;
+        size_t soln=0;
         if(fnbrs>0){
             soln=fnbrs;
         }
 
         // Determine the phoneme column where the solutions stop being the same.
-        int TGPCR_TallyColumn=0;
-        for(int r=0;r<MAXINPUTBUF;r++){
+        size_t TGPCR_TallyColumn=0;
+        for(size_t r=0;r<MAXINPUTBUF;r++){
             // The rules differ when: we get to the end of one or the other
             // rule list or the corresponding rules are not the same.
             if(GPCSolns[0].Rules[r]==NULL) break;
@@ -3289,12 +3289,12 @@ void DRC_UpdPBFromGPC(FILE* UNUSED fh,int UNUSED cycle,const char* UNUSED word)
         // a valid second solution then copy the remaining activations too. Also total
         // these activation for the TGPC and TGPCR totals.  Loop to the maximum of
         // the lengths of the two solutions so all phonemes accounted for.
-        int MaxPhonFragSz=strlen(GPCSolns[0].PhonemeFrag);
-        if(fnbrs>0) MaxPhonFragSz = max(MaxPhonFragSz,(int)strlen(GPCSolns[fnbrs].PhonemeFrag));
-        for(int c=0;c<MaxPhonFragSz;c++){
+        size_t MaxPhonFragSz=strlen(GPCSolns[0].PhonemeFrag);
+        if(fnbrs>0) MaxPhonFragSz = max(MaxPhonFragSz,strlen(GPCSolns[fnbrs].PhonemeFrag));
+        for(size_t c=0;c<MaxPhonFragSz;c++){
             int Ph,PhonIdx;
             DRC_Float Activation;
-            if(c<(int)strlen(GPCSolns[soln].PhonemeFrag)){
+            if(c<strlen(GPCSolns[soln].PhonemeFrag)){
                 // Get the phoneme refered to by the soln solution Phoneme string and column.
                 Ph=GPCSolns[soln].PhonemeFrag[c];
                 // Get the index for that phoneme.
@@ -3381,13 +3381,13 @@ void GPC_CreateWord()
 //---------------------------------------------------------------------------
 void DRC_DspDRCTranslations(FILE* fh,int cycle)
 {
-    int Solutions=(int)GPCSolns.size();
+    size_t Solutions=GPCSolns.size();
 
     // NOTE: Negating this test will display *ALL* the matching rules.
     if((FLG_OutExtended)&&(Solutions>0)){
 
         // Display all the GPC Translations using Grapheme->Phoneme rules.
-        for(int s=0;s<Solutions;s++){
+        for(size_t s=0;s<Solutions;s++){
             pfprintf(fh,"Cycle%d GPCRoute ",cycle);
             pfprintf(fh,"%.8s ",GPCSolns[s].WordFrag);
 
@@ -3426,7 +3426,7 @@ void DRC_DspDRCTranslations(FILE* fh,int cycle)
         }
 
     }else if(Solutions>0){
-        int s=0;
+        size_t s=0;
         pfprintf(fh,"Cycle%d GPCRoute ",cycle);
         pfprintf(fh,"%s ",GPCSolns[s].WordFrag);
 
@@ -3438,7 +3438,7 @@ void DRC_DspDRCTranslations(FILE* fh,int cycle)
             // If this rule is a wpEnd (end of word) rule then place braces around
             // it and display the remainder of the second rule, otherwise, display
             // it without braces.
-            int s2=FirstNonBodyRuleSoln();
+            size_t s2=(size_t)FirstNonBodyRuleSoln();
             bool FLG_End=(GPCSolns[s].Rules[r1]->WrdPosn==wpEnd)&&(s2!=0);
             if(FLG_End) {
                 pfprintf(fh,"{");
@@ -3513,9 +3513,9 @@ void DRC_DspGPCActivations(FILE* fh,int cycle)
     bool LastRule=false;
 
     if(GPCSolns.size()>0){
-        int fnbrs=FirstNonBodyRuleSoln();  // Index into solution array.
-        int dcRule=0;
-        int dcPhoneme=0;
+        size_t fnbrs=(size_t)FirstNonBodyRuleSoln();  // Index into solution array.
+        size_t dcRule=0;
+        size_t dcPhoneme=0;
 
         // If there is a Non-Body-Rule solution then it is treated as the primary
         // solution (GPC) and the Body-Rule solution as the GPCR solution.  The
@@ -3523,7 +3523,7 @@ void DRC_DspGPCActivations(FILE* fh,int cycle)
         if(fnbrs>0){
             // Go through all the rules and print out the activations for the
             // phonemes for each rule.
-            for(int r=0,c=0;r<WORDSZ;r++){
+            for(size_t r=0,c=0;r<WORDSZ;r++){
                 // Stop when we get to the end of the rules list.
                 if(GPCSolns[fnbrs].Rules[r]==NULL) break;
                 if(GPCSolns[fnbrs].Rules[r]->Class==clsOut) break;
@@ -3544,18 +3544,18 @@ void DRC_DspGPCActivations(FILE* fh,int cycle)
                 // For the last rule, which doesn't have a '+' termination (only
                 // the solution PhonemeFrag has a '+' termination), make sure we
                 // print one more column which will be the '+'.
-                int NumPhonemes=strlen((const char*)GPCSolns[fnbrs].Rules[r]->Phonemes);
+                size_t NumPhonemes=strlen((const char*)GPCSolns[fnbrs].Rules[r]->Phonemes);
                 if(LastRule&&(strchr(GPCSolns[fnbrs].PhonemeFrag,'+')!=NULL)) NumPhonemes++;
 
                 // Run through all the phonemes in the ouput of this rule.
-                for(int p=0;p<NumPhonemes;p++){
+                for(size_t p=0;p<NumPhonemes;p++){
                     // Display the base solution activation for this column and solution fnbrs.
                     DRC_Float Activation=GPCSolns[fnbrs].Activations[c];
                     if(Activation>GP_DisplayThreshold){
                         Phoneme=GPCSolns[fnbrs].PhonemeFrag[c];
                         if(Phoneme=='*') Phoneme='+';
 
-                        pfprintf(fh,"Cycle%d GPC%d %8.6f %c\n",
+                        pfprintf(fh,"Cycle%d GPC%zd %8.6f %c\n",
                             cycle,c,Activation,Phoneme);
                     }
                     c++;
@@ -3566,7 +3566,7 @@ void DRC_DspGPCActivations(FILE* fh,int cycle)
 
         // If there is no Non-Body-Rule solution then solution zero (0) is treated
         // as the GPC solution otherwise it is treated as the GPCR solution.
-        for(int r=dcRule,c=dcPhoneme;r<WORDSZ;r++){
+        for(size_t r=dcRule,c=dcPhoneme;r<WORDSZ;r++){
             // Stop when we get to the end of the rules list.
             if(GPCSolns[0].Rules[r]==NULL) break;
             if(GPCSolns[0].Rules[r]->Class==clsOut) break;
@@ -3574,17 +3574,17 @@ void DRC_DspGPCActivations(FILE* fh,int cycle)
             // For the last rule, which doesn't have a '+' termination (only
             // the solution PhonemeFrag has a '+' termination), make sure we
             // print one more column which will be the '+'.
-            int NumPhonemes=strlen((const char*)GPCSolns[0].Rules[r]->Phonemes);
-            if((int)strlen(GPCSolns[0].PhonemeFrag)-c==NumPhonemes+1) NumPhonemes++;
+            size_t NumPhonemes=strlen((const char*)GPCSolns[0].Rules[r]->Phonemes);
+            if(strlen(GPCSolns[0].PhonemeFrag)-c==NumPhonemes+1) NumPhonemes++;
 
-            for(int p=0;p<NumPhonemes;p++){
+            for(size_t p=0;p<NumPhonemes;p++){
 
                 // Display the base solution activation for this column and solution 0.
                 DRC_Float Activation=GPCSolns[0].Activations[c];
                 if(Activation>GP_DisplayThreshold){
                     Phoneme=GPCSolns[0].PhonemeFrag[c];
                     if(Phoneme=='*') Phoneme='+';
-                    pfprintf(fh,"Cycle%d GPC%s%d %8.6f %c\n",
+                    pfprintf(fh,"Cycle%d GPC%s%zd %8.6f %c\n",
                         cycle,(fnbrs>0)?"R":"",c,Activation,Phoneme);
                     c++;
                 }
@@ -3624,7 +3624,7 @@ int FirstNonBodyRuleSoln(void)
 
     // Search through all the solutions and find the first one that
     // doesn't have a clsBody rule.
-    for(int s=0;(s<(int)GPCSolns.size())&&(!Found);s++){
+    for(size_t s=0;(s<GPCSolns.size())&&(!Found);s++){
         GotBody=false;
         for(int r=0;(r<MAXINPUTBUF)&&(!Found);r++){
             t_gpcrule* rule=GPCSolns[s].Rules[r];
@@ -3635,7 +3635,7 @@ int FirstNonBodyRuleSoln(void)
             }
         }
         if(!GotBody){
-            rtn=s;
+            rtn=(int)s;
             Found=true;
         }
     }
@@ -3661,7 +3661,7 @@ void DRC_GPCRouteShift(int cycle,int& GPCRChars,bool& ChgFlag,FILE* UNUSED fh)
         ChgFlag=true;
     }else if((GPCRChars>0)&&(GPCRChars<=WORDSZ)){
         // NOTE: This should deal with all solutions not just the first.
-        int LastPhonemeCol=strlen(GPCSolns[0].PhonemeFrag)-1;
+        size_t LastPhonemeCol=strlen(GPCSolns[0].PhonemeFrag)-1;
 
         // Check to see if the PB buffer column corresponding to the last
         // GPCPhonemeBuffer column filled with a phoneme has any phonemes
@@ -3674,7 +3674,7 @@ void DRC_GPCRouteShift(int cycle,int& GPCRChars,bool& ChgFlag,FILE* UNUSED fh)
                 ChgFlag=true;
 
                 // Clear out the solutions vector.
-                for(int s=0;s<(int)GPCSolns.size();s++) {
+                for(size_t s=0;s<GPCSolns.size();s++) {
                     if(GPCSolns[s].WordFrag!=NULL) free(GPCSolns[s].WordFrag);
                     if(GPCSolns[s].PhonemeFrag!=NULL) free(GPCSolns[s].PhonemeFrag);
                 }
@@ -3770,11 +3770,11 @@ bool CompletelyMatched(const char* mask)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-void MergeMask(const char* mask,int start,t_gpcrule* rule)
+void MergeMask(const char* mask,size_t start,t_gpcrule* rule)
 {
     /** XXX: MERGE MASK OVERWRITES mask */
-    int PreContext=rule->PreContext;
-    for(int c=0;c<(int)strlen(mask)-start+PreContext;c++){
+    size_t PreContext=rule->PreContext;
+    for(size_t c=0;c<strlen(mask)-start+PreContext;c++){
         // Key to matching (word) mask with rule mask:
         // Word: MASK_USED       - Character already matched by simple fields in *some* rule.
         //       MASK_SPACE      - Character not matched by any simple field in any rule yet.
@@ -3808,11 +3808,11 @@ void MergeMask(const char* mask,int start,t_gpcrule* rule)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-void UnMergeMask(const char* mask,int start,t_gpcrule* rule)
+void UnMergeMask(const char* mask,size_t start,t_gpcrule* rule)
 {
     /** XXX: MERGE MASK OVERWRITES mask */
-    int PreContext=rule->PreContext;
-    for(int c=0;c<(int)strlen(mask)-start+PreContext;c++){
+    size_t PreContext=rule->PreContext;
+    for(size_t c=0;c<strlen(mask)-start+PreContext;c++){
         // Key to matching (word) mask with rule mask:
         // Word: MASK_USED       - Character already matched by simple fields in *some* rule.
         //       MASK_SPACE      - Character not matched by any simple field in any rule yet.
@@ -3855,11 +3855,11 @@ void UnMergeMask(const char* mask,int start,t_gpcrule* rule)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-bool FieldMatch(const char* word,const char* mask,t_gpcrule* rule,int start,int end,int* LetPhoIdx)
+bool FieldMatch(const char* word,const char* mask,t_gpcrule* rule,size_t start,size_t end,int* LetPhoIdx)
 {
-    int len,flds;
+    size_t len, flds;
     bool rtn=true;  // Rule fields did match.
-    int PreContext=rule->PreContext;
+    size_t PreContext=(size_t)rule->PreContext;
     // Get the number of fields in the rule.
     len=strlen((const char*)rule->Fields);
     flds=len;
@@ -3873,7 +3873,7 @@ bool FieldMatch(const char* word,const char* mask,t_gpcrule* rule,int start,int 
     // greater than or equal to the length of the Field string (because you can't
     // match characters, beyond the end of the string, that don't exist).
     if((PreContext <= start)&&(end >= (start-PreContext+len))){
-        for(int i=0;(i<flds)&&(rtn!=0);i++){
+        for(size_t i=0;(i<flds)&&(rtn!=0);i++){
             BYTE Field=rule->Fields[i];
             int  chr=word[start-PreContext+i];   // Get appropriate letter in word
             int  idx=LetPhoIdx[chr];             // Get its index value
@@ -3936,11 +3936,11 @@ bool FieldMatch(const char* word,const char* mask,t_gpcrule* rule,int start,int 
 
     // If we got a match then keep track of the phoneme and mask outputs.
     if(rtn){
-        int posn=strlen(GPCPhonemeBuffer);
+        size_t posn=strlen(GPCPhonemeBuffer);
         // The rule matched so lets set the activation of the outgoing
         // phonemes at this level for the phonemes generated by this rule.
         strcat(GPCPhonemeBuffer,(const char*)rule->Phonemes);    // Concatenate on phonme string for current rule.
-        for(int i=0;i<(int)strlen((const char*)rule->Phonemes);i++){
+        for(size_t i=0;i<strlen((const char*)rule->Phonemes);i++){
             // Some phonemes are protected from output rules.
             if((rule->Protected)||(rule->Class==clsBody)){
                 GPCPhonemeMask[posn+i]=MASK_PROTECTED;  // Indicate phoneme word is protected here.
@@ -4016,7 +4016,7 @@ int NumChr(const char* mask,char Special)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-void DRC_GPCFind(const char* word,const char* mask,int start, int end, bool GotTerm)
+void DRC_GPCFind(const char* word,const char* mask,size_t start, size_t end, bool GotTerm)
 {
     eWrdPosn Type1,Type2,Type3;
     //int SpacesBeforeMask;
@@ -4041,10 +4041,10 @@ void DRC_GPCFind(const char* word,const char* mask,int start, int end, bool GotT
     }
 
     // Save the number of phonemes in out output buffer currently.
-    int CurrPhoneme=strlen(GPCPhonemeBuffer);
+    size_t CurrPhoneme=strlen(GPCPhonemeBuffer);
 
     // Get the size of the word itself
-    int  WordSize=min(strlen(word),WORDSZ);
+    size_t WordSize=min(strlen(word),WORDSZ);
     if(strchr(word,'+')!=NULL) WordSize--;
 
     // The rules are tested in the GPC Route in order Body,Multi,CS,Two,Mphon, and Sing.
@@ -4063,7 +4063,7 @@ void DRC_GPCFind(const char* word,const char* mask,int start, int end, bool GotT
             // Ignore any rules that have context before the first simple letter field
             // because we need to match simple letters at the beginning (this is a
             // clsStart matching proceedure).
-            if(rule->PreContext>start) continue;
+            if((size_t)rule->PreContext>start) continue;
 
 
             // Check to make sure rule fits and matches front of word.
@@ -4095,7 +4095,7 @@ void DRC_GPCFind(const char* word,const char* mask,int start, int end, bool GotT
                 //           ((start-rule->PreContext+(int)strlen(rule->Fields)==WordSize)||
                 //            ((SpacesBeforeMask>=1)&&(SpacesAfterMask==0)));
 
-                int NumFlds=(int)strlen((const char*)rule->Fields);
+                size_t NumFlds=strlen((const char*)rule->Fields);
                 bool MatchEnd = (start-rule->PreContext+NumFlds==WordSize)&&(GotTerm);
                 int LastField =rule->Fields[NumFlds-1];
                 bool LF_Simple = (LastField>=FLD_SIMPLEMIN)&&(LastField<=FLD_SIMPLEMAX);
@@ -4133,7 +4133,7 @@ void DRC_GPCFind(const char* word,const char* mask,int start, int end, bool GotT
 
                             // Bump the index into the storage array when we recurse.
                             MatchedRulesIdx++;
-                            int nextstart=FindStart(mask);
+                            size_t nextstart=(size_t)FindStart(mask);
                             // We've not completely matched the word so continue the search.
                             DRC_GPCFind(word,mask,nextstart,end,GotTerm);
                             // Decrement the index into the storage array when we return.
@@ -4165,18 +4165,18 @@ void DRC_GPCFind(const char* word,const char* mask,int start, int end, bool GotT
 void DRC_GPCApplyOutRules(bool GotTerm)
 {
     const char* DummyMask="CCCCCCCCCXXXXXXXX";
-    int   Solutions=(int)GPCSolns.size();
+    size_t Solutions=GPCSolns.size();
 
     // Look through all the solutions in the vector and try and apply each of the
     // output rules.
-    for(int soln=0;soln<Solutions;soln++){
+    for(size_t soln=0;soln<Solutions;soln++){
         // Grab the pointer to the rules list for this solution and the phoneme string.
         t_gpcrule** RuleList=GPCSolns[soln].Rules;
         BYTE* Phonemes=(BYTE*)GPCSolns[soln].PhonemeFrag;
         char* Mask    =GPCSolns[soln].MaskFrag;
 
         // Get the size of the word itself
-        int  WordSize=min(strlen((const char*)Phonemes),WORDSZ);
+        size_t WordSize=min(strlen((const char*)Phonemes),WORDSZ);
         if(strchr((char*)Phonemes,'+')!=NULL) WordSize--;
 
         // Find the next empty slot in the rule list for the output rule(s).
@@ -4190,13 +4190,13 @@ void DRC_GPCApplyOutRules(bool GotTerm)
         for(;rule!=NULL;rule=GPC_NextRule(rule)){
             // Check the ouput rule GraphemeContext against all positions in
             // phoneme string that was the translation of our word.
-            for(int start=0;start<WORDSZ;start++){
+            for(size_t start=0;start<WORDSZ;start++){
                 // No point trying to match beyond the end of the phoneme word.
-                if(start>=(int)strlen((const char*)Phonemes)) break;
+                if(start>=strlen((const char*)Phonemes)) break;
 
                 if(FieldMatch((char*)Phonemes,DummyMask,rule,start,9,IndexPhoneme)>0){
                     // If this is an end rule then we must have matched the end.
-                    bool MatchedEnd=GotTerm&&(start-rule->PreContext+(int)strlen((const char*)rule->Fields)==WordSize);
+                    bool MatchedEnd=GotTerm&&(start-rule->PreContext+strlen((const char*)rule->Fields)==WordSize);
                     if((rule->WrdPosn==wpEnd)&&(!MatchedEnd)) continue;
 
                     if(Mask[start]!=MASK_PROTECTED){

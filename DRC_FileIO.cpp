@@ -822,7 +822,7 @@ void WriteGPCRulesFile(const char* FileName)
 
     if((fh=fopen(FileName,"w"))!=NULL){
         for(int i=0;i<GPCRulesIdx;i++){
-            pfprintf(fh,"%c %-6s %-26s %2d %-6s %s %3.1f ",
+            pfprintf(fh,"%c %-6s %-26s %2zd %-6s %s %3.1f ",
                 "?bmeA"[GPCRules[i].WrdPosn],
                 GPCRuleClassNames[GPCRules[i].Class],
                 GPCRules[i].GraphemeContext,
@@ -861,7 +861,7 @@ void WriteGPCRulesFile(const char* FileName)
 //---------------------------------------------------------------------------
 void DRC_GPCSetField(t_gpcrule* rule)
 {
-    int FieldIdx=0;
+    size_t FieldIdx=0;
     int FieldState=FLDStateNormal;
 
     char* word=(char*)rule->GraphemeContext;
@@ -926,7 +926,7 @@ void DRC_GPCSetField(t_gpcrule* rule)
                    if(rule->PreContext==-1){
                         rule->PreContext=FieldIdx;
                     }
-                    Fields[FieldIdx]=idx+1;
+                    Fields[FieldIdx]=(BYTE)(idx+1);
                     Mask[FieldIdx]=MASK_USED;
                     FieldIdx++;
 
@@ -935,7 +935,7 @@ void DRC_GPCSetField(t_gpcrule* rule)
                    if(rule->PreContext==-1){
                         rule->PreContext=FieldIdx;
                     }
-                    Fields[FieldIdx]=idx+1;
+                    Fields[FieldIdx]=(BYTE)(idx+1);
                     Mask[FieldIdx]=MASK_USED;
                     FieldIdx++;
 
@@ -943,7 +943,7 @@ void DRC_GPCSetField(t_gpcrule* rule)
                     FieldState=FLDStateContext;
                     GPCFieldStoreIdx++;
                     // Then save the FieldStore index to our fields array.
-                    Fields[FieldIdx]=GPCFieldStoreIdx+FLD_USERMIN;
+                    Fields[FieldIdx]=(BYTE)(GPCFieldStoreIdx+FLD_USERMIN);
                     Mask[FieldIdx]=MASK_SPACE;
                     FieldIdx++;
 
@@ -1213,8 +1213,8 @@ int GPCRuleSort(const void *a,const void *b)
     // The rules are tested in the GPC Route in order Body,Multi,CS,Two,Mphon, and Sing.
     rtn = EntryA->Class - EntryB->Class;
     if(rtn==0){
-        int EntryA_NumSimpleFlds=0;
-        for(int i=0;i<(int)strlen((const char*)EntryA->GraphemeContext);i++){
+        size_t EntryA_NumSimpleFlds=0;
+        for(size_t i=0;i<strlen((const char*)EntryA->GraphemeContext);i++){
             int Field=EntryA->Fields[i];
             // If the current field is a simple field then tally the
             // corresponding input activation.
@@ -1223,8 +1223,8 @@ int GPCRuleSort(const void *a,const void *b)
             }
         }
 
-        int EntryB_NumSimpleFlds=0;
-        for(int i=0;i<(int)strlen((const char*)EntryB->GraphemeContext);i++){
+        size_t EntryB_NumSimpleFlds=0;
+        for(size_t i=0;i<strlen((const char*)EntryB->GraphemeContext);i++){
             int Field=EntryB->Fields[i];
             // If the current field is a simple field then tally the
             // corresponding input activation.
@@ -1234,14 +1234,14 @@ int GPCRuleSort(const void *a,const void *b)
         }
 
         // Sort on the number of simple fields (larger number first).
-        rtn=EntryB_NumSimpleFlds - EntryA_NumSimpleFlds;
+        rtn=(int)(EntryB_NumSimpleFlds - EntryA_NumSimpleFlds);
         // Sort on the number of fields (non-CS rules first).
         if(rtn==0){
-            rtn=strlen((const char*)EntryA->GraphemeContext) - strlen((const char*)EntryB->GraphemeContext);
+            rtn=(int)(strlen((const char*)EntryA->GraphemeContext) - strlen((const char*)EntryB->GraphemeContext));
         }
         // Sort alphabetically on Grapheme string.
         if(rtn==0){
-            rtn=strcmp((const char*)EntryA->GraphemeContext,(const char*)EntryB->GraphemeContext);
+            rtn=(int)(strcmp((const char*)EntryA->GraphemeContext,(const char*)EntryB->GraphemeContext));
         }
     }
     return(rtn);
@@ -1558,12 +1558,12 @@ int ReadLettersFile(const char* FileName)
                     // Save the VC type.
                     Genericlex();
                     ptr=Genericlval.stype;
-                    Letters[LettersIdx].VC=toupper(*ptr);
+                    Letters[LettersIdx].VC=(char)toupper(*ptr);
 
                     // Save the Unknown field (always 'L');
                     Genericlex();
                     ptr=Genericlval.stype;
-                    Letters[LettersIdx].Unknown1=toupper(*ptr);
+                    Letters[LettersIdx].Unknown1=(char)toupper(*ptr);
 
                     // Save all the 14 letter features.
                     for(int f=0;f<14;f++){
@@ -1891,7 +1891,7 @@ char* trim(char *buf)
 {
     if(buf!=NULL){
         // Get the length of the string and...
-        int len=min(strlen(buf),MAXLINE);
+        int len=(int)min(strlen(buf),MAXLINE);
         // Trim the whitespace off the end.
         for(;(len>=0)&&(isspace(buf[len-1]));len--) {
             buf[len-1]=0;
@@ -2048,7 +2048,7 @@ void WritePropertiesFile(const char* FileName)
 //------------------------------------------------------------------------------
 
 t_vocabulary Vocabulary[MAXVOCAB];
-int          VocabularyIdx=MINVOCAB;       // Offset by 1(MINVOCAB) because indices need to accept a sign (ie. negative).
+size_t       VocabularyIdx=MINVOCAB;       // Offset by 1(MINVOCAB) because indices need to accept a sign (ie. negative).
 int          DiscardedWords=0;
 int          HomoGraphemeCombined=0;
 int          HomoPhonemeCombined=0;
@@ -2142,8 +2142,8 @@ void WriteVocabularyFile(const char* FileName)
         pfprintf(fh,"       Graphemic   Phonemic           Written                Spoken                     Chain          \n");
         pfprintf(fh,"Index  Word        Word        ??  Freq      CFS          Freq      CFS         Homophone   Homograph  \n");
         pfprintf(fh,"====== =========== =========== == ======= =========      ======= =========      ==========  ========== \n");
-        for(int i=MINVOCAB;i<VocabularyIdx;i++){
-            PrtVocabLine(fh,i);
+        for(size_t i=MINVOCAB;i<VocabularyIdx;i++){
+            PrtVocabLine(fh,(int)i);
         }
         fclose(fh);
     }else{
@@ -2224,7 +2224,7 @@ static void strlwr(char *str)
 {
     char* p = str;
     for (; *p != '\0'; ++p)
-        *p = tolower(*p);
+        *p = (char)tolower(*p);
 }
 
 //---------------------------------------------------------------------------
@@ -2326,7 +2326,7 @@ int ReadVocabularyFile(const char* FileName)
                         }
 
                         // Add this entry to our LL/PB index list.
-                        OILPOL_AddWords(VocabularyIdx);
+                        OILPOL_AddWords((int)VocabularyIdx);
 
                         VocabularyIdx++;
                     }else{
@@ -2368,29 +2368,29 @@ int ReadVocabularyFile(const char* FileName)
     // Set all the Homophone/Homograph pointers to point to their own entry (meaning
     // that this entry is neither a Homophone or Homograph.  We need to do this after
     // the qsort because the qsort can change the order.
-    for(int w=MINVOCAB; w<VocabularyIdx; w++){
-        Vocabulary[w].Homophone=w;
-        Vocabulary[w].Homograph=w;
+    for(size_t w=MINVOCAB; w<VocabularyIdx; w++){
+        Vocabulary[w].Homophone=(int)w;
+        Vocabulary[w].Homograph=(int)w;
     }
 
     // The DRC1.2 software has this switch on as a default (it treats the flag as
     // invalid).  However this software will allow you to turn it off.
     if(!FindBParam("SeparateHomographemes")->Value){
         pfprintf(fh_homograph,"Linking Homographs:\n");
-        for(int w=MINVOCAB+1; w<VocabularyIdx; w++){
+        for(size_t w=MINVOCAB+1; w<VocabularyIdx; w++){
             // If the two words are the same...
             if(strncmp(Vocabulary[w-1].Word,Vocabulary[w].Word,WORDSZ)==0){
                 HomoGraphemeCombined++;
                 // See if we have indication that we've linked in other words yet.
-                if(Vocabulary[w-1].Homograph == (w-1)){
+                if(Vocabulary[w-1].Homograph == (int)(w-1)){
                     // Nope ... then link these together
                     // Link the first two homographs together.
-                    Vocabulary[w-1].Homograph=w;
-                    Vocabulary[w].Homograph=-(w-1);     // Make current Key word (negative pointer).
+                    Vocabulary[w-1].Homograph=(int)w;
+                    Vocabulary[w].Homograph=(int)(-(w-1));     // Make current Key word (negative pointer).
                     // Record homographs in a file.
                     if(fh_homograph!=NULL){
                         // Test fh_homograph to avoid calculations in argument list.
-                        pfprintf(fh_homograph,"  [%d]%s\\%s <--> [%d]%s\\%s\n",
+                        pfprintf(fh_homograph,"  [%zd]%s\\%s <--> [%zd]%s\\%s\n",
                             w-1,Vocabulary[w-1].Word,Vocabulary[w-1].Phoneme,
                             w,Vocabulary[w].Word,Vocabulary[w].Phoneme);
                     }
@@ -2399,11 +2399,11 @@ int ReadVocabularyFile(const char* FileName)
                     // homograph to the first one and link the previous to this one.
                     // NOTE: DO NOT interchange next two lines.
                     Vocabulary[w].Homograph=-(abs(Vocabulary[w-1].Homograph)); // Make this one the key word.
-                    Vocabulary[w-1].Homograph=w;                               // Previous no longer key word.
+                    Vocabulary[w-1].Homograph=(int)w;                               // Previous no longer key word.
                     // Record homographs in a file.
                     if(fh_homograph!=NULL){
                         // Test fh_homograph to avoid calculations in argument list.
-                        pfprintf(fh_homograph,"  [%d]%s\\%s --> [%d]%s\\%s --> [%d]%s\\%s (insert)\n",
+                        pfprintf(fh_homograph,"  [%zd]%s\\%s --> [%zd]%s\\%s --> [%d]%s\\%s (insert)\n",
                             w-1,Vocabulary[w-1].Word,Vocabulary[w-1].Phoneme,
                             w,Vocabulary[w].Word,Vocabulary[w].Phoneme,
                             Vocabulary[w].Homograph,Vocabulary[abs(Vocabulary[w].Homograph)].Word,
@@ -2447,7 +2447,7 @@ int ReadVocabularyFile(const char* FileName)
         // Fixup the Homophones.  This ammounts to producing a circular list in the
         // .Homophone elements.  We will display the likages as they are produced.
         pfprintf(fh_homophone,"Linking Homophones:\n");
-        for(int w=1; w<VocabularyIdx; w++){
+        for(size_t w=1; w<VocabularyIdx; w++){
             // Use the ancillary index array to give us pointers into the Vocabulary
             // array. Since the PhonemeList adjacent pointers point to phonetic words
             // that are alphabetically adjacent we can use them to fixup the Homophonemes.
@@ -2505,14 +2505,15 @@ int ReadVocabularyFile(const char* FileName)
     }
 
     // Maked the summed entries of the homograph and homophones the same as the key element.
-    for(int w=MINVOCAB; w<VocabularyIdx; w++){
-        int start,end,sumfreq;
+    for(size_t w=MINVOCAB; w<VocabularyIdx; w++){
+        size_t start,end;
+        int sumfreq;
         if(Vocabulary[w].Homograph<0){
             end=w;
             start=end;
             sumfreq=Vocabulary[w].Written.SumFreq;
             do{
-                start=abs(Vocabulary[start].Homograph);
+                start=(size_t)abs(Vocabulary[start].Homograph);
                 Vocabulary[start].Written.SumFreq=sumfreq;
             }while(start!=end);
         }
@@ -2522,7 +2523,7 @@ int ReadVocabularyFile(const char* FileName)
             start=end;
             sumfreq=Vocabulary[w].Spoken.SumFreq;
             do{
-                start=abs(Vocabulary[start].Homophone);
+                start=(size_t)abs(Vocabulary[start].Homophone);
                 Vocabulary[start].Spoken.SumFreq=sumfreq;
             }while(start!=end);
         }
@@ -2538,7 +2539,7 @@ int ReadVocabularyFile(const char* FileName)
     // updated.
     lfMaxWrittenWordFreq=log10((DRC_Float)(MaxWrittenWordFreq+1));
     lfMaxSpokenWordFreq=log10((DRC_Float)(MaxSpokenWordFreq+1));
-    for(int w=MINVOCAB; w<VocabularyIdx; w++){
+    for(size_t w=MINVOCAB; w<VocabularyIdx; w++){
         // Determine this word's written frequency scaling resting state
         Vocabulary[w].Written.CFS=CFSCalc(Vocabulary[w].Written.SumFreq,lfMaxWrittenWordFreq);
 
@@ -2562,19 +2563,16 @@ int ReadVocabularyFile(const char* FileName)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-int SpcStrNCmp(char* str1, char* str2, int len)
+static int SpcStrNCmp(const char* str1, const char* str2, size_t len)
 {
-    int rtn;
-    char* pstr1=str1;
-    char* pstr2=str2;
-    if(str1[0]==0){
-        pstr1++;
+    /* XXX: waiiiit... wtf */
+    if(*str1==0){
+        str1++;
     }
-    if(str2[0]==0){
-        pstr2++;
+    if(*str2==0){
+        str2++;
     }
-    rtn=strncmp(pstr1,pstr2,len);
-    return(rtn);
+    return strncmp(str1,str2,len);
 }
 //---------------------------------------------------------------------------
 // Routine:
@@ -2592,9 +2590,9 @@ void DisplayHomographs(FILE* fh)
     pfprintf(fh,"\n\nMax. Freq: Written=%d, Spoken=%d.\n\n",MaxWrittenWordFreq,MaxSpokenWordFreq);
     pfprintf(fh,"Graphemic Word           Corresponding Phonemic Words\n");
     pfprintf(fh,"======================== ============================================\n");
-    for(int w=MINVOCAB+1; w<VocabularyIdx; w++){
-        int w1=w-1;
-        int w2=w;
+    for(size_t w=MINVOCAB+1; w<VocabularyIdx; w++){
+        size_t w1=w-1;
+        size_t w2=w;
         if(SpcStrNCmp(Vocabulary[w1].Word,Vocabulary[w2].Word,WORDSZ)==0){
             if(!InList){
                 // First pair of homophones detected.
@@ -2644,7 +2642,7 @@ void DisplayHomophones(FILE* fh)
     pfprintf(fh,"\n\nMax. Freq: Written=%d, Spoken=%d.\n\n",MaxWrittenWordFreq,MaxSpokenWordFreq);
     pfprintf(fh,"Phonemic Word            Corresponding Graphemic Words\n");
     pfprintf(fh,"======================== ============================================\n");
-    for(int w=MINVOCAB+1; w<VocabularyIdx; w++){
+    for(size_t w=MINVOCAB+1; w<VocabularyIdx; w++){
         int w1=PhonemeList[w-1];
         int w2=PhonemeList[w];
         if(SpcStrNCmp(Vocabulary[w1].Phoneme,Vocabulary[w2].Phoneme,WORDSZ)==0){
@@ -2849,17 +2847,18 @@ void DspNeighbourTtl(FILE *fh)
 
 bool IsNeighbour(const char* word, const char* nonword)
 {
-    int len1=strlen(word);
-    int len2=strlen(nonword);
-    int len=max(len1,len2);
+    size_t len1=strlen(word);
+    size_t len2=strlen(nonword);
+    size_t len=max(len1,len2);
     bool rtn=true;
 
-    if(abs(len2-len1)>1){
+    if(abs((int)(len2-len1))>1){
+    /* if(abs(len2-len1)>1){ */
         // Neighbourhood words can only differ by one letter.
         rtn=false;
     }else{
         int errcnt=0;
-        for(int i=0;i<len;i++){
+        for(size_t i=0;i<len;i++){
             if(word[i]!=nonword[i]){
                 errcnt++;
             }
@@ -2876,12 +2875,12 @@ void DspNeighbourhood(FILE* fh,const char* nonword){
     // Clear the vector
     VocabIdx.erase(VocabIdx.begin(),VocabIdx.end());
     // Count and keep track of indices to words that are neighbours.
-    for(int w=0; w<VocabularyIdx; w++){
+    for(size_t w=0; w<VocabularyIdx; w++){
         // Check to see if this word is a neighbour.
         if(IsNeighbour(Vocabulary[w].Word,nonword)){
             // Only process homographs if they are the key one (or nonhomographs).
-            if((Vocabulary[w].Homograph==w)||(Vocabulary[w].Homograph<0)){
-                VocabIdx.push_back(w);
+            if((Vocabulary[w].Homograph==(int)w)||(Vocabulary[w].Homograph<0)){
+                VocabIdx.push_back((int)w);
             }
         }
 
@@ -2894,7 +2893,7 @@ void DspNeighbourhood(FILE* fh,const char* nonword){
     pfprintf(fh,"%-12s %7s %3zu",nonword,(Word)?"WORD!!":"nonword",VocabIdx.size());
     if(VocabIdx.size()>0){
         // If there are neighbours print them too.
-        for(int w=0;w<(int)VocabIdx.size();w++){
+        for(size_t w=0;w<VocabIdx.size();w++){
             pfprintf(fh," %s",Vocabulary[VocabIdx[w]].Word);
         }
     }

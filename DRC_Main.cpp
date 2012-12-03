@@ -196,7 +196,7 @@ void ProcessDRCCmd(t_DRCCmd* Cmd)
                     printf("Available parameters:\n");
                     printf("    Parameter Name                  Value\n");
                     printf("    ------------------------- -----------\n");
-                    t_fparam* fp=DRC_FParams;
+                    t_fparam* fp=DRC_FParams; // XXX: is this intended?
                     while(fp->Name!=NULL){
                         printf("    %-25s %11.6f\n",fp->Name,fp->Value);
                         fp++;

@@ -99,7 +99,7 @@ typedef struct{
     eWrdPosn  WrdPosn;        // Position in the word to match (b-begin,m-medial,e-end,A-any).
     eGPCClass Class;          // Class of GPC Rule.
     BYTE*     GraphemeContext;// Context string for rule.
-    int       PreContext;     // Number of context fields before first basic or simple character field.
+    size_t    PreContext;     // Number of context fields before first basic or simple character field.
     BYTE      Fields[MAXINPUTBUF]; // Fields corresponding to GraphemeContext
     char      Mask[MAXINPUTBUF];   // Mask of simple('X') vs. context(' ') fields of Fields[]
     BYTE*     Phonemes;       // Phonemic replacement.

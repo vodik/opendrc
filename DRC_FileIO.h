@@ -78,7 +78,7 @@ typedef struct{
     int     Homograph; // Linked list of homographs.
 }t_vocabulary;
 extern t_vocabulary Vocabulary[MAXVOCAB];
-extern int          VocabularyIdx;
+extern size_t       VocabularyIdx;
 extern int          DiscardedWords;
 extern int          HomoGraphemeCombined;
 extern int          HomoPhonemeCombined;
