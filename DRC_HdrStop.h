@@ -48,6 +48,8 @@
 #ifndef _H_DRC_HdrStop
 #define _H_DRC_HdrStop
 
+#define UNUSED __attribute__((unused))
+
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <string>
@@ -58,7 +60,6 @@
 #include <cctype>
 #include <cmath>
 #include <cassert>
-/* #include <io.h> */
 #include <exception>
 #include <vector>
 

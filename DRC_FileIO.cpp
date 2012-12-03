@@ -407,10 +407,10 @@ void File_Line_Display(void)
 t_parameter Parameters[MAXPARAM];
 int         ParametersIdx=0;
 
-static void WriteParamFile(char* FileName);
-static void OutputParamFile(FILE* fh);
+static void UNUSED WriteParamFile(const char* FileName);
+static void UNUSED OutputParamFile(FILE* fh);
 static void DRC_GPCSetField(t_gpcrule* rule);
-static int GPCRuleSort(const void *a,const void *b);
+static int UNUSED GPCRuleSort(const void *a,const void *b);
 static void SortGPCRules(void);
 static bool InitGPCSearch(void);
 static char* trim(char *buf);
@@ -419,9 +419,9 @@ static void WriteBatchStatsHdr(FILE* fh);
 static void ClearBatchStatistics(void);
 static DRC_Float sqr(DRC_Float num);
 static void DspMean(FILE* fh,const char* good,const char* bad,t_StatList& Stats);
-static void DspStdDev(FILE* fh,char* good,const char* bad,t_StatList& Stats);
+static void DspStdDev(FILE* fh,const char* good,const char* bad,t_StatList& Stats);
 static void RTTotal(t_StatList& Return,t_StatList& Stats1,t_StatList& Stats2);
-static int ReadDriverFile(const char* FileName);
+static int UNUSED ReadDriverFile(const char* FileName);
 
 //---------------------------------------------------------------------------
 // Routine: CleanParamFile() - Routine clean up the parameters structure.
@@ -2756,7 +2756,6 @@ int ReadBatchFile(const char* FileName)
     FILE* fhBatch=NULL;
     FILE* fhBatchStats=NULL;
     int   rtn=1;
-    char  buf[MAXPATH];
     char* BatchFileName=strdup(FileName);
 
     fh_lexlinedsp=stdout;

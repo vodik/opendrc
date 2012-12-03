@@ -171,12 +171,9 @@
 
 #define MAXERR 10
 
-static FILE* fh_BatchFile=stdin;
-
-static void* FindParam(char* Name);
 static bool MatchArg(const char *flag,const char *arg);
 static void TestAndCall(int &idx,int argc,char **argv,int (*func)(char **argv));
-static void ErrCmdSwt(char *str);
+static void ErrCmdSwt(const char *str);
 
 static int Set_Language(char **arglist);
 static int Set_VisualFeatureLetterUnits(char **arglist);
@@ -509,32 +506,6 @@ t_bparam* FindBParam(const char* Name,bool FailHard)
 
 
 //---------------------------------------------------------------------------
-// Routine:
-// Input:
-// Output:
-// SideEffects:
-// Errors:
-//---------------------------------------------------------------------------
-void* FindParam(const char* Name)
-{
-    void *rtn=NULL;
-
-    rtn=(void*)FindIParam(Name,false);
-    if(rtn==NULL){
-        rtn=(void*)FindFParam(Name,false);
-    }
-    if(rtn==NULL){
-        rtn=(void*)FindSParam(Name,false);
-    }
-    if(rtn==NULL){
-        rtn=(void*)FindBParam(Name,false);
-    }
-
-    return(rtn);
-}
-
-
-//---------------------------------------------------------------------------
 // Routine: Return value of given named parameter.
 // Input:
 // Output:
@@ -720,7 +691,6 @@ void ProcessCmdLineArgs(int argc,char **argv)
     int i=-1;
     int MaxCycles=FindIParam("MaxCycles")->Value;
     const char* TestWord=NULL;
-    char buf[MAXPATH];
 
     // For each command line argument...
     // TestAndCall() will increment 'a' when a switch is found.
@@ -990,7 +960,7 @@ int Set_SetParameter(char **arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-int Set_ReadParameterFile(char **arglist)
+int Set_ReadParameterFile(char UNUSED **arglist)
 {
     // -p FILE  -Read parameters from FILE
     //char* CmdLineFlag=arglist[0];
@@ -1010,7 +980,7 @@ int Set_ReadParameterFile(char **arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-int Set_SeparateHomophoneFlag(char **arglist)
+int Set_SeparateHomophoneFlag(char UNUSED **arglist)
 {
     // -s  -Give homophones separate entries in the phonological lexicon
     //char* CmdLineFlag=arglist[0];
@@ -1026,7 +996,7 @@ int Set_SeparateHomophoneFlag(char **arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-int Set_ContinueToMaxCycles(char **arglist)
+int Set_ContinueToMaxCycles(char UNUSED **arglist)
 {
     // -c  -Continue running cycles until MAXCYCLES is reached, even if the
     //      stimuli is named before then.
@@ -1071,7 +1041,7 @@ int Set_ProcessBatchFile(char **arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-int Set_TestBatchOnly(char **arglist)
+int Set_TestBatchOnly(char UNUSED **arglist)
 {
     // -t   - Test batch file only (no execution done).
     FindBParam("TestBatchOnly")->Value=true;
@@ -1181,7 +1151,7 @@ int Set_ActivationFileExt(char **arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-int Set_SaveActivationLvls(char **arglist)
+int Set_SaveActivationLvls(char UNUSED **arglist)
 {
     // -a  -Save activation levels
     //char* CmdLineFlag=arglist[0];
@@ -1198,7 +1168,7 @@ int Set_SaveActivationLvls(char **arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-int Set_ReportExtraInfo(char **arglist)
+int Set_ReportExtraInfo(char UNUSED **arglist)
 {
     // -e  -Report extra information in the screen output & RT/stats files
     //char* CmdLineFlag=arglist[0];
@@ -1259,7 +1229,7 @@ int Set_OutputFlags(char **arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-int Set_ReportActGreater(char **arglist)
+int Set_ReportActGreater(char UNUSED **arglist)
 {
     // -m VALUE  -Report only activation levels >= VALUE (default 0.02)
     //char* CmdLineFlag=arglist[0];
@@ -1276,7 +1246,7 @@ int Set_ReportActGreater(char **arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-int Set_NoOutputFiles(char **arglist)
+int Set_NoOutputFiles(char UNUSED **arglist)
 {
     // --nofiles  -Suppress creation of all output files
     //char* CmdLineFlag=arglist[0];
@@ -1332,7 +1302,7 @@ int Set_OutputDirectory(char **arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-int Set_ReportSimDuration(char **arglist)
+int Set_ReportSimDuration(char UNUSED **arglist)
 {
     // -t  -Report simulation duration(s) in ms
     //char* CmdLineFlag=arglist[0];
@@ -1355,7 +1325,7 @@ int Set_ReportSimDuration(char **arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-int Set_Verbalize(char **arglist)
+int Set_Verbalize(char UNUSED **arglist)
 {
     // -v  -Pronounce the model's output audibly (Mac OS X only)
     //char* CmdLineFlag=arglist[0];
@@ -1376,7 +1346,7 @@ int Set_Verbalize(char **arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-int ListIrregularWords(char **arglist)
+int ListIrregularWords(char UNUSED **arglist)
 {
     // --irreglist  -List all the words in the selected language which are irregular
     //               (the pronunciation produced by the GPC rules does not match the vocabulary)
@@ -1396,7 +1366,7 @@ int ListIrregularWords(char **arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-int ListIrregularStressWords(char **arglist)
+int ListIrregularStressWords(char UNUSED **arglist)
 {
     // --irregstress  -List all the words in the selected language which have
     //                 irregular stress (the stress pattern selected by the GPC stress
@@ -1417,7 +1387,7 @@ int ListIrregularStressWords(char **arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-int ApplyGPCRules(char **arglist)
+int ApplyGPCRules(char UNUSED **arglist)
 {
     // --reg  -Read words from stdin and apply GPC rules to them
     //char* CmdLineFlag=arglist[0];
@@ -1436,7 +1406,7 @@ int ApplyGPCRules(char **arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-int ListRegularWords(char **arglist)
+int ListRegularWords(char UNUSED **arglist)
 {
     // --reglist  -List all the words in the selected language which are regular
     //char* CmdLineFlag=arglist[0];
@@ -1454,7 +1424,7 @@ int ListRegularWords(char **arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-int ApplyGPCStressRules(char **arglist)
+int ApplyGPCStressRules(char UNUSED **arglist)
 {
     // --stress  -Read words from stdin and apply GPC stress rules to them
     //char* CmdLineFlag=arglist[0];
@@ -1472,7 +1442,7 @@ int ApplyGPCStressRules(char **arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-int ListWhammies(char **arglist)
+int ListWhammies(char UNUSED **arglist)
 {
     // --whammies  -Read words from stdin and list whammies for them
     //char* CmdLineFlag=arglist[0];
@@ -1490,7 +1460,7 @@ int ListWhammies(char **arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-int DisplayHelp(char **arglist)
+int DisplayHelp(char UNUSED **arglist)
 {
     // Display the help message as it appears in the text array above.
     // Insert terminating newlines on each line (requires that blank lines
@@ -1515,7 +1485,7 @@ int DisplayHelp(char **arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-int DisplayVersion(char **arglist)
+int DisplayVersion(char UNUSED **arglist)
 {
     // --version  -Display version numbers and exit
     //char* CmdLineFlag=arglist[0];
@@ -1589,7 +1559,7 @@ int ReadCmdLineOptionsFile(char **arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-int Cmd_DspNeighbourhood(char **arglist)
+int Cmd_DspNeighbourhood(char UNUSED **arglist)
 {
     FindBParam("Neighbourhood")->Value=true;
     return(1);
@@ -1603,7 +1573,7 @@ int Cmd_DspNeighbourhood(char **arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-int Cmd_DspHomographs(char **arglist)
+int Cmd_DspHomographs(char UNUSED **arglist)
 {
     DisplayHomographs(stdout);
     return(1);
@@ -1617,7 +1587,7 @@ int Cmd_DspHomographs(char **arglist)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-int Cmd_DspHomophones(char **arglist)
+int Cmd_DspHomophones(char UNUSED **arglist)
 {
     DisplayHomophones(stdout);
     return(1);

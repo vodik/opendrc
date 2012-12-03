@@ -614,7 +614,6 @@ static int* POL_Index=NULL;
 
 static int OIL_CharNext(int chridx,int column,int prev);
 static int POL_CharNext(int phoidx,int column,int prev);
-static char* Trim(char* str);
 static bool fequal(DRC_Float a,DRC_Float b);
 static int LetterIdx(char letter);
 static void IndexLetters(void);
@@ -701,7 +700,7 @@ void OILPOL_AddWords(int VocabIdx)
     bool POLPB_Terminated=false;
     for(int c=0;c<WORDSZ;c++){
         // Determine all the indices we need to link this word.
-        chridx=IndexLetter[pWord[c]];            // Convert alphabetic character into 0-26 index
+        chridx=IndexLetter[(int)pWord[c]];       // Convert alphabetic character into 0-26 index
         newidx=VocabIdx*WORDSZ*2 + c;            // Figure out index for current element
         curidx=chridx*WORDSZ+c;                  // ... and into head pointer array (OIL_Index)
         // Link our new element into head of linked-list.
@@ -710,7 +709,7 @@ void OILPOL_AddWords(int VocabIdx)
 
         if(!POLPB_Terminated){
             // Determine all the indices we need to link this word.
-            phoidx=IndexPhoneme[pPhoneme[c]];       // Convert phoneme character into 0-45 index
+            phoidx=IndexPhoneme[(int)pPhoneme[c]];   // Convert phoneme character into 0-45 index
             newidx=VocabIdx*WORDSZ*2 + WORDSZ + c;   // Figure out index for current element
             curidx=phoidx*WORDSZ+c;                  // ... and into head pointer array (POL_Index)
             // Link our new element into head of linked-list.
@@ -749,33 +748,6 @@ int POL_CharNext(int phoidx,int column,int prev)
         rtn=OILPOL_Sort[prev];
     }
     return(rtn);
-}
-
-//---------------------------------------------------------------------------
-// Trim the left and right space characters off the given string and return
-// a pointer to the beginning of the trimmed string.
-//---------------------------------------------------------------------------
-// Routine:
-// Input:
-// Output:
-// SideEffects:
-// Errors:
-//---------------------------------------------------------------------------
-char* Trim(char* str)
-{
-    // Get pointer to last character in string.
-    char* ptr=&str[strlen(str)-1];
-    // Decrement the pointer NULLing anything that is whitespace
-    while(isspace(*ptr)){
-        *ptr=0;
-        ptr--;
-    }
-    // Set pointer to beginning of string.
-    ptr=str;
-    // Find first non-whitespace character.
-    while(isspace(*ptr)) ptr++;
-    // Return pointer to that character.
-    return(ptr);
 }
 
 //------------------------------------------------------------------------------
@@ -841,7 +813,7 @@ void IndexLetters()
 
         // Now go through all the letters we have defined and save their index.
         for(int i=0; i<LETTERS; i++){
-            IndexLetter[Letters[i].Letter]=i;
+            IndexLetter[(int)Letters[i].Letter]=i;
         }
     }
 }
@@ -890,7 +862,7 @@ void IndexPhonemes()
 
         // Now go through all the letters we have defined and save their index.
         for(int i=0; i<PHONEMES; i++){
-            IndexPhoneme[Phonemes[i].PhonemeCode]=i;
+            IndexPhoneme[(int)Phonemes[i].PhonemeCode]=i;
         }
     }
 }
@@ -1042,11 +1014,10 @@ static void strlwr(char *str)
         *p = tolower(*p);
 }
 
-void DRC_ProcessWord(int MaxCycles,const char *TestWord,const char* Category)
+void DRC_ProcessWord(int MaxCycles,const char *TestWord,const char* UNUSED Category)
 {
     Enter("DRC_ProcessWord");
 
-    char buf[MAXPATH];
     int  PromotedGPCRChars = 0;      // Number of word characters promoted to GPCR (including assumed trailing '+')
     bool FLG_GPCRInpChg    = false;  // Flag:When the input to the GPC route has changed.
 
@@ -1545,7 +1516,7 @@ void DRC_ResetSystem()
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-void DRC_PropagateActivation(int cycle,FILE* fh)
+void DRC_PropagateActivation(int UNUSED cycle,FILE* UNUSED fh)
 {
     Enter("DRC_PropagateActivation");
 
@@ -1615,7 +1586,7 @@ void DRC_CalcFeatures(int cycle,FILE* fh)
         // Look for the letter in the Letters table and set a pointer to the
         // features part.  Unknown letters will translate into blanks and then
         // into a zero feature list.
-        DRC_Float* pf=(DRC_Float*)Letters[IndexLetter[VisualBuffer[c]]].Features;
+        DRC_Float* pf=(DRC_Float*)Letters[IndexLetter[(int)VisualBuffer[c]]].Features;
 
         // If we found the letter then copy over its features.
         for(int f=0; f<FEATURES; f++){
@@ -1811,7 +1782,7 @@ DRC_Float* DRC_CalcFeatLetterEI(const char* str)       // Working & Tested
         // For each column in the incoming word...
         for(int c=0; c<WORDSZ; c++){
             // Get the index of the letter of the real word.
-            int idx=IndexLetter[str[c]];
+            int idx=IndexLetter[(int)str[c]];
             // For each possible letter for this real word column ...
             for(int L=0; L<LETTERS; L++){
                 // For each feature in this test letter...
@@ -1874,7 +1845,7 @@ DRC_Float* DRC_CalcOILLetterEI()
             // For each word in the OIL process every letter in that word.
             for(int c=0; c<WORDSZ; c++){
                 // Get the array index of that letter.
-                int idx=IndexLetter[Vocabulary[w].Word[c]];
+                int idx=IndexLetter[(int)Vocabulary[w].Word[c]];
                 for(int L1=0; L1<LETTERS; L1++){
                     if(idx==L1){
                         // Go through all the letter possibilities for that column in the
@@ -2052,8 +2023,9 @@ DRC_Float* DRC_CalcLetterOIL_EI()
         // These are just the temporary arrays to contain the Excit/Inhib values
         // for each character in each input column.  These values are tallied once
         // for the entire OIL for efficiency.
-        DRC_Float LetterLayerE[WORDSZ*LETTERS];
-        DRC_Float LetterLayerI[WORDSZ*LETTERS];
+        // XXX: apparently unsued
+        /* DRC_Float LetterLayerE[WORDSZ*LETTERS]; */
+        /* DRC_Float LetterLayerI[WORDSZ*LETTERS]; */
 
         // Lets first find out what the total activation of all letters in all
         // columns is.  Once this is found we can subtract one of the inhibitions
@@ -2835,7 +2807,7 @@ DRC_Float* DRC_CalcPhonoPhoneme_EI()
             // For each word in the POL process every letter in that word.
             for(int c=0; (c<WORDSZ)&&(!Finished); c++){
                 // Get the array index of the c'th phoneme in the activated word.
-                int idx=IndexPhoneme[Vocabulary[w].Phoneme[c]];
+                int idx=IndexPhoneme[(int)Vocabulary[w].Phoneme[c]];
                 // Now accumulate the E/I for each possible phoneme in the c'th position.
                 for(int L=0; L<PHONEMES; L++){
                     if(L==idx){
@@ -3124,7 +3096,7 @@ void DRC_CalcGPCRoute(int cycle,int NumCharGPCR,bool& WordShifted,FILE* fh)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-void DRC_UpdActFromGPCR(FILE* fh,int cycle,const char* word)
+void DRC_UpdActFromGPCR(FILE* UNUSED fh,int UNUSED cycle,const char* word)
 {
     char RuleUsed[MAXINPUTBUF];
 
@@ -3282,7 +3254,7 @@ void DRC_UpdActFromGPCR(FILE* fh,int cycle,const char* word)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-void DRC_UpdPBFromGPC(FILE* fh,int cycle,const char* word)
+void DRC_UpdPBFromGPC(FILE* UNUSED fh,int UNUSED cycle,const char* UNUSED word)
 {
     // Zero our totals variables.
     DRC_GPC_TotalAct=0.0;
@@ -3679,7 +3651,7 @@ int FirstNonBodyRuleSoln(void)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-void DRC_GPCRouteShift(int cycle,int& GPCRChars,bool& ChgFlag,FILE* fh)
+void DRC_GPCRouteShift(int cycle,int& GPCRChars,bool& ChgFlag,FILE* UNUSED fh)
 {
     // Determine the column of the last GPC Route generated phoneme and
     // watch all the phonemes in that column for excursions past the
@@ -4280,7 +4252,7 @@ bool DRC_TestOutput(int Cycle,FILE* fh)
     bool finished=false;
 
     // Get index value of a blank (word terminator) to detect end.
-    int blank=IndexPhoneme[' '];
+    int blank=IndexPhoneme[(int)' '];
 
     // 'Zero' out the index buffer for the phonemes.
     for(int c=0; c<WORDSZ; c++) ActIdx[c]=blank;
@@ -4351,7 +4323,7 @@ bool DRC_TestOutput(int Cycle,FILE* fh)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-void DRC_FinalReport(FILE* fh)
+void DRC_FinalReport(FILE* UNUSED fh)
 {
     Enter("DRC_FinalReport");
 
@@ -4365,7 +4337,7 @@ void DRC_FinalReport(FILE* fh)
 // SideEffects:
 // Errors:
 //---------------------------------------------------------------------------
-void DRC_Cleanup(FILE* fh)
+void DRC_Cleanup(FILE* UNUSED fh)
 {
     Enter("DRC_Cleanup");
 
