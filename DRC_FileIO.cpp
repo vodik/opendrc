@@ -822,7 +822,7 @@ void WriteGPCRulesFile(const char* FileName)
 
     if((fh=fopen(FileName,"w"))!=NULL){
         for(int i=0;i<GPCRulesIdx;i++){
-            pfprintf(fh,"%c %-6s %-26s %2d %-6s %c %3.1f ",
+            pfprintf(fh,"%c %-6s %-26s %2d %-6s %s %3.1f ",
                 "?bmeA"[GPCRules[i].WrdPosn],
                 GPCRuleClassNames[GPCRules[i].Class],
                 GPCRules[i].GraphemeContext,
@@ -1111,7 +1111,7 @@ int ReadGPCRulesFile(const char* FileName)
                         case 'e': GPCRules[GPCRulesIdx].WrdPosn=wpEnd; break;
                         case 'A': GPCRules[GPCRulesIdx].WrdPosn=wpAny; break;
                         default:
-                            pfprintf(stderr,"ERROR: GPCRules file: Illegal Word Position='%c'\n",ptr);
+                            pfprintf(stderr,"ERROR: GPCRules file: Illegal Word Position='%c'\n",*ptr);
                             break;
                     }
 
@@ -2891,7 +2891,7 @@ void DspNeighbourhood(FILE* fh,const char* nonword){
         }
     }
     // Print the 'nonword's leadin.
-    pfprintf(fh,"%-12s %7s %3d",nonword,(Word)?"WORD!!":"nonword",VocabIdx.size());
+    pfprintf(fh,"%-12s %7s %3zu",nonword,(Word)?"WORD!!":"nonword",VocabIdx.size());
     if(VocabIdx.size()>0){
         // If there are neighbours print them too.
         for(int w=0;w<(int)VocabIdx.size();w++){

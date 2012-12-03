@@ -590,7 +590,7 @@ static DRC_Float EL_UnsupportedDecay;    // Decay of activation for phonemes wit
 static DRC_Float GPC_GPCPhonemeExcit;
 static DRC_Float GPC_GPCCriticalPhonology;
 static int       GPC_GPCOnset;
-static //int   GPC_CyclesB4NextLetter;  // Obsolete in DRC1.2
+//static int   GPC_CyclesB4NextLetter;  // Obsolete in DRC1.2
 
 /* XXX: WTF? */
 static bool      GPC_DRC12UnSupDecayTrigErr;  // Flag which turns on/off the compensation for a bug in DRC1.2
@@ -1274,7 +1274,7 @@ void PrtCopyright(FILE* fh)
     if(fh!=NULL){
         int line=0;
         while(Copyright[line]!=NULL){
-            pfprintf(fh,Copyright[line]);
+            fputs(Copyright[line], fh);
             line++;
         }
     }
@@ -1971,7 +1971,7 @@ void DRC_CalcOILWords(int cycle,FILE* fh)
                     if(FLG_OutExtended) {
                         pfprintf(fh,"  Cycle%03d Orth %8.6f '%s' (%d)\n",cycle,OIL_WordsTP1[w],Vocabulary[w].Word,w);
                     }else{
-                        pfprintf(fh,"Cycle%d Orth %8.6f %s\n",cycle,OIL_WordsTP1[w],Vocabulary[w].Word,w);
+                        pfprintf(fh,"Cycle%d Orth %8.6f %s\n",cycle,OIL_WordsTP1[w],Vocabulary[w].Word);
                     }
                 }
             }
