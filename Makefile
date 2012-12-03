@@ -1,7 +1,7 @@
 VERSION = $(shell git describe --tags)
 
 CXXFLAGS := -std=c++11 \
-	-Wall -Wextra -pedant \
+	-Wall -Wextra -pedantic \
 	-DDRC_VERSION=\"${VERSION}\" \
 
 SRC = ${wildcard *.cpp}
